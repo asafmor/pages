@@ -1,0 +1,1862 @@
+<!doctype html>
+<html lang="en" data-theme="paper" data-layout="sidebar">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pageleaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;600&amp;family=Archivo:wght@500;600&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Chivo:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;600&amp;family=Literata:opsz,wght@7..72,500;7..72,600&amp;family=Manrope:wght@400;600&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Architecture: theme tokens → layout → components → Markdown typography → responsive/print. */
+:root{color-scheme:light;--bg:#f4efe6;--surface:#fffdf8;--text:#2d2924;--muted:#665e55;--line:#d7cab8;--accent:#8b3525;--soft:#eee2d2;--code:#f0e6d8;--table-head:#e7d9c6;--quote-rule:4px solid #8b3525;--header-bg:#f8f1e7;--scroll-track:#e7dbcb;--scroll-thumb:#9c7256;--nav-scroll-track:#f8f1e7;--nav-scroll-thumb:#e7d9c6;--title-font:Literata,Georgia,serif;--body-font:"Atkinson Hyperlegible",Arial,sans-serif;--body-size:16px;--body-leading:1.82;--radius:2px;--header-height:126px;--sidebar:245px;--toc:210px;--measure:740px;--article-frame:1120px;--header:var(--header-height);--shadow:0 12px 30px #4d38200d}
+[data-theme="midnight"]{color-scheme:dark;--bg:#0b0d16;--surface:#141827;--text:#f1f3fa;--muted:#a9b2c5;--line:#30374d;--accent:#a9b9ff;--soft:#20263a;--code:#101320;--table-head:#202840;--quote-rule:3px solid #a9b9ff;--header-bg:#0f1220;--scroll-track:#191d2c;--scroll-thumb:#697899;--nav-scroll-track:#0f1220;--nav-scroll-thumb:#30374d;--title-font:Chivo,Arial,sans-serif;--body-font:"IBM Plex Sans",Arial,sans-serif;--body-size:16px;--body-leading:1.76;--radius:10px;--header-height:126px;--shadow:0 18px 48px #0008}
+[data-theme="grove"]{color-scheme:light;--bg:#f8faf4;--surface:#fcfdf8;--text:#243629;--muted:#576a5b;--line:#c4d1bf;--accent:#2d7047;--soft:#e0ebdd;--code:#e6efe2;--table-head:#d6e6d2;--quote-rule:3px solid #2d7047;--header-bg:#e6eee0;--scroll-track:#dfe8da;--scroll-thumb:#6f896b;--nav-scroll-track:#e6eee0;--nav-scroll-thumb:#c4d1bf;--title-font:Alegreya,Georgia,serif;--body-font:"Work Sans",Arial,sans-serif;--body-size:15px;--body-leading:1.78;--radius:14px;--header-height:126px;--shadow:0 10px 28px #29432712}
+[data-theme="ocean"]{color-scheme:light;--bg:#fafcff;--surface:#fcfdff;--text:#182d48;--muted:#53677f;--line:#c0cde0;--accent:#225b9b;--soft:#ecf3fe;--code:#f1f6fe;--table-head:#d5e2f1;--quote-rule:4px solid #225b9b;--header-bg:#dfe8f5;--scroll-track:#d7dfeb;--scroll-thumb:#607a9a;--nav-scroll-track:#dfe8f5;--nav-scroll-thumb:#c0cde0;--title-font:Archivo,Arial,sans-serif;--body-font:Manrope,Arial,sans-serif;--body-size:15px;--body-leading:1.7;--radius:6px;--header-height:126px;--shadow:0 10px 24px #16475c12}
+[data-theme="contrast"]{color-scheme:dark;--bg:#000;--surface:#000;--text:#fff;--muted:#fff;--line:#fff;--accent:#ffe600;--soft:#1c1c1c;--code:#000;--table-head:#252525;--quote-rule:5px solid #ffe600;--header-bg:#000;--scroll-track:#000;--scroll-thumb:#ffe600;--nav-scroll-track:#000;--nav-scroll-thumb:#ffe600;--title-font:Arial Black,Arial,Helvetica,sans-serif;--body-font:Arial,Helvetica,sans-serif;--body-size:18px;--body-leading:1.65;--radius:0;--header-height:130px;--shadow:none}
+[data-theme="paper"] .header{box-shadow:0 2px 0 var(--line)}[data-theme="paper"] .page-title{font-style:italic}[data-theme="paper"] .article th{letter-spacing:.03em;text-transform:uppercase;font-size:.78em}[data-theme="midnight"] .header{background:linear-gradient(90deg,#0f1522,#151b29);box-shadow:0 1px 0 #ffffff12}[data-theme="midnight"] .page-title{letter-spacing:-.055em;font-weight:720}[data-theme="midnight"] .article pre{box-shadow:inset 0 1px #ffffff0d,0 14px 30px #0005}[data-theme="grove"] .header{border-bottom-style:dashed}[data-theme="grove"] .sidebar a[aria-current]{box-shadow:inset 3px 0 var(--accent)}[data-theme="grove"] .article blockquote{background:linear-gradient(90deg,var(--soft),transparent)}[data-theme="ocean"] .header{border-bottom:3px solid var(--accent)}[data-theme="ocean"] .primary a{letter-spacing:.035em;text-transform:uppercase;font-size:11px}[data-theme="ocean"] .article table{font-size:13px}[data-theme="contrast"] a{text-decoration-thickness:3px}[data-theme="contrast"] .header{border-bottom:3px solid var(--accent)}[data-theme="contrast"] .sidebar a[aria-current], [data-theme="contrast"] .toc a[aria-current]{outline:3px solid var(--accent);outline-offset:-3px;background:var(--soft)}[data-theme="contrast"] .article th{color:#000;background:var(--accent)}
+[hidden]{display:none!important}*{box-sizing:border-box;scrollbar-color:var(--accent) var(--soft)}::selection{background:var(--accent);color:var(--surface)}body{margin:0;background:var(--bg);color:var(--text);font:var(--body-size)/var(--body-leading) var(--body-font)}button,select{font:inherit;color:inherit}a{color:var(--accent);text-underline-offset:4px}button,select{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:7px 11px;cursor:pointer}button:hover,a:hover{color:var(--accent)}:focus-visible{outline:3px solid var(--accent);outline-offset:4px}.skip{position:fixed;top:-100px;left:20px;z-index:10;background:var(--surface);padding:12px}.skip:focus{top:10px}.header{position:sticky;top:0;z-index:3;background:var(--header-bg);border-bottom:1px solid var(--line)}.masthead{height:calc(var(--header-height) - 50px);display:flex;align-items:center;gap:16px;padding:0 22px}.doc-title{margin:0;min-width:0;max-width:min(70vw,900px);font-size:22px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.doc-title a{display:block;overflow:hidden;text-overflow:ellipsis;text-decoration:none;color:var(--text)}.tools{margin-left:auto;display:flex;align-items:center;gap:10px;flex-shrink:0}.theme-picker{position:relative;display:grid;align-items:center}.theme-picker::after{content:"";position:absolute;right:14px;width:7px;height:7px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:translateY(-2px) rotate(45deg);pointer-events:none}.theme-picker select{appearance:none;-webkit-appearance:none;min-height:38px;padding:7px 32px 7px 12px;background:var(--surface);border:1px solid var(--line);border-radius:999px;box-shadow:var(--shadow);color:var(--text);font-size:13px;font-weight:600;letter-spacing:.01em}.theme-picker select:hover{background:var(--soft);border-color:var(--accent)}.theme-picker select:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.theme-picker option{background:var(--surface);color:var(--text)}.primary{display:flex;gap:26px;overflow:auto;padding:0 22px;min-height:49px;scrollbar-width:thin;scrollbar-color:var(--nav-scroll-thumb) var(--nav-scroll-track)}.primary::-webkit-scrollbar{height:7px}.primary::-webkit-scrollbar-track{background:var(--nav-scroll-track)}.primary::-webkit-scrollbar-thumb{background:var(--nav-scroll-thumb);border-radius:20px;border:2px solid var(--nav-scroll-track)}.primary a{padding:11px 0;white-space:nowrap;text-decoration:none;color:var(--muted);border-bottom:2px solid transparent;font-size:13px;font-weight:600}.primary a[aria-current]{color:var(--accent);border-color:var(--accent)}.layout{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr) var(--toc);max-width:1600px;margin:auto}.sidebar,.toc{position:sticky;top:var(--header);height:calc(100dvh - var(--header));overflow:auto;padding:35px 22px}.sidebar{border-right:1px solid var(--line)}.eyebrow{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 17px}.sidebar a,.toc a{display:block;text-decoration:none;color:var(--muted);font-size:13px;line-height:1.5;padding:10px 12px;border-radius:6px;margin:3px 0}.sidebar a[aria-current]{background:var(--soft);color:var(--accent);font-weight:600}.sidebar a:hover,.toc a:hover{background:var(--soft)}.main{min-width:0;padding:42px clamp(24px,4vw,66px) 70px}.article-wrap{max-width:var(--measure);margin:auto}.page-title{font-family:var(--title-font);font-size:clamp(32px,3.2vw,48px);letter-spacing:-1.3px;font-weight:500;line-height:1.15;margin:12px 0 27px}.toc{padding:42px 20px 20px 0}.toc nav{border-left:1px solid var(--line);padding-left:10px}.toc a{font-size:12px;padding:6px 8px}.toc a[aria-current]{color:var(--accent);background:var(--soft)}.toc a[data-level="5"]{margin-left:12px}.toc a[data-level="6"]{margin-left:24px}.pager{display:flex;gap:16px;margin-top:48px;padding-top:24px;border-top:1px solid var(--line)}.pager a{flex:1;padding:16px;border:1px solid var(--line);border-radius:var(--radius);text-decoration:none;background:var(--surface);box-shadow:var(--shadow);font-size:14px}.pager a:last-child{text-align:right}.pager small{display:block;color:var(--muted);font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}.article{overflow-wrap:anywhere}.article [id]{scroll-margin-top:calc(var(--header) + 24px)}.article p{margin:0 0 21px}.article>p:first-child{font-size:18px;line-height:1.8;color:var(--muted)}.article h1,.article h2,.article h3,.article h4,.article h5,.article h6{font-family:var(--title-font);line-height:1.3;scroll-margin-top:150px;margin:34px 0 15px;font-weight:600}.article h4{font-size:25px}.article h5{font-size:20px}.article h6{font-size:17px}.article blockquote{margin:26px 0;padding:18px 23px;border:1px solid var(--line);border-inline-start:var(--quote-rule);background:var(--soft);border-radius:var(--radius)}.article blockquote p:last-child{margin:0}.article pre{padding:22px;background:var(--code);border:1px solid var(--line);border-radius:var(--radius);overflow:auto;font-size:13px;line-height:1.8}.article code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.article :not(pre)>code{background:var(--code);border-radius:4px;padding:2px 5px;font-size:.87em}.article table{display:block;overflow:auto;border-collapse:collapse;width:100%;margin:26px 0;font-size:14px}.article td,.article th{padding:12px 16px;text-align:left;border:1px solid var(--line)}.article th{background:var(--table-head);font-weight:600}.article img{max-width:100%;height:auto;border-radius:var(--radius)}.article li{margin:6px 0}.article hr{border:0;border-top:1px solid var(--line);margin:32px 0}.menu-button{display:none}.mobile-toc{display:none}.drawer{background:var(--bg);color:var(--text);border:1px solid var(--line);max-height:90dvh;width:min(420px,92vw);border-radius:var(--radius);padding:24px}.drawer::backdrop{background:#0008}.drawer a{display:block;padding:8px 12px;text-decoration:none}.drawer a[aria-current]{background:var(--soft)}.drawer h3{font-size:13px;margin:24px 0 5px}.drawer button{float:right}.status{padding:40px;max-width:700px;margin:auto}.print-content{display:none}
+/* Wide documents: tables can breathe while normal paragraphs retain a readable measure. */
+*{scrollbar-color:var(--scroll-thumb) var(--scroll-track)}*::-webkit-scrollbar{width:12px;height:12px}*::-webkit-scrollbar-track{background:var(--scroll-track)}*::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border:3px solid var(--scroll-track);border-radius:20px}
+.primary{align-items:flex-end}.primary a{padding:9px 0}
+[data-theme="paper"] .header{border-bottom:1px solid var(--line);box-shadow:none}[data-theme="paper"] .page-title{font-style:normal}[data-theme="ocean"] .header{border-bottom:1px solid var(--line)}
+[data-theme="grove"] .sidebar a[aria-current]{box-shadow:none}
+:is([data-theme="midnight"],[data-theme="ocean"]) :is(button,select,.sidebar a,.toc a,.pager a,.article blockquote,.article pre,.article table,.drawer,.drawer a,.mobile-toc){border-radius:var(--radius)}
+.article-wrap{max-width:var(--article-frame)}
+.article p,.article>ul,.article>ol,.article>blockquote,.article>pre{max-width:var(--measure)}
+/* Keep header controls aligned with the centered content frame on wide screens. */
+.masthead,.primary-container{max-width:1600px;margin:auto}
+.primary-container{padding:0 22px}.primary-container .primary{padding:0}.sidebar-layout .primary-container{display:none}
+.sidebar-group{margin:0 0 20px}.sidebar-group-title{margin:0;padding:8px 12px 4px;color:var(--text);font-size:12px;line-height:1.45;font-weight:700}.sidebar-group a{margin:1px 0 1px 10px}.sidebar-layout .sidebar{padding-top:28px}
+
+@media(min-width:1600px){.layout{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+@media(max-width:1199px){.layout{grid-template-columns:220px minmax(0,1fr)}.toc{display:none}.mobile-toc{display:block;border:1px solid var(--line);border-radius:var(--radius);padding:12px 17px;margin-bottom:28px;font-size:13px}.mobile-toc a{display:block;padding:4px 0}.mobile-toc summary{cursor:pointer;color:var(--muted)}}
+@media(max-width:700px){:root{--header:118px}.masthead{height:68px;padding:0 18px;gap:10px}.doc-title{font-size:18px;max-width:calc(100vw - 180px)}.tools{gap:7px}.theme-picker select{max-width:115px;font-size:12px}.menu-button{display:block}.primary{padding:0 18px;gap:23px}.layout{display:block}.sidebar{display:none}.main{padding:28px 22px 45px}.page-title{font-size:36px}.pager{gap:10px}.pager a{padding:12px}.article>p:first-child{font-size:17px}}
+@media(prefers-reduced-motion:no-preference){button,a{transition:background .15s,color .15s}}
+@media print{body{background:white;color:black}.header,.layout,.drawer,.skip{display:none!important}.print-content{display:block}.print-content article{break-before:page}.print-content article:first-child{break-before:auto}.article pre{white-space:pre-wrap}.article a{color:inherit}.article table{display:table}.article h2,.article h3,.article h4{break-after:avoid}}
+/* Standard scrollbar properties override the custom parts unless both are auto. */
+@supports selector(::-webkit-scrollbar){.primary{scrollbar-width:auto;scrollbar-color:auto}.primary::-webkit-scrollbar-button{display:none;width:0;height:0}}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="header"><div class="masthead"><h1 class="doc-title"><a id="document-title" href="#/"></a></h1><div class="tools"><div class="theme-picker"><select id="theme" aria-label="Choose theme"><option value="paper">Paper</option><option value="midnight">Midnight</option><option value="grove">Grove</option><option value="ocean">Ocean</option><option value="contrast">High contrast</option></select></div><button class="menu-button" id="menu" aria-label="Open document navigation">☰</button></div></div><div class="primary-container"><nav id="primary" class="primary" aria-label="Sections"></nav></div></header>
+<div id="status" class="status" role="status">Loading your document…</div>
+<div class="layout" id="layout" hidden><aside class="sidebar"><nav id="secondary" aria-label="Pages"></nav></aside><main class="main" id="content" tabindex="-1"><div class="article-wrap"><h1 class="page-title" id="page-title"></h1><details class="mobile-toc" id="mobile-toc"><summary>On this page</summary><nav aria-label="On this page"></nav></details><article class="article" id="article"></article><nav class="pager" id="pager" aria-label="Previous and next pages"></nav></div></main><aside class="toc" id="toc"><p class="eyebrow">On this page</p><nav aria-label="On this page"></nav></aside></div>
+<dialog class="drawer" id="drawer"><button id="close-menu" aria-label="Close navigation">✕</button><h2>Explore document</h2><nav id="mobile-nav" aria-label="Document navigation"></nav></dialog>
+<div class="print-content article" id="print-content"></div>
+<noscript><p class="status">Enable JavaScript to read this document.</p></noscript>
+<!-- REPLACE THE MARKDOWN BELOW. For a literal closing script tag in Markdown, write &lt;/script instead; readMarkdown decodes this sequence. -->
+<script id="markdown-source" type="text/plain"># GR221 Mallorca — Ruta de Pedra en Sec
+
+## 1. Route Overview
+
+### 1.1 Identity & Geography
+
+✓ **Recommended for your trip:** spend **7–8 nights on Mallorca**, starting **21 April 2027**, and walk **Valldemossa → Deià → Sóller → Tossals Verds → Lluc → Pollença** in five hiking days. Add Esporles for a sixth hiking day. This keeps the central mountain stages and leaves time for travel and a contingency day. A full traverse is better with a longer holiday.
+
+**Planning assumptions:** solo adult, one backpack, indoor accommodation, independent hiking, public transport where practical, and 21 April treated as arrival day. Dormitory beds are acceptable for planning purposes; private-room alternatives appear below. No accommodation has been reserved and no April 2027 availability is confirmed.
+
+The GR221 crosses Mallorca’s Serra de Tramuntana in Spain’s Balearic Islands, usually southwest to northeast. The current official main itinerary runs **Port d’Andratx → Port de Pollença**. Many older accounts finish in **Pollença town**, about 7 km inland. The council website gives **150.1 km** for the main route; its July 2026 leaflet gives **150.2 km**. Treat it as approximately **150 km**, with actual walking dependent on accommodation approaches and variants. [Official route overview](https://caminsdepedra.conselldemallorca.es/en/dry-stone-route-gr-221), [July 2026 official map](https://caminsdepedra.conselldemallorca.es/documents/995858/996207/fulleto_ruta_pedra_sec_A3.pdf/ef144427-463a-db66-86dc-dbc397734962?t=1784205709571).
+
+The highest main-route pass is around **1,200 m**. Published full-traverse tracks commonly accumulate roughly **5,500 m ↑ and ↓**, but there is no single verified total covering every lodging/variant combination. Budget **9–11 hiking days** for a sensibly split full traverse, plus travel; faster versions require long days. [Full-traverse track account](https://www.hikingexperience.net/en/trails/map-and-stages-gr221/).
+
+### 1.2 Character & Experience
+
+This is a mountain-and-village trek with sea views, olive terraces, old stone paths, oak woodland and bare limestone passes. It is not continuously coastal, and its inland days can feel far removed from Mallorca’s beach resorts.
+
+For choosing sections, the strongest appeal is the contrast: Valldemossa’s high ridge, the agricultural paths around Deià, the stone staircase through Biniaraix, then the higher country above Tossals Verds. The southwest adds particularly good Dragonera views. [Council: southwest stage](https://caminsdepedra.conselldemallorca.es/en/-/etapa-2-sant-elm-estellencs), [Council: Biniaraix and Cúber](https://caminsdepedra.conselldemallorca.es/en/-/etapa-6-muleta-tossals-verds).
+
+Refuges can make a solo trip sociable, but village accommodation also gives you privacy and better control over meals. You can mix them without luggage transfers.
+
+### 1.3 At a Glance
+
+| Decision | What it means for you |
+|---|---|
+| Best fit | Five or six walking days within 7–8 nights |
+| Effort | Moderate overall, with demanding mountain days; not uniformly easy |
+| Typical daily commitment | About 4–7 h moving; allow breaks and extra navigation time |
+| Main bottleneck | A confirmed bed and meals at Tossals Verds |
+| Most useful adjustment | Sleep in Sóller town before the climb to Tossals Verds |
+| Best season fit | Late April is a strong choice, with rain/wind contingencies |
+| Pack strategy | Indoor nights; no tent or stove needed for the recommended plan |
+| Key uncertainty | April 2027 transport, accommodation inventory and trail conditions |
+
+> 📅 **Checked: 12 September 2026.** The **Mallorca 312 cycling event is scheduled for Saturday 24 April 2027**. The organizer confirms closed roads. Expect possible transport disruption and extra accommodation demand; the precise 2027 closure timetable was not established. [Event organizer](https://mallorca312.com/en/).
+
+## 2. Route & Stage Breakdown
+
+### 2.1 Standard Itinerary
+
+The official stage divisions are useful for identifying paths, but some are too long for a relaxed holiday. **An official stage is not necessarily a recommended day.** Figures below reproduce council stage data, rounded to 0.1 km; walking times exclude your breaks. The final row’s elevation is an approximate planning allowance because its detailed official page could not be retrieved.
+
+| Official stage | Route | km | ↑ m | ↓ m | Moving time | Overnight / practical interpretation |
+|---|---|---:|---:|---:|---|---|
+| 1 | Port d’Andratx → Sant Elm | 9.2 | 372 | 372 | 3 h 20 min | Sant Elm; manageable opening day |
+| 2 | Sant Elm → Estellencs | 24.7 | 1,010 | 912 | 8 h 40 min | Estellencs; consider splitting via Ses Fontanelles |
+| 3 | Estellencs → Esporles | 14.4 | 670 | 629 | 4 h 50 min | Esporles; Banyalbufar is an intermediate stop |
+| 4 | Esporles → Can Boi, Deià | 23.2 | 1,325 | 1,387 | 8 h 10 min | **Split at Valldemossa** |
+| 5 | Can Boi → Muleta | 9.9 | 362 | 385 | 3 h 06 min | Muleta; alternatively branch to Sóller town |
+| 6 | Muleta → Tossals Verds | 27.8 | 1,111 | 696 | 9 h 05 min | **Start in Sóller to shorten it** |
+| 7 | Tossals Verds → Son Amer | 15.1 | 869 | 848 | 5 h 35 min | Son Amer or nearby Lluc monastery |
+| 8 | Son Amer → Pont Romà, Pollença | 17.5 | 189 | 677 | 4 h 45 min | Pollença; logical finish for a shorter trek |
+| 9 | Pollença → Port de Pollença | About 6.7–7 | About 0–100 | About 50–150 | About 2 h | Optional sea finish for a partial-route holiday |
+
+Sources: council pages for [stage 1](https://caminsdepedra.conselldemallorca.es/en/-/etapa-1-port-d-andratx-sant-elm), [stage 2](https://caminsdepedra.conselldemallorca.es/en/-/etapa-2-sant-elm-estellencs), [stage 3](https://caminsdepedra.conselldemallorca.es/en/-/etapa-3-estellencs-esporles), [stage 4](https://caminsdepedra.conselldemallorca.es/en/-/stage-3-esporles-can-boi), [stage 5](https://caminsdepedra.conselldemallorca.es/en/-/stage-4-can-boi-muleta), [stage 6](https://caminsdepedra.conselldemallorca.es/en/-/etapa-6-muleta-tossals-verds), [stage 7](https://caminsdepedra.conselldemallorca.es/en/-/etapa-7-tossals-verds-son-amer), [stage 8](https://caminsdepedra.conselldemallorca.es/en/-/etapa-7-son-amer-pont-roma); [finish extension account](https://www.talesofatrail.com/gr221/our-stages).
+
+**Confidence: High** for the quoted official stage figures; **Medium** for how closely your final track will match them. The stage-page distances do not exactly reconcile with the council’s headline route total. Do not combine measurements from different variants into a supposedly precise total.
+
+### 2.2 Stage-by-Stage Analysis
+
+| Section | Terrain, appeal and practical implications |
+|---|---|
+| Port d’Andratx → Sant Elm | A shorter opening walk with climbs despite coastal endpoints. Buy supplies before leaving; village services at both ends. Worth including when completing the southwest, less essential on a one-week highlights trip. |
+| Sant Elm → Estellencs | La Trapa, sea cliffs and Dragonera views are the main reward. The full official day is long and exposed to weather. Carry lunch and the full day’s water; do not assume a mapped spring or La Trapa supplies refreshments. Ses Fontanelles can split the walking, subject to an actual booking. |
+| Estellencs → Esporles | Terrace country, Banyalbufar and the Camí des Correu. Repeated smaller climbs rather than one high pass. Banyalbufar offers an opportunity for a meal or a shorter day; verify business opening hours. This is the best extra stage for cultural scenery. |
+| Esporles → Valldemossa | Approximately 9–10 km, roughly ↑600–700 m and ↓400–500 m; allow 3.5–4.5 h. A wooded climb and a useful short opening day. Son Cabaspre has an official warning about missing signs; offline navigation matters. |
+| Valldemossa → Deià | Roughly 12–14 km depending on the ascent; about ↑600–750 m and ↓900–1,000 m, 4.5–6 h. High views and a substantial descent make it a priority. Carry lunch and water; choose the actual GPX before deciding whether an access permit is needed. |
+| Deià → Muleta or Sóller | A gentler day among olive groves and old paths. Muleta gives a sea-view overnight; the Camí des Rost branch gives a practical finish in Sóller town. Approximately 10–12 km to town, about ↑300–400 m; exact descent depends on the variant. Shops and meals are easier at the town finish. |
+| Sóller → Tossals Verds | About 20–23 km and approximately ↑1,000–1,100 m via Biniaraix, Cúber and the main route; allow 6.5–8 h moving. Start early. The Barranc climb is sustained; Cúber is a road crossing, not a dependable shop. Choose the non-Pas-Llis route explicitly. |
+| Tossals Verds → Lluc / Son Amer | A full mountain day over the high pass, followed by a long rocky descent and woodland. Carry all lunch and water. No intermediate village or staffed meal stop. Lluc and Son Amer are different endpoints; allow extra walking between them. |
+| Lluc / Son Amer → Pollença | Woodland around Binifaldó, then a long descent and lower valley walking. Less dramatic than the high stages, but a satisfying finish. Its length can still tire sore feet. Carry lunch rather than depend on an intermediate business. |
+| Pollença → Port de Pollença | Low, comparatively easy walking to the sea. It does not add another mountain highlight. Older walkers report road-side walking; check the current official alignment before deciding. A bus finish preserves time for Pollença itself. |
+
+The split-stage figures are **planning ranges**, not newly measured GPX statistics. They combine the council’s stage descriptions with [local guide variants into Sóller](https://www.mallorcahiking.com/most-popular-tours/gr221-stage-3b-dei%C3%A0-puerto-de-s%C3%B3ller-or-s%C3%B3ller/), [a mapped Sóller–Tossals itinerary](https://www.komoot.com/collection/2235396/-an-alternative-to-magaluf-the-gr221-mallorca), and [firsthand stage accounts](https://www.talesofatrail.com/gr221/our-stages). Allow additional time for photography, meals and wet rock.
+
+### 2.3 Alternative Itineraries
+
+**Separate hiking days from holiday length.** Arrival and departure can consume two dates even when the flights are short. The trip-length column below includes one contingency/rest day where shown.
+
+| Option | Walking plan | Hiking days | Sensible holiday length | Approximate walking | Effort and trade-off |
+|---|---|---:|---|---|---|
+| Short mountain core | Sóller → Tossals → Lluc → Pollença | 3 | 5–6 days | 53–58 km | Concentrated effort; misses Valldemossa and Deià |
+| Compact highlights | Valldemossa → Deià → Sóller → Tossals → Lluc | 4 | 6–7 days | 55–64 km | Keeps the strongest central scenery; departure from Lluc needs planning |
+| **Best one-week fit** | Above, then Pollença | **5** | **8 days / 7 nights** | **72–81 km** | Varied, with two demanding mountain days and one buffer day |
+| **Best with a little more time** | Esporles → Valldemossa, then the five-day core | **6** | **9 days / 8 nights** | **81–91 km** | Shorter opening day and another village overnight |
+| Extra terraces | Estellencs → Esporles, then the six-day plan | 7 | 10 days / 9 nights | 95–105 km | Adds Banyalbufar and Camí des Correu |
+| Full route, brisk | Port d’Andratx → Port de Pollença | 8–9 | 10–12 days | About 150 km | Some combinations/long stages; fewer easy days |
+| Full route, comfortably split | Split at Ses Fontanelles and Valldemossa; add a Sóller night after Muleta | 11–12 | 13–15 days | About 150 km plus approaches | More expensive and booking-intensive; better time for every section |
+
+These are **my itinerary designs**, using the sections above, rather than official tour products. Ranges deliberately account for alternate town approaches.
+
+**Concrete full-route sequences:**
+
+- **Nine hiking days:** Port d’Andratx → Sant Elm → Estellencs → Esporles → Valldemossa → Deià → Sóller → Tossals → Lluc → Port de Pollença, passing through Pollença on the final day. That final day is about 24–26 km; stop in Pollença and add another day if tired. The Sant Elm–Estellencs day remains long.
+- **Eight hiking days:** use the same sequence but combine Esporles–Valldemossa–Deià. This adds the official 23.2 km / ↑1,325 m day. I would choose the shorter central traverse for an eight-day holiday instead.
+- **Twelve hiking days:** Port d’Andratx → Sant Elm → Ses Fontanelles → Estellencs → Esporles → Valldemossa → Deià → Muleta → Sóller → Tossals → Lluc → Pollença → Port de Pollença. Every arrow is one day. This requires a confirmed Ses Fontanelles stay; combining the final two walking days reduces it to eleven.
+
+For a **genuinely gentler 7–8-night holiday**, reduce the mountain traverse instead of merely reducing its number of days:
+
+1. Spend two nights around Esporles/Banyalbufar: walk Camí des Correu in one direction and use a bus for the other, subject to that day’s service.
+2. Spend one night in Deià and walk to Sóller the next day.
+3. Spend two nights in Sóller: choose a short Biniaraix/Fornalutx valley circuit or an out-and-back up part of the Barranc, turning around before fatigue builds.
+4. Transfer to Lluc for one night and do a short woodland walk. Walk to Pollença only if a roughly 18 km day suits you; otherwise use transport.
+5. Finish with a Palma night.
+
+Aim for **6–12 km and 2–4 h** on most walking days by choosing local turnaround points. This is a GR221-based holiday with transfers, not a continuous traverse. **It omits the high pass and the full Sóller–Tossals climb.**
+
+If you want the high mountains with less climbing, a confirmed bus/taxi to **Cúber** followed by a walk to Tossals can replace the long climb from Sóller. However, the next day to Lluc still has roughly **870 m ascent**. Transport to the reservoir does not make the entire mountain section easy.
+
+### 2.4 Variants & Detours
+
+| Change | Effect on route / effort | When it makes sense |
+|---|---|---|
+| Start in Esporles | Adds about 9–10 km and one day before Valldemossa | Best simple extension to the five-day core |
+| Start in Estellencs | Adds another 14.4 km and one day | Best extra day for terraces and villages |
+| Branch into Sóller town | Avoids sleeping at Muleta and walking its approach next morning | My default for balancing daily effort |
+| Muleta overnight + extra Sóller night | Preserves sunset at Muleta, then adds a short transition/rest day | Good use of an extra night if refuge atmosphere matters |
+| Cúber → Tossals via main route | Roughly 7–9 km, 2.5–3.5 h; final GPX required | Short mountain access day; skips the Biniaraix ascent |
+| Pas Llis | Alternative from the Cúber area with a short exposed, chain-assisted passage | Experienced, confident hikers in dry conditions; not the default solo route |
+| Sa Costera → Cala Tuent | Roughly 10–12 km from Mirador de ses Barques, longer from Sóller; boat/taxi needed at finish | An extra coastal day with confirmed return transport |
+| Archduke circuit from Valldemossa | Local provider version: 11 km, ↑550 m, about 4 h | Stay two nights and choose the best-weather day; overlaps the traverse scenery |
+| S’Arracó / Galatzó approaches | Alternative southwest entrances | Useful if fitting refuge beds or avoiding the longest southwest day |
+| Castell d’Alaró / Orient branch | Changes the finish and overnight pattern; not a minor out-and-back | Worth a separate extension after the main booking chain is secure |
+| Port de Pollença finish | Adds about 7 km, about 2 h | For a sea finish or full main-route completion |
+
+Use the [official variants and mapping portal](https://caminsdepedra.conselldemallorca.es/en/dry-stone-route-gr-221), [Archduke circuit description](https://www.mallorcahiking.com/most-popular-tours/circuit-out-valldemossa-and-along-archdukes-bridleway/) and [Cala Tuent boat operator](https://www.barcoscalobra.com/). Distances for transport-assisted variants are planning ranges; confirm both the track and the transfer before booking.
+
+**Do not substitute a summit or gorge for an ordinary GR221 stage without separate research.** In particular, the Torrent de Pareis is not a casual shortcut to the coast. For this first solo trip, the main-route high pass already provides a substantial mountain experience.
+
+## 3. Difficulty & Trail Conditions
+
+### 3.1 Physical Difficulty
+
+The difficult part is repeated climbing and descending on stone with a loaded pack. The official **Muleta–Tossals day exceeds nine hours moving**, which is why the recommended itinerary starts that day in Sóller. The official combined **Esporles–Deià day has over 1,300 m ascent and descent**, so split it at Valldemossa. These are meaningful reductions in workload, not merely changes of lodging. [Council stage 6](https://caminsdepedra.conselldemallorca.es/en/-/etapa-6-muleta-tossals-verds), [Council stage 4](https://caminsdepedra.conselldemallorca.es/en/-/stage-3-esporles-can-boi).
+
+Before committing, test two consecutive walking days with your intended backpack, including roughly **800–1,000 m ascent on one day**. The useful test is how your feet and knees feel the following morning. If that is currently too much, choose the gentler plan or reservoir access variant.
+
+### 3.2 Technical Difficulty
+
+The recommended main route is a walking trek, with rough limestone, cobbles, uneven steps and steep descents. It does not require planned climbing equipment in ordinary dry conditions. That does not mean every section is comfortable for someone with vertigo or poor footing.
+
+Choose the **main route via Font des Noguer / Coll des Coloms** when approaching Tossals from Cúber; inspect the GPX for this choice. **Pas Llis is a distinct variant**, not an unavoidable obstacle. Local accounts describe a chain-assisted passage there. [Official variant list](https://caminsdepedra.conselldemallorca.es/en/dry-stone-route-gr-221), [Pas Llis route account](https://www.estilopalma.com/2024/12/tossals-verds-over-rough-and-smooth/).
+
+### 3.3 Elevation
+
+The central route rises from Sóller’s low valley to the roughly 900 m Coll de l’Ofre, drops to Tossals, then climbs again to the approximately 1,200 m high pass before descending to Lluc. There is little reason to worry about altitude acclimatization at these elevations; physical effort and weather are the issues. [DAV high-pass route](https://www.outdooractive.com/en/route/hiking-trail/balearen/mallorca-gr-221-stage-9-from-refugi-de-tossals-verds-to-refugi-son/15725571/).
+
+### 3.4 Trail Condition
+
+Expect maintained historical paths interspersed with rocky mountain trail, woodland tracks and road sections. Wet limestone and leaf-covered stone steps can materially slow your pace. Wind damage, erosion or exceptional snow can change usability.
+
+📅 **Checked 12 September 2026:** the official Esporles–Can Boi description says the **Son Cabaspre urbanization section is passable but not signposted**. Some travel reports describe closure or land-access problems. Use the council’s current alignment, and confirm again before walking. A report that someone crossed a fence is not evidence of permission. [Official stage status](https://caminsdepedra.conselldemallorca.es/en/-/stage-3-esporles-can-boi).
+
+## 4. Season & Weather
+
+### 4.1 Hiking Season
+
+✓ **Recommended:** retain late April. It offers a good balance between daylight, moderate lowland temperatures and staffed accommodation. It is already a popular hiking period. The route is not governed by one alpine-style opening date; each refuge and any high-weather restriction must be checked separately.
+
+Local guides describe September through early June as the main walking period, while noting that April and May can still be hot. [Local seasonal guidance](https://www.mallorcahiking.com/most-popular-tours/circuit-out-valldemossa-and-along-archdukes-bridleway/).
+
+### 4.2 Weather Patterns
+
+For context, AEMET’s **1981–2010 Palma airport normals**, at only 5 m elevation, give April an average daily maximum **19.8°C**, minimum **7.4°C**, rainfall **34 mm**, and about **4.8 days with at least 1 mm rain**. These are old climate normals for a lowland station, **not a forecast or mountain climate measurement**. [AEMET station data](https://www.aemet.es/en/serviciosclimaticos/datosclimatologicos/valoresclimatologicos?k=bal&l=B278).
+
+For packing, allow for warm walking in sheltered valleys, cold wind at exposed passes, rain and reduced visibility. Near-freezing conditions on high ground remain a contingency worth preparing for. Do not infer a snow-free high pass from a sunny Palma forecast. The exact weather for April 2027 is presently unknowable.
+
+### 4.3 Seasonal Trade-offs
+
+| Period | Main advantage | Main compromise |
+|---|---|---|
+| March–April | Cooler walking, spring growth | Rain/wind, occasional high-ground winter conditions; popular refuge dates |
+| May | Longer daylight, generally warmer | Greater heat and water demand |
+| June–August | Long days | Heat makes exposed multiday walking much less attractive |
+| September–October | Warm sea and a second hiking season | Heat can linger; rain and storms require flexibility |
+| November–February | Quiet villages and cooler days | Shorter daylight and more limited services; mountain weather |
+
+This comparison is a planning synthesis. For decisions, use [AEMET forecasts](https://www.aemet.es/en/eltiempo/prediccion) and [AEMET warnings](https://www.aemet.es/en/eltiempo/prediccion/avisos), selecting Mallorca/Serra de Tramuntana and the relevant towns. A storm day is a reason to change the route, not to use the buffer day as pressure to push through.
+
+## 5. Navigation & Route Finding
+
+### 5.1 Waymarking
+
+Follow GR signs and red-and-white route markings, while checking each junction against your downloaded map. Old reports of long unsigned southern sections predate improvements; conversely, a general claim that the whole route is signed does not remove the specific Son Cabaspre caveat. [Council route overview](https://caminsdepedra.conselldemallorca.es/en/dry-stone-route-gr-221), [local route updates](https://gr221.info/news.htm).
+
+### 5.2 Maps & Digital Navigation
+
+| Resource | Best use |
+|---|---|
+| [Official hiking map viewer](https://www.conselldemallorca.info/mediambient/pedra/senderisme/index_ca.html) | Confirm main route, variants and their status |
+| [Official July 2026 PDF map](https://caminsdepedra.conselldemallorca.es/documents/995858/996207/fulleto_ruta_pedra_sec_A3.pdf/ef144427-463a-db66-86dc-dbc397734962?t=1784205709571) | Whole-route orientation; not a detailed terrain map |
+| Council stage pages linked in §2.1 | Each retrieved stage page includes a GPX download link |
+| [Komoot central-stage collection](https://www.komoot.com/collection/2235396/-an-alternative-to-magaluf-the-gr221-mallorca) | Compare custom stage endpoints; check against official access |
+| [DAV/Outdooractive high-pass description](https://www.outdooractive.com/en/route/hiking-trail/balearen/mallorca-gr-221-stage-9-from-refugi-de-tossals-verds-to-refugi-son/15725571/) | Terrain and route explanation; its historical bus numbers are obsolete |
+
+A current detailed Tramuntana paper map is a useful backup. Check that it covers the central and northern sections; an island tourist road map is insufficient. No particular paid map edition was verified during this research.
+
+### 5.3 Navigation Preparation
+
+Download your **exact** daily GPX, offline terrain maps, refuge pins and escape points. Include the Sóller-town branch and the chosen Cúber–Tossals approach. Test that maps and tracks remain visible in airplane mode.
+
+Save reservation confirmations and bus information offline too. The official overview map is useful for planning, but it cannot resolve every rocky junction. Carry a small paper backup or printed route extracts and know how to identify your coordinates.
+
+## 6. Accommodation & Overnight Planning
+
+### 6.1 Accommodation System
+
+The route combines council refuges with independently operated hostels, guesthouses and hotels. **They do not all use the same booking system.** A Spanish *hostal* may offer private rooms rather than backpacker dormitories.
+
+| Place | Booking route | Role in your plan |
+|---|---|---|
+| Valldemossa | [Ca’s Papà official website](https://www.hotelcaspapa.com/en/home.html), or another village property | Practical trail start; expect a private-room budget |
+| Deià | [Can Boi official refuge information](https://caminsdepedra.conselldemallorca.es/en/-/can-boi-4) and council portal | Good inexpensive/social overnight |
+| Sóller town | [Hostel Sóller](https://hostelsoller.com/) or [Hostal Nadal](https://www.hostalnadalsoller.com/en/) | Best location before the long climb; confirm room type |
+| Muleta | Council portal | Scenic refuge near Port de Sóller; different logistics from town |
+| Tossals Verds | [Council refuge information](https://caminsdepedra.conselldemallorca.es/en/refugi) and portal | Remote overnight anchoring the mountain section |
+| Lluc / Son Amer | Council portal for Son Amer; [Lluc monastery](https://www.lluc.net/es/) separately | Dormitory versus private-room choice |
+| Pollença | Council portal for Pont Romà, or town hotel | Convenient trekking finish |
+| Esporles | [S’Hostal d’Esporles listing](https://www.booking.com/hotel/es/sa-hostal-da-esporles.html) | Extra opening stage; verify cancellation and arrival terms |
+| Ses Fontanelles | [Owner’s enquiry page](https://www.ses-fontanelles.es/en/) | Southwest stage split; privately booked |
+
+These are **practical candidates, not confirmed availability or a hotel-quality ranking**. Ses Fontanelles currently advertises private double rooms; do not assume the old dormitory configuration described in hiking blogs still applies.
+
+### 6.2 Booking Strategy
+
+**Book the bed chain around Tossals Verds.** It has fewer convenient substitutes than Sóller, Deià or Pollença. Solo travel helps when a single bed remains, but does not remove the need to reserve.
+
+Use the [official council booking portal](https://seu.conselldemallorca.net/refugis/en/dispo/llistat/). It includes a **route availability search**, in addition to individual refuge/date searches.
+
+1. Prepare your preferred itinerary and one alternative with dates shifted by a day or the direction reversed.
+2. Search **one adult**, exact arrival date, and departure the following day. Check whether you are buying a dormitory bed or a room.
+3. Check Tossals first, then Can Boi, Son Amer and Pont Romà as applicable. Secure town stays around the workable refuge sequence.
+4. Select meals and linen deliberately. At Tossals, include dinner and arrange the next day’s lunch; ask how early breakfast can be provided if needed.
+5. Before paying, read the displayed cancellation/refund rules, payment deadline, remaining balance and amendment procedure. Save the complete confirmation.
+6. If the system cannot handle your request, use the council’s published contact: **+34 971 173 700**, **xarxaderefugis@conselldemallorca.net**. No enquiry has been sent on your behalf.
+
+📅 **Official booking window checked 12 September 2026:** generally **four months to five days before arrival**. Closer bookings may be possible by phone or at the refuge if places remain. Blogs disagree about “130 days”; the official rule does not specify that or a guaranteed release hour. [Council booking procedure](https://seu.conselldemallorca.net/es/ficha?key=6313), [published refuge regulation](https://caminsdepedra.conselldemallorca.es/documents/995858/12336898/20180928_reglament.pdf/760f5323-1cf8-776c-6aef-0423b6452066?t=1710941107517).
+
+For the **seven-night itinerary in §13.1**, the four-calendar-month rule implies these dates. **They are calculated planning dates, not verified system release appointments.**
+
+| Night required | Property | Expected booking-window date |
+|---|---|---|
+| 22 April 2027 | Can Boi | Around 22 December 2026 |
+| 24 April 2027 | Tossals Verds | Around 24 December 2026 |
+| 25 April 2027 | Son Amer, if chosen | Around 25 December 2026 |
+| 26 April 2027 | Pont Romà, if chosen | Around 26 December 2026 |
+
+Start checking the portal’s calendar in early/mid-December. The holiday-period release dates make checking the online workflow in advance useful. If nights open separately, reserve earlier scarce beds as they become available while keeping later town stays flexible; do not wait for the last date to open without checking the earlier ones.
+
+**Private-room limits:** Tossals’ two-bed room is booked **by email**, according to the refuge page. It is only one room and not a reliable sole plan. If private sleeping every night is essential, either secure it or replace the remote overnight with transport-assisted day walks. [Tossals booking instruction](https://caminsdepedra.conselldemallorca.es/en/refugi).
+
+**Unresolved:** no reliable current, universal refund percentage or deposit rule was verified for all council properties. The often-repeated “80% deposit” is not treated here as a guaranteed 2027 condition. Use the exact terms on your reservation; cancellation terms from tour companies do not govern direct refuge bookings.
+
+### 6.3 Overnight Logistics
+
+Council regulations state April arrival/registration **before 19:00**, dormitory access from **16:00**, departure before **10:00**, and use of sheets or a sleeping bag. These are distinct from the later nightly door-closing time. **Plan to arrive well before 19:00.** [Refuge regulation](https://caminsdepedra.conselldemallorca.es/documents/995858/12336898/20180928_reglament.pdf/760f5323-1cf8-776c-6aef-0423b6452066?t=1710941107517).
+
+Tossals lists showers, hot water, electricity, heating and Wi-Fi. Its posted meal times are breakfast **08:00–09:00** and dinner **20:30**. Confirm early-start arrangements rather than assume a 06:30 breakfast. Linen/towels cost extra on the published tariff. [Tossals facilities](https://caminsdepedra.conselldemallorca.es/en/refugi).
+
+Ask each property about potable water, charging, towel/linen inclusion, dietary needs and next-day packed lunch. Do not assume laundry facilities or reliable drying overnight. Bring earplugs and keep valuables with you.
+
+### 6.4 Camping
+
+For one backpack and this itinerary, **indoor accommodation is the simpler plan**. A tent adds weight and does not solve the uneven spacing of authorized overnight sites.
+
+IBANAT operates designated camping at **Sa Font Coberta and Es Pixarells** around Lluc. Its page specifies online reservations and labels their water points **non-potable**. These are specific campsites, not a general right to camp along the GR221. [Official campsite information and reservations](https://caib.es/sites/ibanat/ca/acampades_ibanat/).
+
+I did not establish a single regulation that conclusively resolves every proposed bivouac location across public land, private estates and protected zones. Do not infer permission from camping blogs or assume “no tent” bypasses restrictions. Obtain permission from the relevant manager for any camping variant.
+
+## 7. Food, Water & Resupply
+
+### 7.1 Water
+
+💧 **Plan around confirmed potable supplies at overnight stops.** A spring name on a map does not prove it is flowing or safe. April 2027 spring reliability cannot be established now.
+
+Carry capacity for **at least 3 L**. As a planning starting point, carry about **2–3 L on ordinary days**, and assess more for long, warm mountain days according to your consumption and the forecast. Ask the host the evening before about the next day’s supply. Bottled water may be the fallback if a refuge’s tap supply is unsuitable.
+
+| Section | Water plan |
+|---|---|
+| Estellencs–Esporles | Fill at departure; Banyalbufar is a possible commercial refill, not a guaranteed fountain |
+| Valldemossa–Deià | Start with the whole day’s requirement |
+| Deià–Sóller | Carry a day supply even if a café stop is planned |
+| Sóller–Tossals | No dependable staffed refill after leaving the valley; verify at departure |
+| Tossals–Lluc | Carry the whole day’s water; confirm Tossals supply before leaving Sóller |
+| Lluc–Pollença | Carry a full day supply; treat incidental fountains as unverified |
+
+A filter can reduce some microbial risks but does not make contaminated water universally safe or make a dry spring useful. Use confirmed drinking water first. Local guide advice emphasizes carrying water even outside summer. [Route-specific guide advice](https://www.mallorcahiking.com/most-popular-tours/circuit-out-valldemossa-and-along-archdukes-bridleway/).
+
+### 7.2 Food
+
+Village stays offer restaurants and shops; mountain days require advance supplies. Lluc advertises catering and a bakery/shop, but selection and hours need checking. [Lluc services](https://www.lluc.net/es/).
+
+For the two-day Sóller–Tossals–Lluc crossing: buy the first lunch and snacks in Sóller, reserve dinner/breakfast at Tossals, and arrange a packed lunch there or carry a second lunch. Keep one extra substantial snack/meal for delay. There is no need to carry a week’s food.
+
+If you want to keep a specific diet during the trip, confirm what the refuge can actually provide before paying for meals. Do not assume a fixed communal menu or packed lunch can be adapted on arrival.
+
+### 7.3 Resupply Strategy
+
+**Sóller is the last major resupply before the mountain pair.** Use the easier Deià–Sóller day to shop, sort your pack and confirm the next refuge’s meal/water arrangements. Refuel at Lluc; return to broader choice in Pollença. This sequence avoids both an overloaded pack and an unplanned food gap.
+
+Business opening times, Sunday service and holiday hours for April 2027 remain unverified. Buy essentials the preceding afternoon whenever possible.
+
+## 8. Access & Transportation
+
+### 8.1 Reaching the Route
+
+Fly to **Palma de Mallorca Airport (PMI)**. The airport operator lists **EMT A1 to Palma centre**; use the Plaça d’Espanya / Estació Intermodal area to connect with island buses. [Airport bus information](https://www.aena.es/en/palma-de-mallorca/getting-there/bus.html).
+
+The following route numbers are planning references from the currently indexed TIB network, **not verified April 2027 timetables**:
+
+| Need | Route to check |
+|---|---|
+| Palma → Estellencs / Banyalbufar / Esporles | [TIB 202](https://www.tib.org/en/linies-i-horaris/autobus/-/linia/202) |
+| Palma → Valldemossa / Deià / Sóller corridor | [TIB 203](https://www.tib.org/en/linies-i-horaris/autobus/-/linia/203) |
+| Palma → Sóller / Port de Sóller | TIB 204 via the [official network planner](https://www.tib.org/en/linies-i-horaris) |
+| Palma → Port d’Andratx for the full route | Check TIB 101 in the same planner |
+
+Aim to reach your first village without a same-day mountain hike. If the flight arrives late, sleep in Palma and transfer the next morning; shorten the trek if necessary rather than race sunset.
+
+### 8.2 Leaving the Route
+
+From Pollença or Port de Pollença, check **TIB 301 to Palma**, then A1 to PMI. If finishing at Lluc, investigate **312 toward Inca** with onward train/bus, or **231** through the mountains when operating. [TIB network](https://www.tib.org/en/linies-i-horaris), [301 route](https://www.tib.org/en/linies-i-horaris/autobus/-/linia/301).
+
+For a morning flight, a last night in Palma is the most forgiving arrangement. I would not schedule a mountain walk and a flight on the same day.
+
+### 8.3 Along-the-Route Transport
+
+TIB **231** is particularly useful: the operator’s indexed stop list includes **Sóller, Mirador de ses Barques, Cúber, Lluc and Pollença**. Its service period and frequency must be checked for your date; some live English pages returned incomplete content during research. [TIB 231 stop list](https://www.tib.org/de/linies-i-horaris/autobus/-/linia/231).
+
+| Adjustment | Practical use | Limitation |
+|---|---|---|
+| Bus between western villages | Skip a tired/rainy day | Sparse or changed service can defeat a tight schedule |
+| Bus/taxi Sóller → Cúber | Reduce mountain ascent | Must confirm service, especially on 24 April |
+| Tram/bus Port de Sóller → Sóller | Shorten the approach after a Muleta overnight | Adds transfer time; check first departures |
+| Cala Tuent → Port de Sóller boat | Complete a Sa Costera day | Sea state and seasonal schedule; arrange before walking |
+| Taxi from a road-accessible village | Recover from missed bus or illness | Solo traveler pays the whole fare; request an actual quote |
+
+The [Cala Tuent operator](https://www.barcoscalobra.com/) advertises crossings, but that is not confirmation of an April 2027 departure. Avoid walking into an isolated finish expecting an unbooked boat or taxi.
+
+### 8.4 Pre- and Post-Trek Logistics
+
+With one backpack, you do not need a luggage-transfer service or a return to your starting hotel. An open-ended traverse works well with buses. Choose the final Palma accommodation for convenient airport access.
+
+Check your airline’s actual pack dimensions and rules for trekking poles before choosing cabin-only travel. Airline-specific baggage policy and flights from Israel were not researched, so no fare or direct service is assumed.
+
+## 9. Safety & Risk Management
+
+### 9.1 Main Hazards
+
+The relevant risks are slips on stone, fatigue late in a long descent, dehydration, sudden wind/rain and navigation errors in cloud. Road crossings and road-side sections need attention too.
+
+For a solo trip, use conservative weather decisions on **Valldemossa–Deià** and **Tossals–Lluc**. A shorter itinerary does not reduce the difficulty of a particular exposed section. Skip Pas Llis if its exposure exceeds your comfort; avoid adding remote side routes merely because they look close on a map.
+
+### 9.2 Emergency Planning
+
+**Emergency number: 112.** Give your coordinates, route section, nearest landmark and injury/condition. Follow the operator’s instructions. Mobile reception is not continuous; Ses Fontanelles explicitly reports no cellular reception at the property, illustrating why offline preparation matters. [Spain health/emergency guidance](https://www.gov.uk/foreign-travel-advice/spain/health), [Ses Fontanelles](https://www.ses-fontanelles.es/en/).
+
+Share each day’s destination with a trusted contact, agree when they should act if you fail to check in, and send any route change while you still have signal. A satellite communicator is an optional additional layer if you already use one, not a substitute for weather judgment.
+
+### 9.3 Bailout & Escape Options
+
+| Where you are | Best planning option |
+|---|---|
+| Estellencs / Banyalbufar / Esporles / Valldemossa / Deià | End at a village and use confirmed bus/taxi or stay overnight |
+| Sóller / Biniaraix before the main climb | Return to the valley; this is an easy decision point before committing |
+| Cúber / Font des Noguer road corridor | Prearranged pickup or an operating scheduled bus; avoid walking the main road as a fallback |
+| Tossals Verds | Ask staff about the suitable route out; Son Ordines road access is reached on foot, not by a taxi at the refuge door |
+| High pass between Tossals and Lluc | No immediate vehicle extraction point; route choice depends on location and conditions |
+| Lluc / Son Amer | Road access, lodging alternatives and transport options |
+| Lower Pollença valley | Roads become closer, but a bus stop and service must still be verified |
+
+The refuge describes the walk from Son Ordines parking as about **one hour**; allow for your condition and the actual pickup point. [Official Tossals access](https://caminsdepedra.conselldemallorca.es/en/refugi).
+
+### 9.4 Health & Insurance
+
+For this Mallorca itinerary, ordinary hiking health measures and routine vaccine records matter more than specialized travel vaccination. Review records with a travel-health clinician if uncertain; individual vaccine history is unknown.
+
+| Topic | Trip-specific action |
+|---|---|
+| Routine protection | Verify MMR, tetanus/diphtheria/pertussis and polio; review other routine eligibility under your own schedule |
+| Measles | Mallorca reported 29 confirmed cases in a July 2025 bulletin. This supports checking immunity, not predicting an April 2027 outbreak |
+| Hepatitis A | Discuss if not immune. CDC advises consideration for most Spain travelers and recommends it for relevant rural/village exposures; UK guidance does not make the same general recommendation |
+| Hepatitis B | Review records and exposure. CDC recommends it for unvaccinated travelers under 60; the walking itinerary itself adds little specific blood/sexual exposure |
+| Rabies | No routine pre-exposure indication identified for ordinary hiking/refuge stays; avoid bats and seek prompt care after possible exposure |
+| Entry certificates | UK destination guidance currently lists no IHR certificate requirement for Spain; recheck your final transit itinerary |
+
+Sources: [CDC Spain, reviewed 25 August 2026](https://wwwnc.cdc.gov/travel/destinations/traveler/none/spain), [TravelHealthPro Spain](https://travelhealthpro.org.uk/countries/spain), [Mallorca measles bulletin, 4 July 2025](https://www.caib.es/sites/epidemiologia/es/inicio-9268/archivopub.do?ctrl=MCRST337ZI518203&id=518203). The CDC/UK difference is preserved rather than presented as a uniform international recommendation.
+
+**TBE assessment — very low concern for this trip; vaccination usually not indicated by Mallorca alone.** Spain’s national epidemiology centre describes Spain as non-endemic, with no detected locally acquired cases and only sporadic imported cases, while acknowledging tick-vector presence. CDC’s endemic-area vaccination framework does not make vegetation exposure alone an indication. **Confidence: High** for present national classification; **Medium** for a fine-scale Mallorca/April 2027 prediction. [ISCIII/CNE TBE](https://cne.isciii.es/en/servicios/enfermedades-transmisibles/enfermedades-a-z/encefalitis-transmitida-garrapatas), [CDC TBE guidance](https://www.cdc.gov/yellow-book/hcp/travel-associated-infections-diseases/tick-borne-encephalitis.html).
+
+Use ordinary tick precautions: label-directed repellent, minimize brushing vegetation, inspect skin daily using a phone/mirror for your back, and carry fine-tipped tweezers. This assessment does not mean Mallorca has no ticks or other tick-borne infections.
+
+Carry blister/wound supplies and regular medicines; plan hydration and enough food for each day. Verify insurance covers **solo multiday hiking, your route’s terrain/elevation, medical care, mountain rescue/evacuation and repatriation**. Do not assume an Israeli resident has EHIC/GHIC eligibility or that every rescue is free. [Spain health and insurance guidance](https://www.gov.uk/foreign-travel-advice/spain/health).
+
+## 10. Rules, Access & Trail Management
+
+### 10.1 Access Requirements
+
+No general GR221 hiking permit or trail entry fee was identified for the public main-route itinerary. Refuges require separate reservations. Private-estate detours may have their own permission systems.
+
+**Muntanya del Voltor:** some popular Archduke-path approaches enter this managed area and require advance permission. A recent detailed hiking guide gives **info@muntanyadelvoltor.com** and **+34 619 591 985** for requests. Its reported quota/release practices should be reconfirmed directly; the manager’s website could not be retrieved. The official GR221 description uses the **Coma des Cairats** side, so do not assume every Valldemossa–Deià track has identical permit requirements. [Permit and map explanation](https://www.moonhoneytravel.com/path-of-the-archduke-mallorca/), [official stage description](https://caminsdepedra.conselldemallorca.es/en/-/stage-3-esporles-can-boi).
+
+### 10.2 Regulations
+
+Remain on authorized paths, obey local closure signs and respect private property. Use designated overnight locations, carry rubbish out and do not light fires or cook outside permitted areas. Refuge house rules apply separately from trail access. [Council refuge regulations](https://caminsdepedra.conselldemallorca.es/documents/995858/12336898/20180928_reglament.pdf/760f5323-1cf8-776c-6aef-0423b6452066?t=1710941107517), [IBANAT campsites](https://caib.es/sites/ibanat/ca/acampades_ibanat/).
+
+No drone, dog or wild-camping activity is included in this plan; their location-specific permissions were not established. If adding one, check the relevant authority rather than reuse a general GR221 answer.
+
+### 10.3 Trail Etiquette
+
+Use gates/stiles, leave gates as found, avoid climbing dry-stone walls and do not pick produce from estates. Keep noise low near houses and wildlife. At refuges, use the designated boot/gear area, respect sleeping neighbors and prepare the next morning’s bag without disturbing the dormitory.
+
+## 11. Gear & Packing
+
+### 11.1 Route-Specific Gear Strategy
+
+Use a **roughly 30–36 L backpack** for indoor nights, provided your gear fits comfortably. Carry weather protection and daily food/water, with a small reserve. A tent, sleeping mat and stove add little value to this booked-refuge plan.
+
+### 11.2 Footwear
+
+Prioritize wet-rock grip, a secure heel, toe room and enough underfoot protection for hours of stone. Given your preference for wide, non-waterproof footwear, a proven trail shoe can fit this trip; test it on repeated rocky descents with a loaded pack. Do not choose a thinner sole simply to save a few grams if stones already tire your feet. Specific shoe models were not compared here.
+
+### 11.3 Clothing & Layering
+
+A light walking layer, trousers, fleece, warm evening layer, wind/rain shell, spare dry socks and a dry sleep layer form a useful system. Add a warm hat and light gloves for exposed weather. Keep the spare clothing compact rather than carry a fresh outfit for every day.
+
+### 11.4 Rain & Weather Protection
+
+Carry a hooded waterproof shell and protect the contents with a pack liner/dry bags. Include rain trousers if your forecast and cold tolerance justify them. Sunglasses, a sun hat and sunscreen remain useful in April. A pack cover alone does not reliably keep bedding and electronics dry.
+
+### 11.5 Sleeping & Accommodation Gear
+
+Bring a liner or rent sheets where accepted; confirm bedding/blanket provision at **every** booked property before leaving a sleeping bag at home. Earplugs, a small towel or towel rental, and lightweight indoor footwear are useful. Sleeping requirements are a booking question, not something to infer from a photo of a made-up bed.
+
+### 11.6 Food & Water Equipment
+
+Carry two or more containers totaling at least 3 L, compact lunch storage and a reusable utensil if needed. Water-treatment equipment is optional backup; it does not replace potable-water planning. No cooking kit is needed when meals are arranged.
+
+### 11.7 Navigation, Electronics & Charging
+
+Use your phone with offline maps, an approximately **10,000 mAh battery bank**, charging cable and a compatible European two-pin charger. Adjust battery capacity to your device and screen use. Keep the map available when reception drops.
+
+### 11.8 Safety & Emergency Equipment
+
+Pack a headlamp, whistle, emergency bivy/blanket, blister kit, small first-aid supplies, personal medication, tweezers and minimal repair tape. Poles are useful for repeated descents if you already use them. Stow them when hands are needed on rough passages.
+
+### 11.9 Pack Weight
+
+My planning target is **5–7 kg before food and water**, approximately **8–11 kg when loaded for a mountain day**. This is a realistic target range, not a safety threshold. Weigh the actual setup. Reduce duplicate clothes, large toiletries and unnecessary cooking/camping equipment before cutting rainwear or water capacity.
+
+## 12. Costs & Practicalities
+
+### 12.1 Trek Budget
+
+📅 **Published tariff checked 12 September 2026; 2027 prices unconfirmed.** Tossals lists an adult dorm bed **€14**, breakfast **€5.50**, dinner **€9.50**, picnic **€8**, linen **€4.50**, towel **€2**. Bed + breakfast + dinner is **€29**; adding picnic and linen makes **€41.50**. Do not assume every independent hostel uses this tariff. [Official tariff](https://caminsdepedra.conselldemallorca.es/en/refugi).
+
+The following are **budget allowances I propose**, not live quotes. Private-room prices can be higher during the cycling-event week.
+
+| Style | Accommodation + meals allowance per day | Seven-night / eight-day ground budget |
+|---|---:|---:|
+| Economy, mostly dorms; limited private-room nights | €50–80 | About €500–800 |
+| Mixed refuges and private rooms | €85–130 | About €800–1,250 |
+| Private rooms wherever possible | €140–210+ | About €1,300–1,900+ |
+
+Totals include a planning allowance for local transport, snacks and small incidentals. **Flights, insurance, new equipment and substantial emergency spending are excluded.** Private-room travel cannot be guaranteed at Tossals. Keep a separate contingency reserve for a taxi or an extra hotel night.
+
+For an eighth night, allow roughly another **€60–150**, depending on where you stay. Ask private properties for the total for **one adult**, including any applicable local tax, meals and cancellation conditions.
+
+### 12.2 Money
+
+Use euros. Carry a bank card and around **€100–150 in small cash notes** as a flexible allowance. Reconfirm how each refuge accepts the balance. Obtain cash in Palma or a larger town before the remote section rather than expect an ATM at a refuge.
+
+TIB publishes a bank-card travel option; check its current validation instructions and use the same payment medium consistently. Do not assume an island resident’s free-travel entitlement applies to a visitor. [TIB bank-card guide](https://www.tib.org/en/bitllets-i-tarifes/targeta-bancaria).
+
+### 12.3 Connectivity
+
+Plan for mobile gaps. Wi-Fi at an accommodation does not establish coverage on its approach. Ensure your Israeli mobile plan or eSIM covers Spain, and download maps before travel. Network-by-network mountain coverage was not verified.
+
+### 12.4 Everyday Practicalities
+
+Use village toilets and accommodation facilities before long sections. Carry a small waste bag and tissues. Wash small items only where permitted and do not rely on them drying overnight. A private room in Sóller is a useful chance to reorganize, dry equipment and sleep well before the mountain pair.
+
+## 13. Planning the Trek
+
+### 13.1 Recommended Itinerary
+
+**My first choice: 21–28 April 2027 — eight calendar days, seven nights, five hiking days and one flexible day.** This is a partial GR221 traverse that prioritizes the central sections. Estimated stage figures are planning ranges; finalize the exact route after securing beds.
+
+| Date | Plan | Walking / effort | Overnight |
+|---|---|---|---|
+| Wed 21 April | Arrive PMI; transfer to Valldemossa, or Palma if late | Travel only | Valldemossa preferred |
+| Thu 22 April | Valldemossa → Deià | 12–14 km; ↑600–750 m, ↓900–1,000 m; 4.5–6 h | Can Boi or Deià room |
+| Fri 23 April | Deià → Sóller town | 10–12 km; ↑300–400 m, ↓400–550 m; 3–4 h | Sóller |
+| Sat 24 April | Sóller → Tossals via Biniaraix and main route | 20–23 km; ↑1,000–1,100 m, ↓500–600 m; 6.5–8 h | Tossals Verds |
+| Sun 25 April | Tossals → Lluc / Son Amer | About 15 km; ↑850–900 m, ↓850–900 m; 5.5–6.5 h | Son Amer or Lluc room |
+| Mon 26 April | Lluc / Son Amer → Pollença | 17.5–19 km; ↑190–300 m, ↓680–800 m; 5–6 h | Pollença |
+| Tue 27 April | Contingency/rest; optional sea visit if all went to plan | Keep optional | Palma |
+| Wed 28 April | Airport and departure | Travel only | — |
+
+**Why this ordering:** Deià–Sóller gives a lighter day before the longest climb, the major mountain days remain separate, and you finish somewhere with easier onward transport. The event on 24 April makes a walking departure from Sóller useful, but **check crossings of Ma-10 and race instructions**; do not assume pedestrian passage at any moment. Bad weather still overrides the itinerary.
+
+**My second choice: 21–29 April — nine days, eight nights, six hiking days.** Arrive in Esporles on 21 April; walk to Valldemossa on 22 April, Deià on 23 April, Sóller on 24 April, Tossals on 25 April, Lluc on 26 April, and Pollença on 27 April. Keep 28 April flexible and sleep in Palma; depart 29 April. This buys a gentler start, and the cycling-event date falls on the lower Deià–Sóller walk.
+
+**If you have nine nights:** add Estellencs before Esporles, or add a second Sóller night. Choose Estellencs for more continuous trail; choose Sóller for recovery and weather flexibility. I would not automatically spend that extra day on a summit.
+
+### 13.2 Reservations & Timeline
+
+| When | What to do |
+|---|---|
+| Now–November 2026 | Choose seven or eight nights; compare flight arrival times; check refundable village rooms around 24 April |
+| Early/mid-December | Inspect the council portal, confirm the release rule, prepare alternative dates and a lodging list |
+| Around 22–26 December for seven-night plan | Book the refuge dates as they enter the four-month window; prioritize Tossals within the available sequence |
+| Around 23–27 December for eight-night plan | Corresponding refuge-window dates are one day later |
+| Once refuge sequence works | Finalize town stays and travel arrangements within your acceptable cancellation risk |
+| February–March 2027 | Test your loaded walking setup; review vaccine records/insurance; check 2027 transport and event information |
+| One–two weeks before | Reconfirm meals, potable water, access, check-in and any private-estate permission |
+| 48–72 h before and daily | Review weather/warnings and adapt the mountain days |
+
+Key links: [Council bookings](https://seu.conselldemallorca.net/refugis/en/dispo/llistat/), [Hostel Sóller](https://hostelsoller.com/), [Lluc monastery](https://www.lluc.net/es/), [Valldemossa room candidate](https://www.hotelcaspapa.com/en/home.html), [TIB](https://www.tib.org/en/linies-i-horaris), [Mallorca 312](https://mallorca312.com/en/).
+
+For each reservation record: date, exact address, bed/room type, meals, linen, amount paid, balance, cancellation deadline, arrival deadline and contact number. If any provider changes, recalculate that day’s start/end walking distance.
+
+### 13.3 Travel Plan
+
+Use PMI–Palma–Valldemossa/Esporles for arrival and Pollença–Palma–PMI for departure. Keep the whole kit in your one backpack. The final Palma night removes dependence on an early mountain bus.
+
+A late arrival on 21 April uses some flexibility: either start from Valldemossa on 22 April after an early confirmed transfer, move the sequence by one day if beds permit, or shorten at Lluc. Do not make a fixed flight assumption when booking your first refuge.
+
+### 13.4 Contingency Planning
+
+| Problem | Workable response |
+|---|---|
+| Tossals full | Shift dates, reverse direction if the whole bed chain works, or use Cúber-based day walking; do not simply combine Sóller–Lluc into one day |
+| Can Boi full | Compare Deià rooms; alternatively use a confirmed transfer and revise the walking sequence |
+| Son Amer full | Check Lluc monastery directly |
+| Long Sóller climb feels too much | Arrange Cúber transport on a suitable non-disrupted day; retain a proper plan for the following high-pass day |
+| Bad ridge/high-pass weather | Stay in town or use transport to a lower area; notify booked accommodation about arrival changes |
+| Sore feet | Shorten at a village/road access point and use the buffer day for recovery |
+| Boat cancelled | Do not start a one-way Cala Tuent walk without an alternative return arrangement |
+| Missed bus | Check the next real departure; request taxi quote or stay overnight |
+
+**A spare day at the end protects your flight; it does not automatically move non-refundable refuge bookings.** Real weather flexibility may mean forfeiting a bed and skipping a section. Budget for that possibility.
+
+## 14. Current Conditions & Final Preparation
+
+### 14.1 Latest Route Status
+
+📅 **Research checked 12 September 2026.**
+
+| Issue | Evidence now | April 2027 implication |
+|---|---|---|
+| Main-route extent | Council advertises approximately 150 km Port d’Andratx–Port de Pollença | Older 130/140 km descriptions may use different endpoints/variants |
+| Son Cabaspre | Official page says passable, unsigned | Check exact alignment and any later access notice |
+| Southwest | Official stage pages now cover Port d’Andratx–Sant Elm and Sant Elm–Estellencs | Do not copy older blanket claims that the south is unsigned |
+| Mallorca 312 | Organizer confirms 24 April 2027 and closed roads | Refresh bus changes and road-crossing information |
+| Refuge calendar | Official four-month rule puts April outside the present normal window | Unreleased inventory is not the same as sold out |
+| Weather, snow, storm damage, water | No valid April 2027 condition report exists yet | Recheck close to travel |
+
+Sources: [official route](https://caminsdepedra.conselldemallorca.es/en/dry-stone-route-gr-221), [Son Cabaspre status](https://caminsdepedra.conselldemallorca.es/en/-/stage-3-esporles-can-boi), [cycling event](https://mallorca312.com/en/), [booking procedure](https://seu.conselldemallorca.net/es/ficha?key=6313).
+
+No comprehensive, date-stamped all-clear bulletin was obtained. This report therefore **does not certify every GR221 section open** on either the research date or your travel dates.
+
+### 14.2 Pre-Departure Verification
+
+- **Route:** refresh the [council map/stage pages](https://caminsdepedra.conselldemallorca.es/en/dry-stone-route-gr-221), particularly Son Cabaspre and your chosen variants.
+- **Weather:** check [AEMET warnings](https://www.aemet.es/en/eltiempo/prediccion/avisos) and local forecasts; ask refuges about high-pass snow or storm damage.
+- **Beds and meals:** reconfirm every night, arrival deadline, lunch and potable-water supply.
+- **Transport:** load dated [TIB timetables](https://www.tib.org/en/linies-i-horaris), confirm first/last departures and the [24 April event arrangements](https://mallorca312.com/en/).
+- **Permission:** confirm any Muntanya del Voltor detour with its manager.
+- **Health:** review the [regional surveillance portal](https://www.caib.es/sites/epidemiologia/es/inicio-9268/?campa=yes), routine records and any new destination guidance. Revisit TBE only if destination evidence or the wider itinerary changes.
+- **Documents:** check passport/entry/transit rules for the actual booked flights; no 2027 immigration rule is assumed in this report.
+
+### 14.3 Final Checklist
+
+- [ ] Every overnight has an actual confirmation; scarce-refuge substitutions are resolved.
+- [ ] Exact GPX and offline maps match the overnight locations and chosen variants.
+- [ ] Weather decision and lower-route alternative are ready.
+- [ ] 24 April road/bus disruption has been checked.
+- [ ] Meals, potable water and the mountain lunches are arranged.
+- [ ] Shoes and loaded backpack have been tested on consecutive days.
+- [ ] Dry clothing, rainwear, headlamp, battery and first aid are packed.
+- [ ] Passport, insurance, payment methods and accommodation contacts are available offline.
+- [ ] Airline baggage/pole rules are checked.
+- [ ] A trusted contact has your daily plan and missed-check-in procedure; 112 is saved.
+
+## 15. Route-Specific Considerations
+
+### 15.1 Special Characteristics
+
+**Accommodation geography controls effort.** Muleta, Port de Sóller and Sóller town are not interchangeable. Likewise, Son Amer and the monastery are different buildings. A bed that looks close on an island map can add a meaningful walk to an already long day.
+
+**Continuity has a price.** The full southwest adds good scenery, but fitting it into a week pushes you toward long stages or transport. For your stated priorities, I would preserve the central mountain pair and time in Valldemossa/Deià before chasing the complete mileage.
+
+### 15.2 Local Knowledge
+
+The following is a **small qualitative sample of identifiable traveler and specialist accounts**, not a statistical ranking. Reports are most useful for scenery and experience; the council is the stronger source for current access.
+
+| Section / experience | What the evidence says | My recommendation |
+|---|---|---|
+| **Valldemossa → Deià / Archduke ridge** | Tales of a Trail names it their favorite GR221 stage. Moon & Honey’s detailed ridge walk also emphasizes the high sea views | **Protect this day when shortening the trip**, subject to weather |
+| **Biniaraix → Cúber → Tossals** | DAV describes the sustained stone-path ascent favorably and particularly praises Tossals’ setting | Keep it if you want the full mountain approach; start in Sóller |
+| **Tossals → Lluc** | Firsthand accounts praise its mountain scenery; DAV documents the high pass and long descent | Keep for a mountain-focused trip; give it its own day |
+| **Estellencs → Banyalbufar → Esporles** | Council highlights its dry-stone terraces; traveler accounts emphasize historical paths | Best extra stage when six hiking days become seven |
+| **Deià → Sóller** | Local guide rates it relatively easy and describes farmland/old paths | Keep as the lighter day separating harder stages |
+| **Southwest / La Trapa** | Firsthand account particularly values Dragonera and cliff views | Add on a longer visit or as a separate southwest walk |
+| **Pollença → port** | Tales of a Trail dislikes the road-side finish in their version | First mileage to omit unless coast-to-coast completion matters |
+| **Refuge stays** | Wildbee’s Easter 2025 experience reported full refuges and the importance of early booking | Reserve beds early; do not transfer its “130-day” claim over official rules |
+
+Sources: [Tales of a Trail](https://www.talesofatrail.com/gr221/our-stages), [Moon & Honey ridge guide, updated April 2026](https://www.moonhoneytravel.com/path-of-the-archduke-mallorca/), [DAV Biniaraix/Tossals](https://www.outdooractive.com/en/route/hiking-trail/mallorca/mallorca-gr-221-stage-8-from-refugi-muleta-to-refugi-de-tossals-verds/15725553/), [DAV high pass](https://www.outdooractive.com/en/route/hiking-trail/balearen/mallorca-gr-221-stage-9-from-refugi-de-tossals-verds-to-refugi-son/15725571/), [Wildbee refuge experience](https://wildbeeoutdoors.co.uk/gr221-refuges-in-mallorca-what-to-expect/).
+
+For visual preparation, this [April 2026 walking video: Muleta–Tossals](https://www.youtube.com/watch?v=P4ltFweW0Rc) and [refuge guide video](https://www.youtube.com/watch?v=Z1cmlu0EH8c) are useful leads. Their accessible descriptions were checked, but the videos were not fully reviewed, so no safety or booking claim here depends on their footage.
+
+### 15.3 Research Gaps & Uncertainties
+
+- Actual 2027 bed availability, tariffs, refund/deposit conditions and release hour.
+- The precise 24 April road-closure/crossing timetable and affected bus departures.
+- Exact GPX-derived distance/elevation for your final hotel-to-hotel route.
+- Future water flow, snow, weather and storm damage.
+- Current detailed permissions for any Muntanya del Voltor approach; its manager site was inaccessible.
+- Current private-room versus dormitory inventory at Ses Fontanelles.
+- A complete current Mallorca outbreak picture; historical measles evidence is not a future forecast.
+
+## 16. Research Sources & Confidence
+
+### 16.1 Research Method
+
+Researched through live web sources on **12 September 2026**. Official route stages, council accommodation rules, operator information, weather normals and dated firsthand accounts were compared before constructing the itineraries. Two specialist health checks covered general European travel vaccination and local TBE evidence; their results agree on the limited TBE relevance of this Mallorca trip.
+
+Route designs, budget allowances, pack targets and recommendations are the report’s planning judgments. No availability request, payment, enquiry or booking was submitted.
+
+### 16.2 Source Hierarchy
+
+| Claim | Preferred evidence |
+|---|---|
+| Trail identity, stage measurements, access | Consell de Mallorca |
+| Bed system, facilities and terms | Council rules and the accommodation operator |
+| Bus/boat operation | TIB, Aena and the boat operator |
+| Weather | AEMET |
+| Disease and vaccine relevance | Spanish/Balearic public health, CDC and TravelHealthPro |
+| Which sections feel most rewarding | Identified firsthand writers and specialist route authors |
+
+### 16.3 Source Recency
+
+All listed sources were accessed or checked on **12 September 2026**. The official map is dated **July 2026**; the council still links regulations published in **2017**. Climate normals cover **1981–2010**. Some DAV route descriptions retain a **2018** access/transport context. Those older details were not adopted as current.
+
+Where a page displays an update date but not a walk date, the report does not treat the update as proof that the author recently walked it.
+
+### 16.4 Cross-Verification
+
+The council’s Muleta–Tossals day is 27.8 km; DAV gives 27.8 km, while a Komoot variant gives 25.3 km. Different routing explains why “the stage” can appear shorter online. The report recommends a Sóller start and labels its metrics as ranges.
+
+For high-pass effort, the council’s 15.1 km/869 m ascent and DAV’s 15.1 km/820 m ascent broadly agree. Their difficulty labels differ, so the recommendation uses the measured climbing and terrain rather than treating a rating as universal.
+
+### 16.5 Confidence Ratings
+
+#### High Confidence
+
+Official route identity; the quoted retrieved stage figures; the existence of the council booking portal; published four-month rule; the announced **24 April 2027** cycling event; current Spanish non-endemic TBE classification.
+
+#### Medium Confidence
+
+Custom daily metrics before final GPX selection; predicted accommodation pressure; which sections will best suit you; the broad budget; future public-transport usefulness; the fine-scale TBE assessment.
+
+#### Low Confidence
+
+Any precise April 2027 weather, water, snow, closure, price or availability claim. No such precise claim is presented as confirmed.
+
+### 16.6 Confidence in Recommendations
+
+The five-day core is a strong fit if you enjoy mountain walking and can manage consecutive ascent/descent days. The six-day version is preferable if you want a gentler opening and an extra village. Whether either is comfortable depends on your tested pace, pack and feet; the gentler hybrid exists for a meaningfully lower workload.
+
+### 16.7 Claim-Level Citation Standard
+
+Links sit beside consequential facts and tables. Tables combining sources identify them immediately afterward. A link to a route or provider confirms the stated information, not future availability. The register below collects the significant sources for later refresh.
+
+### 16.8 Source Register
+
+**Access/check date for all entries: 12 September 2026.** “Undated” means no reliable content-update date was established.
+
+| Source | Type / date | Used for |
+|---|---|---|
+| [Council GR221 overview](https://caminsdepedra.conselldemallorca.es/en/dry-stone-route-gr-221) | Trail authority; undated | §§1–5, 10, 14: route extent and variants |
+| [Council July 2026 map](https://caminsdepedra.conselldemallorca.es/documents/995858/996207/fulleto_ruta_pedra_sec_A3.pdf/ef144427-463a-db66-86dc-dbc397734962?t=1784205709571) | Official PDF; July 2026 | §§1, 5: orientation, headline distance discrepancy |
+| [Official map viewer](https://www.conselldemallorca.info/mediambient/pedra/senderisme/index_ca.html) | Official mapping; linked by council, viewer not retrieved | §5: route-selection resource |
+| [Stage 1](https://caminsdepedra.conselldemallorca.es/en/-/etapa-1-port-d-andratx-sant-elm) | Trail authority; undated | §2: southwest opening metrics |
+| [Stage 2](https://caminsdepedra.conselldemallorca.es/en/-/etapa-2-sant-elm-estellencs) | Trail authority; undated | §§1–2: long southwest stage |
+| [Stage 3](https://caminsdepedra.conselldemallorca.es/en/-/etapa-3-estellencs-esporles) | Trail authority; undated | §§2, 15: terraces and metrics |
+| [Stage 4](https://caminsdepedra.conselldemallorca.es/en/-/stage-3-esporles-can-boi) | Trail authority; undated | §§2–3, 10, 14: combined day, Son Cabaspre, Cairats |
+| [Stage 5](https://caminsdepedra.conselldemallorca.es/en/-/stage-4-can-boi-muleta) | Trail authority; undated | §2: Deià–Muleta metrics and setting |
+| [Stage 6](https://caminsdepedra.conselldemallorca.es/en/-/etapa-6-muleta-tossals-verds) | Trail authority; undated | §§2–3: Biniaraix/Cúber and long-day effort |
+| [Stage 7](https://caminsdepedra.conselldemallorca.es/en/-/etapa-7-tossals-verds-son-amer) | Trail authority; undated | §§2, 13: high-pass day |
+| [Stage 8](https://caminsdepedra.conselldemallorca.es/en/-/etapa-7-son-amer-pont-roma) | Trail authority; undated | §§2, 13: Pollença finish |
+| [Council refuge portal](https://seu.conselldemallorca.net/refugis/en/dispo/llistat/) | Direct booking; live | §§6, 13: booking workflow/contact |
+| [Council booking procedure](https://seu.conselldemallorca.net/es/ficha?key=6313) | Government procedure; undated | §§6, 14: booking window |
+| [Refuge regulation](https://caminsdepedra.conselldemallorca.es/documents/995858/12336898/20180928_reglament.pdf/760f5323-1cf8-776c-6aef-0423b6452066?t=1710941107517) | Official regulation; 4 February 2017 | §§6, 10: arrival, bedding and booking rules |
+| [Tossals Verds](https://caminsdepedra.conselldemallorca.es/en/refugi) | Accommodation operator; undated | §§6, 9, 12: rooms, facilities, access, prices |
+| [Can Boi](https://caminsdepedra.conselldemallorca.es/en/-/can-boi-4) | Accommodation operator; undated | §6: Deià refuge |
+| [Ses Fontanelles](https://www.ses-fontanelles.es/en/) | Private operator; undated | §§2, 6, 9: southwest split, private-room enquiry, coverage |
+| [Lluc monastery](https://www.lluc.net/es/) | Accommodation operator; undated | §§6–7, 13: private rooms and services |
+| [Ca’s Papà](https://www.hotelcaspapa.com/en/home.html) | Accommodation operator; undated | §§6, 13: Valldemossa candidate |
+| [Hostel Sóller](https://hostelsoller.com/) | Accommodation operator; undated | §§6, 13: central hostel candidate |
+| [Hostal Nadal](https://www.hostalnadalsoller.com/en/) | Accommodation operator; undated | §6: Sóller alternative |
+| [S’Hostal d’Esporles](https://www.booking.com/hotel/es/sa-hostal-da-esporles.html) | Booking platform; live listing | §6: Esporles candidate, not a quote |
+| [IBANAT campsites](https://caib.es/sites/ibanat/ca/acampades_ibanat/) | Government operator; booking change effective April 2025 | §§6, 10: designated sites and non-potable water |
+| [AEMET normals](https://www.aemet.es/en/serviciosclimaticos/datosclimatologicos/valoresclimatologicos?k=bal&l=B278) | Meteorological authority; 1981–2010 | §4: lowland climate context |
+| [AEMET forecast](https://www.aemet.es/en/eltiempo/prediccion) / [warnings](https://www.aemet.es/en/eltiempo/prediccion/avisos) | Meteorological authority; live | §§4, 14: predeparture checks |
+| [Aena airport buses](https://www.aena.es/en/palma-de-mallorca/getting-there/bus.html) | Airport operator; live | §8: A1 transfer |
+| [TIB network](https://www.tib.org/en/linies-i-horaris), [202](https://www.tib.org/en/linies-i-horaris/autobus/-/linia/202), [203](https://www.tib.org/en/linies-i-horaris/autobus/-/linia/203), [231](https://www.tib.org/de/linies-i-horaris/autobus/-/linia/231), [301](https://www.tib.org/en/linies-i-horaris/autobus/-/linia/301) | Public operator; current/indexed pages, incomplete rendering on some | §§8, 13–14: connections, not 2027 schedules |
+| [TIB bank cards](https://www.tib.org/en/bitllets-i-tarifes/targeta-bancaria) | Public operator; undated | §12: payment resource |
+| [Barcos Azules / Calobra](https://www.barcoscalobra.com/) | Boat operator; undated | §§2, 8: Cala Tuent return option |
+| [Mallorca 312](https://mallorca312.com/en/) | Event organizer; announces 24 April 2027 | §§1, 8, 13–14: closed-road event |
+| [Tales of a Trail stages](https://www.talesofatrail.com/gr221/our-stages) | Firsthand; indexed 2023, walk date not verified | §§1–2, 15: preferences, historical itineraries |
+| [Central Komoot itinerary](https://www.komoot.com/collection/2235396/-an-alternative-to-magaluf-the-gr221-mallorca) | Community mapping; date unclear | §§2, 5: custom-stage comparison |
+| [Full-traverse account](https://www.hikingexperience.net/en/trails/map-and-stages-gr221/) | Firsthand; update unclear | §1: approximate full-track ascent |
+| [Local guide: Deià–Sóller](https://www.mallorcahiking.com/most-popular-tours/gr221-stage-3b-dei%C3%A0-puerto-de-s%C3%B3ller-or-s%C3%B3ller/) | Guide/operator; undated | §§2, 15: town/port alternatives |
+| [Local guide: Archduke circuit](https://www.mallorcahiking.com/most-popular-tours/circuit-out-valldemossa-and-along-archdukes-bridleway/) | Guide/operator; undated | §§2–4, 7: circuit, seasonal/terrain context |
+| [DAV: Muleta–Tossals](https://www.outdooractive.com/en/route/hiking-trail/mallorca/mallorca-gr-221-stage-8-from-refugi-muleta-to-refugi-de-tossals-verds/15725553/) | Hiking club; retains 2018 context | §§2, 15–16: terrain/preferences, independent metrics |
+| [DAV: Tossals–Lluc](https://www.outdooractive.com/en/route/hiking-trail/balearen/mallorca-gr-221-stage-9-from-refugi-de-tossals-verds-to-refugi-son/15725571/) | Hiking club; historical logistics | §§3, 5, 15–16: pass and descent |
+| [Moon & Honey: Archduke](https://www.moonhoneytravel.com/path-of-the-archduke-mallorca/) | Specialist firsthand guide; updated 15 April 2026 | §§10, 15: permit approach and ridge appeal |
+| [Wildbee refuges](https://wildbeeoutdoors.co.uk/gr221-refuges-in-mallorca-what-to-expect/) | Firsthand; Easter 2025 experience | §§6, 15: occupancy experience; booking-window conflict |
+| [GR221 local news](https://gr221.info/news.htm) | Local trail information; mixed historical dates | §5: improvements and old-report limitations |
+| [Pas Llis account](https://www.estilopalma.com/2024/12/tossals-verds-over-rough-and-smooth/) | Local publication; December 2024, updated September 2025 | §3: chain-assisted variant |
+| [April 2026 walking video](https://www.youtube.com/watch?v=P4ltFweW0Rc), [refuge video](https://www.youtube.com/watch?v=Z1cmlu0EH8c) | Firsthand video descriptions; 2026 | §15: visual preparation only, not fully reviewed |
+| [CDC Spain](https://wwwnc.cdc.gov/travel/destinations/traveler/none/spain) | Public health; reviewed 25 August 2026 | §9: routine and hepatitis advice |
+| [TravelHealthPro Spain](https://travelhealthpro.org.uk/countries/spain) | National traveler-health service; live | §9: selective vaccines and certificates |
+| [CAIB measles bulletin](https://www.caib.es/sites/epidemiologia/es/inicio-9268/archivopub.do?ctrl=MCRST337ZI518203&id=518203) | Regional surveillance; 4 July 2025 | §9: historical Mallorca cases |
+| [CAIB surveillance portal](https://www.caib.es/sites/epidemiologia/es/inicio-9268/?campa=yes) | Regional public health; live | §14: outbreak recheck |
+| [ISCIII/CNE TBE](https://cne.isciii.es/en/servicios/enfermedades-transmisibles/enfermedades-a-z/encefalitis-transmitida-garrapatas) | National epidemiology; links April 2026 protocol | §9: non-endemic classification |
+| [CDC TBE Yellow Book](https://www.cdc.gov/yellow-book/hcp/travel-associated-infections-diseases/tick-borne-encephalitis.html) | Public health; 23 April 2025 | §9: endemic-area vaccine criteria |
+| [FCDO Spain health](https://www.gov.uk/foreign-travel-advice/spain/health) | Government travel guidance; live | §9: emergency number and insurance |
+
+### 16.9 Conflicts, Unknowns & Verification List
+
+| Conflict / unknown | How this report handles it |
+|---|---|
+| 130/140/150 km route totals | Uses current council identity, with custom walking ranges |
+| 150.1 versus 150.2 km official total | Reports approximately 150 km; does not claim false precision |
+| Differing stage numbers | Uses place names; old URLs retain earlier numbers |
+| Four months versus 130-day booking claims | Prioritizes official four-month rule; release hour unverified |
+| Son Cabaspre closure claims versus council “passable” | Uses official wording but requires a fresh access check |
+| “All refuges use the council portal” | Explicitly separates private operators and Lluc monastery |
+| “Easy trail” versus demanding daily profiles | Separates physical effort, technical obstacles and itinerary length |
+| Hepatitis recommendations differ internationally | States the CDC/UK difference and asks for record-based clinical review |
+| Future schedules and inventory | No invented departures, prices, available beds or all-clear claims |
+
+### 16.10 Research Freshness
+
+**Research date: 12 September 2026. Intended trip: from 21 April 2027.** Refresh booking rules around December 2026, transport/event arrangements when spring schedules appear, and route status, weather, water and health notices shortly before departure. The most durable planning recommendation is the structure: **five-day central traverse, Sóller-town overnight before Tossals, separate high-pass day, and a final travel buffer**.
+
+## 17. Map
+
+```geomap
+{
+  "layers": [
+    {
+      "id": "gr221-points-of-interest",
+      "name": "GR221 Mallorca — Points of interest",
+      "role": "poi",
+      "geojson": {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.65412,
+                39.57629
+              ]
+            },
+            "properties": {
+              "name": "Palma — Estació Intermodal entrance",
+              "category": "Transport",
+              "routeSection": "Access",
+              "note": "Mapped entrance; bus platforms are inside the station.",
+              "source": {
+                "url": "https://mapcarta.com/es/N14022668773",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.39116,
+                39.54555
+              ]
+            },
+            "properties": {
+              "name": "Port d’Andratx",
+              "category": "Town / route start",
+              "routeSection": "Southwest",
+              "note": "Village reference point; precise GR221 start unverified.",
+              "source": {
+                "url": "https://mapcarta.com/17370078",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.35184,
+                39.57907
+              ]
+            },
+            "properties": {
+              "name": "Sant Elm",
+              "category": "Village / overnight",
+              "routeSection": "Southwest",
+              "note": "Village reference point.",
+              "source": {
+                "url": "https://mapcarta.com/17367852",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.36091,
+                39.59958
+              ]
+            },
+            "properties": {
+              "name": "La Trapa",
+              "category": "Historic site / scenery",
+              "routeSection": "Southwest",
+              "note": "Ruins reference point.",
+              "source": {
+                "url": "https://mapcarta.com/36337314",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.42296,
+                39.61776
+              ]
+            },
+            "properties": {
+              "name": "Finca Ses Fontanelles",
+              "category": "Accommodation",
+              "routeSection": "Southwest",
+              "note": "Property marker; confirm arrival instructions.",
+              "source": {
+                "url": "https://www.outdooractive.com/de/hut/mallorca/finca-ses-fontanelles/30793189/",
+                "publisher": "Outdooractive",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.481,
+                39.6535
+              ]
+            },
+            "properties": {
+              "name": "Estellencs",
+              "category": "Village / overnight",
+              "routeSection": "Southwest",
+              "note": "Village reference point.",
+              "source": {
+                "url": "https://mapcarta.com/25057742",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.51477,
+                39.68745
+              ]
+            },
+            "properties": {
+              "name": "Banyalbufar",
+              "category": "Village / variant",
+              "routeSection": "Southwest",
+              "note": "Village reference point.",
+              "source": {
+                "url": "https://mapcarta.com/17388400",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.5776,
+                39.6692
+              ]
+            },
+            "properties": {
+              "name": "Esporles",
+              "category": "Village / overnight",
+              "routeSection": "Core",
+              "note": "Village reference point.",
+              "source": {
+                "url": "https://mapcarta.com/25413566",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.623,
+                39.7108
+              ]
+            },
+            "properties": {
+              "name": "Valldemossa",
+              "category": "Village / overnight",
+              "routeSection": "Core",
+              "note": "Village reference point.",
+              "source": {
+                "url": "https://mapcarta.com/Valldemossa",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.62161,
+                39.70876
+              ]
+            },
+            "properties": {
+              "name": "Valldemossa Charterhouse",
+              "category": "Historic site",
+              "routeSection": "Core",
+              "note": "Museum marker.",
+              "source": {
+                "url": "https://mapcarta.com/N6113562590",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.62292,
+                39.70948
+              ]
+            },
+            "properties": {
+              "name": "Ca’s Papà",
+              "category": "Accommodation",
+              "routeSection": "Core",
+              "note": "Hotel marker; entrance unverified.",
+              "source": {
+                "url": "https://mapcarta.com/30681208",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.63858,
+                39.7278
+              ]
+            },
+            "properties": {
+              "name": "Pla dels Aritges",
+              "category": "Mountain landmark",
+              "routeSection": "Core",
+              "note": "Locality marker near the ridge routes; precise junction unverified.",
+              "source": {
+                "url": "https://mapcarta.com/N1242613657",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.6352,
+                39.73
+              ]
+            },
+            "properties": {
+              "name": "Es Caragolí",
+              "category": "Ridge / summit",
+              "routeSection": "Core",
+              "note": "Summit marker on the Archduke ridge walk.",
+              "source": {
+                "url": "https://mapcarta.com/N370611029",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.6483,
+                39.7477
+              ]
+            },
+            "properties": {
+              "name": "Deià",
+              "category": "Village / overnight",
+              "routeSection": "Core",
+              "note": "Village reference point.",
+              "source": {
+                "url": "https://mapcarta.com/Deia",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.64556,
+                39.74635
+              ]
+            },
+            "properties": {
+              "name": "Refugi Can Boi",
+              "category": "Accommodation",
+              "routeSection": "Core",
+              "note": "Refuge marker at Carrer des Clot 5.",
+              "source": {
+                "url": "https://mapcarta.com/N612034020",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.64628,
+                39.74906
+              ]
+            },
+            "properties": {
+              "name": "Deià cemetery",
+              "category": "Historic site / viewpoint",
+              "routeSection": "Core",
+              "note": "Cemetery site marker.",
+              "source": {
+                "url": "https://mapcarta.com/W29286664",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.64118,
+                39.76105
+              ]
+            },
+            "properties": {
+              "name": "Cala Deià — bay area",
+              "category": "Beach / coastal scenery",
+              "routeSection": "Detour",
+              "note": "Broad bay marker that may fall on water; beach and path entrances unverified.",
+              "source": {
+                "url": "https://www.seemallorca.com/beaches/cala-deia-beach-deia-661014",
+                "publisher": "SeeMallorca",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.65356,
+                39.76527
+              ]
+            },
+            "properties": {
+              "name": "Llucalcari",
+              "category": "Hamlet / coastal detour",
+              "routeSection": "Detour",
+              "note": "Hamlet reference point; beach and coastal-path junction unverified.",
+              "source": {
+                "url": "https://mapcarta.com/17382162",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.7151,
+                39.7663
+              ]
+            },
+            "properties": {
+              "name": "Sóller",
+              "category": "Town / overnight",
+              "routeSection": "Core",
+              "note": "Town reference point.",
+              "source": {
+                "url": "https://mapcarta.com/S%C3%B3ller",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.7191,
+                39.76645
+              ]
+            },
+            "properties": {
+              "name": "Hostel Sóller",
+              "category": "Accommodation",
+              "routeSection": "Core",
+              "note": "Hostel building marker.",
+              "source": {
+                "url": "https://mapcarta.com/es/W611996724",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.71424,
+                39.76812
+              ]
+            },
+            "properties": {
+              "name": "Hostal Nadal",
+              "category": "Accommodation",
+              "routeSection": "Core",
+              "note": "Hotel location published by the operator.",
+              "source": {
+                "url": "https://www.hostalnadalsoller.com/en/",
+                "publisher": "Hostal Nadal",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.69642,
+                39.79776
+              ]
+            },
+            "properties": {
+              "name": "Port de Sóller",
+              "category": "Harbour village / overnight",
+              "routeSection": "Detour",
+              "note": "Village reference point; boat boarding point unverified.",
+              "source": {
+                "url": "https://mapcarta.com/17382166",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.68116,
+                39.7966
+              ]
+            },
+            "properties": {
+              "name": "Refugi de Muleta",
+              "category": "Accommodation",
+              "routeSection": "Core",
+              "note": "Refuge building marker.",
+              "source": {
+                "url": "https://mapcarta.com/es/W52612938",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.74109,
+                39.78261
+              ]
+            },
+            "properties": {
+              "name": "Fornalutx",
+              "category": "Village / valley walk",
+              "routeSection": "Detour",
+              "note": "Village reference point.",
+              "source": {
+                "url": "https://mapcarta.com/17381046",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.73514,
+                39.77122
+              ]
+            },
+            "properties": {
+              "name": "Biniaraix",
+              "category": "Hamlet / mountain access",
+              "routeSection": "Core",
+              "note": "Hamlet reference point beside the route into the Barranc de Biniaraix.",
+              "source": {
+                "url": "https://mapcarta.com/17387576",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.76312,
+                39.76614
+              ]
+            },
+            "properties": {
+              "name": "Coll de l’Ofre",
+              "category": "Mountain pass",
+              "routeSection": "Core",
+              "note": "Mountain pass marker.",
+              "source": {
+                "url": "https://www.outdooractive.com/es/poi/mallorca/coll-de-l-ofre/1290913/",
+                "publisher": "Outdooractive",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.7877,
+                39.7844
+              ]
+            },
+            "properties": {
+              "name": "Cúber reservoir",
+              "category": "Scenic area",
+              "routeSection": "Core",
+              "note": "Reservoir area marker that may fall on water; access and pickup points unverified.",
+              "source": {
+                "url": "https://mapcarta.com/W27547009",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.79932,
+                39.7871
+              ]
+            },
+            "properties": {
+              "name": "Font des Noguer parking area",
+              "category": "Road access / trail access",
+              "routeSection": "Core",
+              "note": "Parking-area marker near Cúber; agree the precise pickup location with the driver.",
+              "source": {
+                "url": "https://mapcarta.com/W149948643",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.80036,
+                39.78748
+              ]
+            },
+            "properties": {
+              "name": "Font des Noguer spring",
+              "category": "Mapped water feature",
+              "routeSection": "Core",
+              "note": "Mapped spring; flow and potability unverified for April 2027.",
+              "source": {
+                "url": "https://mapcarta.com/N2510446810",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.8254,
+                39.789
+              ]
+            },
+            "properties": {
+              "name": "Coll des Coloms — Escorca",
+              "category": "Mountain pass / route choice",
+              "routeSection": "Core",
+              "note": "Mountain pass in Escorca on the approach to Tossals Verds.",
+              "source": {
+                "url": "https://mapcarta.com/N1280164878",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.81915,
+                39.76874
+              ]
+            },
+            "properties": {
+              "name": "Refugi de Tossals Verds",
+              "category": "Accommodation",
+              "routeSection": "Core",
+              "note": "Refuge building marker.",
+              "source": {
+                "url": "https://mapcarta.com/fr/W98324787",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.831,
+                39.78997
+              ]
+            },
+            "properties": {
+              "name": "Font des Prat",
+              "category": "Mapped water feature",
+              "routeSection": "Core",
+              "note": "Mapped spring; flow and potability unverified for April 2027.",
+              "source": {
+                "url": "https://mapcarta.com/N703167128",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.8521,
+                39.8086
+              ]
+            },
+            "properties": {
+              "name": "Coll des Prat",
+              "category": "High mountain pass",
+              "routeSection": "Core",
+              "note": "Mountain pass at approximately 1,205 m on the Tossals–Lluc stage.",
+              "source": {
+                "url": "https://mapcarta.com/N660833591",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.86654,
+                39.81577
+              ]
+            },
+            "properties": {
+              "name": "Puig d’en Galileu",
+              "category": "Optional summit",
+              "routeSection": "Detour",
+              "note": "Summit reference point; follow the correct GR221 descent.",
+              "source": {
+                "url": "https://de.wikipedia.org/wiki/Puig_d%E2%80%99en_Galileu",
+                "publisher": "Wikipedia",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.89168,
+                39.81842
+              ]
+            },
+            "properties": {
+              "name": "Refugi de Son Amer",
+              "category": "Accommodation",
+              "routeSection": "Core",
+              "note": "Refuge marker at a separate location from Lluc monastery.",
+              "source": {
+                "url": "https://mapcarta.com/es/N612044820",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.8842,
+                39.82259
+              ]
+            },
+            "properties": {
+              "name": "Santuari de Lluc — hotel complex",
+              "category": "Accommodation / historic site",
+              "routeSection": "Core",
+              "note": "Hotel-complex reference point; reception entrance unverified.",
+              "source": {
+                "url": "https://es.geoview.info/santuari_de_lluc%2C9882208",
+                "publisher": "GeoView / GeoNames",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                3.01626,
+                39.87678
+              ]
+            },
+            "properties": {
+              "name": "Pollença",
+              "category": "Town / overnight",
+              "routeSection": "Core",
+              "note": "Town reference point.",
+              "source": {
+                "url": "https://mapcarta.com/17370542",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                3.01336,
+                39.88255
+              ]
+            },
+            "properties": {
+              "name": "Refugi Pont Romà",
+              "category": "Accommodation",
+              "routeSection": "Core",
+              "note": "Refuge marker at a separate location from the bridge and bus stop.",
+              "source": {
+                "url": "https://www.alpenvereinaktiv.com/de/bewirtschaftete-huette/refugi-pont-roma/20674570/",
+                "publisher": "DAV Kassel / alpenvereinaktiv",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                3.01295,
+                39.8831
+              ]
+            },
+            "properties": {
+              "name": "Pont Romà 1 — stop 42045",
+              "category": "Bus stop",
+              "routeSection": "Core",
+              "note": "TIB bus stop 42045; route and departure direction require checking.",
+              "source": {
+                "url": "https://www.tib.org/de/parades/-/parada/42045/llicencies-us",
+                "publisher": "TIB",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                3.0828,
+                39.908
+              ]
+            },
+            "properties": {
+              "name": "Port de Pollença",
+              "category": "Town / optional finish",
+              "routeSection": "Extension",
+              "note": "Town reference point; precise GR221 finish unverified.",
+              "source": {
+                "url": "https://mapcarta.com/Port_de_Pollen%C3%A7a",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.72507,
+                39.79077
+              ]
+            },
+            "properties": {
+              "name": "Mirador de ses Barques parking",
+              "category": "Viewpoint access / road access",
+              "routeSection": "Detour",
+              "note": "Parking-area marker serving the viewpoint and coastal-walk start.",
+              "source": {
+                "url": "https://mapcarta.com/W52707204",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.74396,
+                39.82849
+              ]
+            },
+            "properties": {
+              "name": "Sa Costera",
+              "category": "Coastal landscape",
+              "routeSection": "Detour",
+              "note": "Broad coastal locality marker; follow an established walking track.",
+              "source": {
+                "url": "https://mapcarta.com/N4115551503",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.77583,
+                39.84
+              ]
+            },
+            "properties": {
+              "name": "Cala Tuent beach",
+              "category": "Beach / coastal-walk endpoint",
+              "routeSection": "Detour",
+              "note": "Beach reference point; boat landing unverified.",
+              "source": {
+                "url": "https://de.wikipedia.org/wiki/Cala_Tuent",
+                "publisher": "Wikipedia",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.8271,
+                39.75746
+              ]
+            },
+            "properties": {
+              "name": "Son Ordines",
+              "category": "Alternative exit area",
+              "routeSection": "Exit",
+              "note": "Locality marker; public parking and pickup location require confirmation.",
+              "source": {
+                "url": "https://mapcarta.com/N1140851613",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          },
+          {
+            "type": "Feature",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                2.89017,
+                39.83154
+              ]
+            },
+            "properties": {
+              "name": "Es Pixarells",
+              "category": "Camping / walking area",
+              "routeSection": "Detour",
+              "note": "Locality marker; campsite entrance and reservation require confirmation.",
+              "source": {
+                "url": "https://mapcarta.com/N1242631747",
+                "publisher": "Mapcarta",
+                "retrievedAt": "2026-09-12"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```</script>
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const escapeHTML = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const slugify = text => text.normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}\s_-]/gu,'').trim().replace(/[\s_]+/g,'-') || 'untitled';
+function uniqueSlug(text, used){const base=slugify(text);let id=base,n=2;while(used.has(id))id=base+'-'+n++;used.add(id);return id;}
+function plainText(token){return (token.children||[]).map(t=>t.type==='image'?t.content:t.type==='softbreak'||t.type==='hardbreak'?' ':t.content||'').join('')||token.content||'Untitled';}
+function readMarkdown(){return $('markdown-source').textContent.replace(/&lt;\/script/gi,'<'+'/script');}
+class DocumentParser {
+ constructor(md){this.md=md;}
+ parse(source){
+  const env={},tokens=this.md.parse(source,env),doc={title:'Untitled document',sections:[],pages:[],anchors:new Map(),env};
+  const sectionSlugs=new Set(),headingSlugs=new Set();let section=null,page=null,titleFound=false;
+  const addSection=title=>{section={title,slug:uniqueSlug(title,sectionSlugs),pages:[],used:new Set()};doc.sections.push(section);page=null;return section;};
+  const addPage=(title,kind='page')=>{if(!section)addSection('Document');page={title,slug:uniqueSlug(title,section.used),kind,tokens:[],toc:[],section};page.route='#/'+section.slug+'/'+page.slug;section.pages.push(page);doc.pages.push(page);return page;};
+  const ensurePage=()=>page||addPage('Overview','overview');
+  for(let i=0;i<tokens.length;i++){
+   const t=tokens[i];
+   if(t.type==='heading_open'){
+    const level=Number(t.tag.slice(1)),title=plainText(tokens[i+1]),id=uniqueSlug(title,headingSlugs);t.attrSet('id','heading-'+id);
+    if(t.level===0&&level===1&&!titleFound){doc.title=title;titleFound=true;doc.titleAnchor=id;i+=2;continue;}
+    if(t.level===0&&level===2){addSection(title);section.anchor=id;i+=2;continue;}
+    if(t.level===0&&level===3){addPage(title);doc.anchors.set(id,{page});i+=2;continue;}
+    ensurePage();doc.anchors.set(id,{page,id});if(level>=4)page.toc.push({title,id,level});
+   }
+   ensurePage().tokens.push(t);
+  }
+  for(const s of doc.sections){if(!s.pages.length){section=s;addPage(s.title,'overview');}if(s.anchor)doc.anchors.set(s.anchor,{page:s.pages[0]});}
+  if(!doc.pages.length){addSection('Document');addPage(doc.title,'overview');}
+  // Reconstruct source order after filling empty sections.
+  doc.pages=doc.sections.flatMap(s=>s.pages);if(doc.titleAnchor)doc.anchors.set(doc.titleAnchor,{page:doc.pages[0]});
+  for(const p of doc.pages){
+   if(p.toc.length)continue;
+   for(let i=0;i<p.tokens.length;i++){
+    const token=p.tokens[i],inline=p.tokens[i+1];
+    if(token.type!=='paragraph_open'||token.level!==0||inline?.type!=='inline')continue;
+    const children=inline.children||[],start=children.findIndex(t=>t.type!=='text'||t.content.trim());
+    if(start<0||children[start].type!=='strong_open')continue;
+    const end=children.findIndex((t,j)=>j>start&&t.type==='strong_close');
+    if(end<0)continue;
+    const label=children.slice(start+1,end).map(t=>t.content||'').join('').trim();
+    const remainder=children.slice(end+1).map(t=>t.content||'').join('').trim();
+    if(!label||label.length>100||(remainder&&!/[:：]$/.test(label)))continue;
+    const title=label.replace(/[:：.]$/,'');
+    const id=uniqueSlug(title,headingSlugs);token.attrSet('id','heading-'+id);
+    p.toc.push({title,id,level:4});doc.anchors.set(id,{page:p,id});
+   }
+  }
+  return doc;
+ }
+}
+class MarkdownRenderer {
+ constructor(md,model){this.md=md;this.model=model;const original=md.renderer.rules.link_open||((ts,i,o,e,r)=>r.renderToken(ts,i,o));md.renderer.rules.link_open=(ts,i,o,e,r)=>{const t=ts[i],href=t.attrGet('href');if(href?.startsWith('#')&&!href.startsWith('#/')){let key;try{key=decodeURIComponent(href.slice(1));}catch{key=href.slice(1);}const target=model.anchors.get(key);if(target)t.attrSet('href',target.page.route+(target.id?'/'+target.id:''));}t.attrSet('target','_blank');t.attrSet('rel','noopener noreferrer');return original(ts,i,o,e,r);};}
+ render(page){return this.md.renderer.render(page.tokens,this.md.options,this.model.env);}
+}
+// Extension point: add future transformations here. Navigation and TOC are core UI.
+const contentEnhancements=[];
+function enhanceContent(article){for(const enhance of contentEnhancements)enhance(article);}
+class HashRouter {
+ constructor(model,onRoute){this.model=model;this.onRoute=onRoute;this.positions=new Map();this.current=null;this.lastPages=new Map();}
+ start(){if('scrollRestoration'in history)history.scrollRestoration='manual';window.addEventListener('hashchange',()=>this.resolve());this.resolve(true);}
+ resolve(initial=false){
+  if(location.hash==='#content'){$('content').focus();return;}
+  if(this.current)this.positions.set(this.current,window.scrollY);
+  let parts;try{parts=decodeURIComponent(location.hash).replace(/^#\//,'').split('/');}catch{parts=[];}
+  let section=this.model.sections.find(s=>s.slug===parts[0]),page=section?.pages.find(p=>p.slug===parts[1]),anchor=parts.slice(2).join('/');
+  if(!page){let alias;try{alias=this.model.anchors.get(decodeURIComponent(location.hash.slice(1)));}catch{}page=alias?.page||section?.pages[0]||this.model.pages[0];anchor=alias?.id||'';history.replaceState(null,'',page.route+(anchor?'/'+anchor:''));}
+  if(anchor&&!page.tokens.some(t=>t.attrGet('id')==='heading-'+anchor)){anchor='';history.replaceState(null,'',page.route);}
+  this.current=location.hash;this.lastPages.set(page.section.slug,page);this.onRoute(page,anchor,initial);const route=this.current;
+  requestAnimationFrame(()=>{if(this.current!==route)return;if(anchor)document.getElementById('heading-'+anchor)?.scrollIntoView();else window.scrollTo(0,this.positions.get(route)||0);});
+ }
+}
+class DocumentViewer {
+ constructor(model,renderer){this.model=model;this.renderer=renderer;this.router=new HashRouter(model,(...args)=>this.render(...args));this.observer=null;}
+ link(page,label,current){return `<a href="${page.route}"${page===current?' aria-current="page"':''}>${escapeHTML(label)}</a>`;}
+ start(){
+  const homePage=this.model.pages[0];$('document-title').textContent=this.model.title;$('document-title').href=homePage.route;const sidebarLayout=document.documentElement.dataset.layout==='sidebar';$('primary').hidden=sidebarLayout;document.documentElement.classList.toggle('sidebar-layout',sidebarLayout);$('secondary').setAttribute('aria-label',sidebarLayout?'Document navigation':'Pages');if('ResizeObserver'in window)new ResizeObserver(entries=>document.documentElement.style.setProperty('--header',entries[0].target.offsetHeight+'px')).observe(document.querySelector('.header'));$('status').hidden=true;$('layout').hidden=false;
+  $('menu').onclick=()=>$('drawer').showModal();$('close-menu').onclick=()=>$('drawer').close();$('drawer').addEventListener('click',e=>{if(e.target===$('drawer')){const r=$('drawer').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('drawer').close();}if(e.target.closest('a'))$('drawer').close();});
+  window.addEventListener('beforeprint',()=>{$('print-content').innerHTML=`<h1>${escapeHTML(this.model.title)}</h1>`+this.model.sections.map(s=>`<section><h2>${escapeHTML(s.title)}</h2>${s.pages.map(p=>`<article><h3>${escapeHTML(p.title)}</h3>${this.renderer.render(p)}</article>`).join('')}</section>`).join('');});window.addEventListener('afterprint',()=>{$('print-content').replaceChildren();});this.router.start();
+ }
+ render(page,anchor,initial){
+  const s=page.section;document.title=page.title+' · '+this.model.title+' | Pageleaf';
+  $('primary').innerHTML=this.model.sections.map(section=>`<a href="${(this.router.lastPages.get(section.slug)||section.pages[0]).route}"${section===s?' aria-current="true"':''}>${escapeHTML(section.title)}</a>`).join('');
+  const sidebarLayout=document.documentElement.dataset.layout==='sidebar';$('secondary').innerHTML=sidebarLayout?this.model.sections.map(section=>`<section class="sidebar-group"><h3 class="sidebar-group-title">${escapeHTML(section.title)}</h3>${section.pages.length>1?section.pages.map(p=>this.link(p,p.title,page)).join(''):this.link(section.pages[0],section.pages[0].kind==='overview'?'Overview':section.pages[0].title,page)}</section>`).join(''):s.pages.map(p=>this.link(p,p.title,page)).join('');
+  $('mobile-nav').innerHTML=this.model.sections.map(section=>`<h3>${escapeHTML(section.title)}</h3>${section.pages.map(p=>this.link(p,p.title,page)).join('')}`).join('');
+  $('page-title').textContent=page.title;
+  $('article').innerHTML=this.renderer.render(page);enhanceContent($('article'));
+  const toc=page.toc.map(h=>`<a href="${page.route}/${h.id}" data-level="${h.level}">${escapeHTML(h.title)}</a>`).join('')||`<a href="${page.route}">${escapeHTML(page.title)}</a>`;$('toc').querySelector('nav').innerHTML=toc;$('mobile-toc').querySelector('nav').innerHTML=toc;$('toc').style.visibility=toc?'visible':'hidden';$('mobile-toc').hidden=!toc;$('mobile-toc').style.display=toc?'':'none';
+  const index=this.model.pages.indexOf(page);$('pager').innerHTML=[index>0?`<a href="${this.model.pages[index-1].route}"><small>← Previous</small>${escapeHTML(this.model.pages[index-1].title)}</a>`:'',index<this.model.pages.length-1?`<a href="${this.model.pages[index+1].route}"><small>Next →</small>${escapeHTML(this.model.pages[index+1].title)}</a>`:''].join('');
+  this.observer?.disconnect();if('IntersectionObserver'in window){this.observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting);if(visible.length)this.markHeading(visible[0].target.id.slice(8));},{rootMargin:'-140px 0px -55% 0px'});page.toc.forEach(h=>this.observer.observe(document.getElementById('heading-'+h.id)));}this.markHeading(anchor||page.toc[0]?.id);
+  if(!initial)$('content').focus({preventScroll:true});
+ }
+ markHeading(id){document.querySelectorAll('.toc a,.mobile-toc a').forEach(a=>{if(a.hash.endsWith('/'+id))a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}
+}
+try{const theme=localStorage.getItem('pageleaf-theme');if(['paper','midnight','grove','ocean','contrast'].includes(theme))document.documentElement.dataset.theme=theme;}catch{}
+$('theme').value=document.documentElement.dataset.theme;$('theme').onchange=e=>{document.documentElement.dataset.theme=e.target.value;try{localStorage.setItem('pageleaf-theme',e.target.value);}catch{}};
+if(!window.markdownit){$('status').textContent='The Markdown library could not load. Connect to the internet and reload this file to try again.';}else{try{const md=window.markdownit({html:false,linkify:true,typographer:true});const model=new DocumentParser(md).parse(readMarkdown());new DocumentViewer(model,new MarkdownRenderer(md,model)).start();}catch(error){$('status').hidden=false;$('status').textContent='This document could not be opened: '+error.message;console.error(error);}}
+</script>
+</body>
+</html>
