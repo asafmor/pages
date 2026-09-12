@@ -36,6 +36,94 @@
 /* Standard scrollbar properties override the custom parts unless both are auto. */
 @supports selector(::-webkit-scrollbar){.primary{scrollbar-width:auto;scrollbar-color:auto}.primary::-webkit-scrollbar-button{display:none;width:0;height:0}}
 </style>
+<style>
+.geomap {
+  margin: 28px 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.geomap-map {
+  height: 420px;
+  width: 100%;
+  scroll-margin-top: calc(var(--header) + 16px);
+  /* Leaflet's panes must stay below the document's sticky navigation. */
+  isolation: isolate;
+  z-index: 0;
+  background: var(--soft);
+  color: #222;
+}
+
+.geomap-toolbar { padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.geomap-toolbar:empty { display: none; }
+.geomap-layers { font-size: 14px; }
+.geomap summary { cursor: pointer; font-weight: 600; }
+.geomap-layers fieldset { border: 0; padding: 8px 0 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.geomap-layers label { display: inline-flex; gap: 8px; align-items: center; min-height: 32px; cursor: pointer; }
+.geomap input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+.geomap-layer-swatch { width: 22px; border-top: 3px solid; }
+.geomap-data > summary { padding: 12px 16px; border-top: 1px solid var(--line); }
+.geomap-table-wrapper { width: 100%; overflow-x: auto; }
+.article .geomap-table { display: table; margin: 0; width: 100%; font-size: 13px; }
+.article .geomap-table th, .article .geomap-table td { padding: 10px 12px; vertical-align: top; overflow-wrap: anywhere; }
+.article .geomap-table th { text-transform: none; letter-spacing: normal; }
+.geomap-table td { min-width: 100px; }
+.geomap-table td:first-child { min-width: 140px; }
+.geomap-table tbody tr { cursor: pointer; }
+.geomap-table tr.is-hovered, .geomap-table tr:hover { background: var(--soft); }
+.geomap-table tr.is-selected { background: var(--soft); box-shadow: inset 4px 0 var(--accent); }
+.geomap-layer-state { display: block; font-size: 11px; font-style: italic; color: var(--muted); }
+.geomap .geomap-feature-button { border: 0; background: transparent; padding: 0; border-radius: 0; text-align: left; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.geomap .geomap-feature-button[aria-current] { font-weight: 700; }
+.article .geomap-table .map-link-cell, .article .geomap-table .map-link-header {
+  width: 1%;
+  min-width: 0;
+  white-space: nowrap;
+  text-align: center;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.map-link-cell a { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 24px; text-decoration: none; }
+.geomap-table-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 16px; font-size: 13px; }
+.geomap-table-controls input { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); padding: 8px 10px; min-width: 0; max-width: 100%; border-radius: var(--radius); }
+.geomap-filter-status { color: var(--muted); }
+.geomap-message, .geomap-error { padding: 12px 16px; color: var(--muted); font-size: 14px; }
+.geomap-error { border: 1px solid var(--line); border-radius: var(--radius); }
+.geomap .geomap-marker {
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #28614b;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font: bold 20px/1 Arial, sans-serif;
+  box-shadow: 0 1px 5px #0009;
+}
+.geomap .geomap-marker.is-hovered { outline: 3px solid #222; outline-offset: 2px; }
+.geomap .geomap-marker.is-selected { outline: 4px double #222; outline-offset: 2px; background: #153c2d; }
+.geomap .leaflet-container :focus-visible { outline: 3px solid #1769aa; outline-offset: 3px; }
+.geomap-popup { font: 14px/1.5 Arial, sans-serif; color: #222; overflow-wrap: anywhere; max-height: 240px; overflow-y: auto; }
+.geomap-popup strong { display: block; margin-bottom: 6px; }
+.article .geomap-popup p { margin: 6px 0; }
+.geomap-popup a { color: #1769aa; }
+.geomap-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (max-width: 700px) {
+  .geomap-map { height: 380px; }
+  .geomap-layers fieldset { flex-direction: column; gap: 4px; }
+  .geomap-table-controls { align-items: stretch; flex-direction: column; }
+}
+
+@media print {
+  .geomap-map, .geomap-toolbar, .geomap-table-controls { display: none; }
+  .geomap { overflow: visible; }
+  .geomap-table-wrapper { overflow: visible; }
+  .geomap-data > summary { list-style: none; }
+  .geomap-table tr { break-inside: avoid; }
+}
+</style>
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
@@ -1761,6 +1849,608 @@ Links sit beside consequential facts and tables. Tables combining sources identi
 ```</script>
 <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
 <script>
+var PageleafGeoMap = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+  // src/geomap/index.js
+  var index_exports = {};
+  __export(index_exports, {
+    install: () => install
+  });
+
+  // src/geomap/data.js
+  var isObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+  function text(...values) {
+    for (const value of values) {
+      if (typeof value === "string" && value.trim()) return value.trim();
+      if (typeof value === "number" && Number.isFinite(value)) return String(value);
+    }
+    return "";
+  }
+  function safeUrl(value) {
+    if (typeof value !== "string") return "";
+    try {
+      const url = new URL(value);
+      return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+    } catch {
+      return "";
+    }
+  }
+  function sourceUrl(source) {
+    return safeUrl(isObject(source) ? source.url : source);
+  }
+  function position(value) {
+    if (!Array.isArray(value) || value.length < 2 || !value.every(Number.isFinite) || Math.abs(value[0]) > 180 || Math.abs(value[1]) > 90) {
+      throw new Error("Invalid longitude/latitude position");
+    }
+  }
+  function coordinates(value, child, minimum = 0) {
+    if (!Array.isArray(value) || value.length < minimum) throw new Error("Invalid coordinate array");
+    value.forEach(child);
+  }
+  function line(value) {
+    coordinates(value, position, 2);
+  }
+  function ring(value) {
+    coordinates(value, position, 4);
+    const first = value[0], last = value.at(-1);
+    if (first.length !== last.length || first.some((n, i) => n !== last[i])) {
+      throw new Error("Polygon rings must be closed");
+    }
+  }
+  function polygon(value) {
+    coordinates(value, ring, 1);
+  }
+  function validateGeometry(geometry, depth = 0) {
+    if (geometry === null) return;
+    if (!isObject(geometry) || depth > 64) throw new Error("Invalid or excessively nested geometry");
+    if (geometry.type === "GeometryCollection") {
+      if (!Array.isArray(geometry.geometries)) throw new Error("Missing geometries array");
+      geometry.geometries.forEach((child) => {
+        if (child === null) throw new Error("Null GeometryCollection member");
+        validateGeometry(child, depth + 1);
+      });
+      return;
+    }
+    const validators = {
+      Point: position,
+      MultiPoint: (value) => coordinates(value, position),
+      LineString: line,
+      MultiLineString: (value) => coordinates(value, line),
+      Polygon: polygon,
+      MultiPolygon: (value) => coordinates(value, polygon)
+    };
+    if (!Object.hasOwn(validators, geometry.type)) throw new Error(`Unsupported geometry: ${geometry.type}`);
+    if (Array.isArray(geometry.coordinates) && geometry.coordinates.length === 0) return;
+    validators[geometry.type](geometry.coordinates);
+  }
+  function asFeatures(geojson) {
+    if (!isObject(geojson)) throw new Error("Missing GeoJSON object");
+    const features = geojson.type === "FeatureCollection" ? geojson.features : [geojson.type === "Feature" ? geojson : { type: "Feature", properties: {}, geometry: geojson }];
+    if (!Array.isArray(features)) throw new Error("Missing features array");
+    for (const feature of features) {
+      if (!isObject(feature) || feature.type !== "Feature" || !(feature.properties === null || isObject(feature.properties))) {
+        throw new Error("Invalid GeoJSON Feature");
+      }
+      validateGeometry(feature.geometry);
+    }
+    return features;
+  }
+  function hasGeometry(geometry) {
+    if (!geometry) return false;
+    if (geometry.type === "GeometryCollection") return geometry.geometries.some(hasGeometry);
+    return geometry.coordinates.length > 0;
+  }
+  function drawableGeometry(geometry) {
+    if (!hasGeometry(geometry)) return null;
+    if (geometry.type !== "GeometryCollection") return geometry;
+    return { ...geometry, geometries: geometry.geometries.map(drawableGeometry).filter(Boolean) };
+  }
+  function normalizeGeoMap(input) {
+    if (!isObject(input) || !Array.isArray(input.layers)) throw new Error("GeoMap requires a layers array");
+    const layers = [], features = [], errors = [], ids = /* @__PURE__ */ new Set();
+    input.layers.forEach((layer, layerIndex) => {
+      try {
+        if (!isObject(layer) || !["id", "name", "role"].every((key) => typeof layer[key] === "string" && layer[key].trim())) {
+          throw new Error("Layer requires a nonempty id, name and role");
+        }
+        if (ids.has(layer.id)) throw new Error("Duplicate layer id");
+        if (layer.source !== void 0 && (!isObject(layer.source) || ["url", "publisher", "retrievedAt", "originalFormat"].some((key) => layer.source[key] !== void 0 && typeof layer.source[key] !== "string"))) {
+          throw new Error("Invalid layer source metadata");
+        }
+        const entries = asFeatures(layer.geojson).map((feature, index) => {
+          const p = feature.properties || {};
+          return {
+            id: `${layer.id}/${index}`,
+            layerId: layer.id,
+            layerName: layer.name,
+            role: layer.role,
+            feature,
+            name: text(p.name) || `${layer.name} \xB7 ${index + 1}`,
+            category: text(p.category, p.type) || layer.role,
+            routeSection: text(p.routeSection, p.route_section),
+            note: text(p.note, p.description, p.desc),
+            sourceUrl: sourceUrl(p.source) || safeUrl(p.sourceUrl) || safeUrl(p.source_url) || sourceUrl(layer.source),
+            point: feature.geometry?.type === "Point" && hasGeometry(feature.geometry) ? feature.geometry.coordinates : null
+          };
+        });
+        ids.add(layer.id);
+        layers.push({ id: layer.id, name: layer.name, role: layer.role, features: entries });
+        for (const entry of entries) features.push(entry);
+      } catch (error) {
+        errors.push(`Layer ${layerIndex + 1}: ${error.message}`);
+      }
+    });
+    if (input.layers.length && !layers.length) throw new Error(errors.join("; "));
+    return { layers, features, errors };
+  }
+
+  // src/geomap/dom.js
+  function element(tag, className, text2) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text2 !== void 0) node.textContent = text2;
+    return node;
+  }
+  function externalLink(url, label) {
+    const link = element("a", "", label);
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.addEventListener("click", (event) => event.stopPropagation());
+    return link;
+  }
+  function popupContent(feature) {
+    const content = element("div", "geomap-popup");
+    content.append(element("strong", "", feature.name));
+    for (const [label, value] of [["Category", feature.category], ["Layer", feature.layerName], ["Route section", feature.routeSection]]) {
+      if (value) content.append(element("div", "", `${label}: ${value}`));
+    }
+    if (feature.note) content.append(element("p", "", feature.note));
+    if (feature.sourceUrl) content.append(externalLink(feature.sourceUrl, "Source \u2197"));
+    return content;
+  }
+
+  // src/geomap/table.js
+  function locationLink(feature) {
+    const [longitude, latitude] = feature.point;
+    const link = externalLink(`https://www.google.com/maps?q=${latitude},${longitude}`, "\u{1F4CD}");
+    link.setAttribute("aria-label", `Open ${feature.name} in Google Maps`);
+    link.title = "Open in Google Maps";
+    return link;
+  }
+  var FeatureTable = class {
+    constructor(root, runtime, id, { onSelect, onHover } = {}) {
+      this.rows = /* @__PURE__ */ new Map();
+      this.details = element("details", "geomap-data");
+      this.details.open = runtime.features.length <= 8;
+      this.details.append(element("summary", "", `Map locations and features (${runtime.features.length})`));
+      const wrapper = element("div", "geomap-table-wrapper");
+      wrapper.tabIndex = 0;
+      wrapper.setAttribute("role", "region");
+      wrapper.setAttribute("aria-label", "Map locations and features table");
+      const table = element("table", "geomap-table");
+      table.id = `${id}-table`;
+      const caption = element("caption", "geomap-sr-only", "Geographic features. Select a name to focus it on the map.");
+      table.append(caption);
+      const columns = [
+        { key: "name", label: "Name" },
+        { key: "category", label: "Category / Type" },
+        { key: "layerName", label: "Layer" },
+        { key: "routeSection", label: "Route section" },
+        { key: "note", label: "Details" },
+        { key: "point", label: "\u{1F4CD}" },
+        { key: "sourceUrl", label: "Source" }
+      ].filter((column) => ["name", "category", "layerName"].includes(column.key) || runtime.features.some((f) => f[column.key]));
+      const head = element("thead"), heading = element("tr");
+      for (const column of columns) {
+        const th = element("th", column.key === "point" ? "map-link-header" : "", column.label);
+        th.scope = "col";
+        if (column.key === "point") th.setAttribute("aria-label", "Google Maps location");
+        heading.append(th);
+      }
+      head.append(heading);
+      table.append(head);
+      const body = element("tbody");
+      for (const feature of runtime.features) {
+        const row = element("tr");
+        row.dataset.featureId = `${id}/${feature.id}`;
+        for (const column of columns) {
+          const cell = element("td", column.key === "point" ? "map-link-cell" : "");
+          if (column.key === "name") {
+            const button = element("button", "geomap-feature-button", feature.name);
+            button.type = "button";
+            button.setAttribute("aria-label", `Show ${feature.name} on map`);
+            button.addEventListener("click", (event) => {
+              event.stopPropagation();
+              onSelect?.(feature.id);
+            });
+            cell.append(button);
+          } else if (column.key === "point") {
+            if (feature.point) cell.append(locationLink(feature));
+          } else if (column.key === "sourceUrl") {
+            if (feature.sourceUrl) cell.append(externalLink(feature.sourceUrl, "Source \u2197"));
+          } else {
+            cell.textContent = feature[column.key] || "\u2014";
+            if (column.key === "layerName") {
+              const state = element("span", "geomap-layer-state", " (hidden on map)");
+              state.hidden = true;
+              cell.append(state);
+            }
+          }
+          row.append(cell);
+        }
+        row.addEventListener("click", (event) => {
+          if (!event.target.closest("a, button") && !window.getSelection()?.toString()) onSelect?.(feature.id);
+        });
+        row.addEventListener("mouseenter", () => onHover?.(feature.id));
+        row.addEventListener("mouseleave", () => onHover?.(null));
+        row.addEventListener("focusin", () => onHover?.(feature.id));
+        row.addEventListener("focusout", () => onHover?.(null));
+        this.rows.set(feature.id, row);
+        body.append(row);
+      }
+      table.append(body);
+      wrapper.append(table);
+      if (runtime.features.length > 8) this.addSearch(runtime.features, id);
+      this.details.append(wrapper);
+      if (!runtime.features.length) this.details.append(element("p", "geomap-message", "No geographic features."));
+      root.append(this.details);
+    }
+    addSearch(features, id) {
+      const controls = element("div", "geomap-table-controls");
+      const label = element("label", "", "Search locations");
+      const input = element("input");
+      input.id = `${id}-search`;
+      input.type = "search";
+      input.placeholder = "Search locations\u2026";
+      label.htmlFor = input.id;
+      const status = element("span", "geomap-filter-status", `${features.length} of ${features.length} features`);
+      status.setAttribute("role", "status");
+      const searchText = new Map(features.map((f) => [f.id, [f.name, f.category, f.layerName, f.routeSection, f.note].join(" ").toLocaleLowerCase()]));
+      input.addEventListener("input", () => {
+        const query = input.value.trim().toLocaleLowerCase();
+        let count = 0;
+        for (const [id2, row] of this.rows) {
+          row.hidden = !searchText.get(id2).includes(query);
+          if (!row.hidden) count += 1;
+        }
+        status.textContent = `${count} of ${features.length} features`;
+      });
+      controls.append(label, input, status);
+      this.details.append(controls);
+    }
+    select(id) {
+      this.rows.get(this.selectedId)?.classList.remove("is-selected");
+      this.rows.get(this.selectedId)?.querySelector("button").removeAttribute("aria-current");
+      this.rows.get(id)?.classList.add("is-selected");
+      this.rows.get(id)?.querySelector("button").setAttribute("aria-current", "true");
+      this.selectedId = id;
+    }
+    hover(id) {
+      this.rows.get(this.hoveredId)?.classList.remove("is-hovered");
+      this.rows.get(id)?.classList.add("is-hovered");
+      this.hoveredId = id;
+    }
+    setLayerVisible(layer, visible) {
+      for (const feature of layer.features) {
+        const row = this.rows.get(feature.id);
+        row.classList.toggle("is-layer-hidden", !visible);
+        row.querySelector(".geomap-layer-state").hidden = visible;
+      }
+    }
+  };
+
+  // src/geomap/style.js
+  var routeColors = ["#1769aa", "#a33a14", "#7041a0", "#00796b"];
+  var routePatterns = [null, "12 7", "3 7", "14 5 3 5"];
+  var categoryIcons = new Map(Object.entries({
+    settlement: "\u2302",
+    accommodation: "\u25A3",
+    transport: "\u2194",
+    water: "\u2248",
+    pass: "\u22C8",
+    viewpoint: "\u25C9",
+    historic: "\u265C",
+    "trail-access": "\u2197",
+    summit: "\u25B2",
+    food: "\u2668"
+  }));
+  function layerStyle(role, routeIndex) {
+    if (role === "route") return { color: routeColors[routeIndex % routeColors.length], weight: 4, dashArray: routePatterns[routeIndex % routePatterns.length], fillOpacity: 0.12 };
+    if (role === "boundary") return { color: "#79532b", weight: 2, dashArray: "6 5", fillOpacity: 0.14 };
+    return { color: "#28614b", weight: 3, dashArray: null, fillOpacity: 0.18 };
+  }
+  function pointMarker(L, latlng, feature) {
+    const icon = element("span", "geomap-marker-symbol", categoryIcons.get(feature.category.toLowerCase()) || "\u25CF");
+    icon.setAttribute("aria-hidden", "true");
+    return L.marker(latlng, {
+      icon: L.divIcon({ className: "geomap-marker", html: icon, iconSize: [30, 30], iconAnchor: [15, 15] }),
+      title: feature.name,
+      alt: feature.name,
+      // Keyboard focus should not unexpectedly move the document or the map.
+      autoPanOnFocus: false,
+      bubblingMouseEvents: false
+    });
+  }
+  function emphasize(group, style, level) {
+    const apply = (layer) => {
+      if (layer.eachLayer) {
+        layer.eachLayer(apply);
+        return;
+      }
+      if (layer.setStyle) layer.setStyle({ ...style, weight: style.weight + (level === 2 ? 3 : level), fillOpacity: style.fillOpacity + level * 0.08 });
+      const icon = layer.getElement?.();
+      icon?.classList.toggle("is-selected", level === 2);
+      icon?.classList.toggle("is-hovered", level === 1);
+      if (layer.setZIndexOffset) layer.setZIndexOffset(level * 500);
+    };
+    apply(group);
+  }
+
+  // src/geomap/map.js
+  var FeatureMap = class {
+    constructor(L, container, toolbar, runtime, { onSelect, onHover, onVisibility }) {
+      this.L = L;
+      this.container = container;
+      this.layers = /* @__PURE__ */ new Map();
+      this.features = /* @__PURE__ */ new Map();
+      this.onSelect = onSelect;
+      this.onHover = onHover;
+      this.reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+      this.map = L.map(container, {
+        scrollWheelZoom: false,
+        fadeAnimation: !this.reducedMotion,
+        zoomAnimation: !this.reducedMotion,
+        markerZoomAnimation: !this.reducedMotion
+      }).setView([20, 0], 2);
+      try {
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: '\xA9 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
+        }).addTo(this.map);
+        let routeIndex = 0;
+        const controls = element("details", "geomap-layers");
+        controls.append(element("summary", "", "Layers"));
+        const fields = element("fieldset");
+        fields.append(element("legend", "geomap-sr-only", "Visible map layers"));
+        for (const layer of runtime.layers) {
+          const style = layerStyle(layer.role, layer.role === "route" ? routeIndex++ : 0);
+          const group = L.featureGroup().addTo(this.map);
+          const label = element("label");
+          const checkbox = element("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = true;
+          checkbox.addEventListener("change", () => {
+            if (checkbox.checked) group.addTo(this.map);
+            else this.map.removeLayer(group);
+            onVisibility(layer, checkbox.checked);
+            this.refresh(this.selectedId);
+            this.refresh(this.hoveredId);
+          });
+          const swatch = element("span", "geomap-layer-swatch");
+          swatch.style.borderTopColor = style.color;
+          swatch.style.borderTopStyle = style.dashArray ? "dashed" : "solid";
+          swatch.setAttribute("aria-hidden", "true");
+          label.append(checkbox, swatch, document.createTextNode(layer.name));
+          fields.append(label);
+          this.layers.set(layer.id, { group, checkbox, layer });
+          for (const feature of layer.features) {
+            const drawable = drawableGeometry(feature.feature.geometry);
+            if (!drawable) continue;
+            const geometry = L.geoJSON({ ...feature.feature, geometry: drawable }, {
+              style: () => style,
+              pointToLayer: (_, latlng) => pointMarker(L, latlng, feature)
+            });
+            geometry.bindPopup(() => popupContent(feature), { maxWidth: 300, autoPan: false });
+            geometry.on("click", () => this.select(feature.id));
+            geometry.on("mouseover", () => this.hover(feature.id));
+            geometry.on("mouseout", () => this.hover(null));
+            geometry.addTo(group);
+            this.features.set(feature.id, { geometry, style, feature });
+          }
+        }
+        controls.append(fields);
+        toolbar.append(controls);
+        const bounds = L.latLngBounds([]);
+        for (const { group } of this.layers.values()) {
+          const layerBounds = group.getBounds();
+          if (layerBounds.isValid()) bounds.extend(layerBounds);
+        }
+        if (bounds.isValid()) this.map.fitBounds(bounds, { padding: [24, 24], maxZoom: 15 });
+        if (window.ResizeObserver) {
+          this.observer = new ResizeObserver(() => this.map.invalidateSize({ pan: false }));
+          this.observer.observe(container);
+        }
+        this.onVisibility = onVisibility;
+      } catch (error) {
+        this.destroy();
+        throw error;
+      }
+    }
+    refresh(id) {
+      const binding = this.features.get(id);
+      if (binding) emphasize(binding.geometry, binding.style, id === this.selectedId ? 2 : id === this.hoveredId ? 1 : 0);
+    }
+    select(id) {
+      const previous = this.selectedId;
+      this.selectedId = id;
+      this.refresh(previous);
+      this.refresh(id);
+      this.onSelect(id);
+    }
+    hover(id) {
+      const previous = this.hoveredId;
+      this.hoveredId = id;
+      this.refresh(previous);
+      this.refresh(id);
+      this.onHover(id);
+    }
+    focus(id) {
+      const binding = this.features.get(id);
+      if (!binding) {
+        this.select(id);
+        return;
+      }
+      const { geometry, feature } = binding;
+      const entry = this.layers.get(feature.layerId);
+      entry.group.addTo(this.map);
+      entry.checkbox.checked = true;
+      this.onVisibility(entry.layer, true);
+      this.select(id);
+      this.container.scrollIntoView({ behavior: this.reducedMotion ? "instant" : "smooth", block: "start" });
+      this.map.invalidateSize({ pan: false });
+      if (feature.point) {
+        const [longitude, latitude] = feature.point;
+        this.map.flyTo([latitude, longitude], Math.max(this.map.getZoom(), 15), { animate: !this.reducedMotion });
+      } else {
+        const bounds = geometry.getBounds();
+        if (bounds.isValid()) this.map.fitBounds(bounds, { padding: [30, 30], maxZoom: 16, animate: !this.reducedMotion });
+      }
+      geometry.openPopup();
+    }
+    destroy() {
+      this.observer?.disconnect();
+      this.map.remove();
+    }
+  };
+
+  // src/geomap/leaflet.js
+  var loading;
+  function loadLeaflet() {
+    if (loading) return loading;
+    loading = Promise.all([
+      loadAsset("link", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="),
+      loadAsset("script", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js", "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=")
+    ]).then(() => {
+      if (!window.L) throw new Error("Leaflet did not initialize");
+      return window.L;
+    });
+    return loading;
+  }
+  function loadAsset(tag, url, integrity) {
+    return new Promise((resolve, reject) => {
+      const node = document.createElement(tag);
+      if (tag === "link") {
+        node.rel = "stylesheet";
+        node.href = url;
+      } else node.src = url;
+      node.integrity = integrity;
+      node.crossOrigin = "anonymous";
+      const timer = setTimeout(() => finish(new Error("Leaflet download timed out")), 15e3);
+      const finish = (error) => {
+        clearTimeout(timer);
+        node.onload = node.onerror = null;
+        if (error) {
+          node.remove();
+          reject(error);
+        } else resolve();
+      };
+      node.onload = () => finish();
+      node.onerror = () => finish(new Error("Leaflet download failed"));
+      document.head.append(node);
+    });
+  }
+
+  // src/geomap/index.js
+  function install(md, { loadMapLibrary = loadLeaflet } = {}) {
+    const originalFence = md.renderer.rules.fence;
+    const parsed = /* @__PURE__ */ new WeakMap(), pending = /* @__PURE__ */ new Map(), components = /* @__PURE__ */ new WeakMap();
+    let nextId = 0;
+    md.renderer.rules.fence = (tokens, index, ...args) => {
+      const token = tokens[index];
+      if (token.info.trim().split(/\s+/)[0] !== "geomap") return originalFence(tokens, index, ...args);
+      if (!parsed.has(token)) {
+        try {
+          const runtime2 = normalizeGeoMap(JSON.parse(token.content));
+          runtime2.errors.forEach((error) => console.warn("GeoMap:", error));
+          parsed.set(token, runtime2);
+        } catch (error) {
+          console.error("GeoMap:", error);
+          parsed.set(token, null);
+        }
+      }
+      const runtime = parsed.get(token);
+      if (!runtime) return '<p class="geomap-error" role="status">Map data could not be rendered.</p>';
+      const id = `geomap-${++nextId}`;
+      pending.set(id, runtime);
+      return `<div class="geomap" data-geomap-id="${id}"></div>`;
+    };
+    function enhance(root, { interactive = true } = {}) {
+      const active = components.get(root) || [];
+      for (const node of root.querySelectorAll("[data-geomap-id]")) {
+        const id = node.dataset.geomapId, runtime = pending.get(id);
+        if (!runtime) continue;
+        pending.delete(id);
+        const component = { disposed: false };
+        active.push(component);
+        const toolbar = element("div", "geomap-toolbar");
+        const container = element("div", "geomap-map");
+        container.id = `${id}-map`;
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Interactive geographic map");
+        const status = element("p", "geomap-message", interactive ? "Loading map\u2026" : "Geographic features");
+        status.setAttribute("role", "status");
+        container.append(status);
+        node.append(toolbar, container);
+        const table = new FeatureTable(node, runtime, id, {
+          onSelect: (featureId) => {
+            table.select(featureId);
+            component.map?.focus(featureId);
+          },
+          onHover: (featureId) => component.map?.hover(featureId)
+        });
+        if (runtime.errors.length) node.prepend(element("p", "geomap-message", "Some map layers could not be rendered."));
+        if (!interactive) {
+          table.details.open = true;
+          continue;
+        }
+        Promise.resolve().then(loadMapLibrary).then((L) => {
+          if (component.disposed || !node.isConnected) return;
+          status.remove();
+          component.map = new FeatureMap(L, container, toolbar, runtime, {
+            onSelect: (featureId) => table.select(featureId),
+            onHover: (featureId) => table.hover(featureId),
+            onVisibility: (layer, visible) => table.setLayerVisible(layer, visible)
+          });
+        }).catch((error) => {
+          if (component.disposed) return;
+          console.error("GeoMap:", error);
+          toolbar.replaceChildren();
+          container.replaceChildren(element("p", "geomap-message", "Map unavailable. Geographic features and links are listed below."));
+        });
+      }
+      components.set(root, active);
+    }
+    function dispose(root) {
+      for (const component of components.get(root) || []) {
+        component.disposed = true;
+        component.map?.destroy();
+      }
+      components.delete(root);
+    }
+    return { enhance, dispose };
+  }
+  return __toCommonJS(index_exports);
+})();
+</script>
+<script>
 'use strict';
 const $ = id => document.getElementById(id);
 const escapeHTML = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1817,6 +2507,7 @@ class MarkdownRenderer {
 }
 // Extension point: add future transformations here. Navigation and TOC are core UI.
 const contentEnhancements=[];
+let geomaps;
 function enhanceContent(article){for(const enhance of contentEnhancements)enhance(article);}
 class HashRouter {
  constructor(model,onRoute){this.model=model;this.onRoute=onRoute;this.positions=new Map();this.current=null;this.lastPages=new Map();}
@@ -1838,7 +2529,7 @@ class DocumentViewer {
  start(){
   const homePage=this.model.pages[0];$('document-title').textContent=this.model.title;$('document-title').href=homePage.route;const sidebarLayout=document.documentElement.dataset.layout==='sidebar';$('primary').hidden=sidebarLayout;document.documentElement.classList.toggle('sidebar-layout',sidebarLayout);$('secondary').setAttribute('aria-label',sidebarLayout?'Document navigation':'Pages');if('ResizeObserver'in window)new ResizeObserver(entries=>document.documentElement.style.setProperty('--header',entries[0].target.offsetHeight+'px')).observe(document.querySelector('.header'));$('status').hidden=true;$('layout').hidden=false;
   $('menu').onclick=()=>$('drawer').showModal();$('close-menu').onclick=()=>$('drawer').close();$('drawer').addEventListener('click',e=>{if(e.target===$('drawer')){const r=$('drawer').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('drawer').close();}if(e.target.closest('a'))$('drawer').close();});
-  window.addEventListener('beforeprint',()=>{$('print-content').innerHTML=`<h1>${escapeHTML(this.model.title)}</h1>`+this.model.sections.map(s=>`<section><h2>${escapeHTML(s.title)}</h2>${s.pages.map(p=>`<article><h3>${escapeHTML(p.title)}</h3>${this.renderer.render(p)}</article>`).join('')}</section>`).join('');});window.addEventListener('afterprint',()=>{$('print-content').replaceChildren();});this.router.start();
+  window.addEventListener('beforeprint',()=>{$('print-content').innerHTML=`<h1>${escapeHTML(this.model.title)}</h1>`+this.model.sections.map(s=>`<section><h2>${escapeHTML(s.title)}</h2>${s.pages.map(p=>`<article><h3>${escapeHTML(p.title)}</h3>${this.renderer.render(p)}</article>`).join('')}</section>`).join('');geomaps?.enhance($('print-content'),{interactive:false});});window.addEventListener('afterprint',()=>{geomaps?.dispose($('print-content'));$('print-content').replaceChildren();});this.router.start();
  }
  render(page,anchor,initial){
   const s=page.section;document.title=page.title+' · '+this.model.title+' | Pageleaf';
@@ -1846,7 +2537,7 @@ class DocumentViewer {
   const sidebarLayout=document.documentElement.dataset.layout==='sidebar';$('secondary').innerHTML=sidebarLayout?this.model.sections.map(section=>`<section class="sidebar-group"><h3 class="sidebar-group-title">${escapeHTML(section.title)}</h3>${section.pages.length>1?section.pages.map(p=>this.link(p,p.title,page)).join(''):this.link(section.pages[0],section.pages[0].kind==='overview'?'Overview':section.pages[0].title,page)}</section>`).join(''):s.pages.map(p=>this.link(p,p.title,page)).join('');
   $('mobile-nav').innerHTML=this.model.sections.map(section=>`<h3>${escapeHTML(section.title)}</h3>${section.pages.map(p=>this.link(p,p.title,page)).join('')}`).join('');
   $('page-title').textContent=page.title;
-  $('article').innerHTML=this.renderer.render(page);enhanceContent($('article'));
+  geomaps?.dispose($('article'));$('article').innerHTML=this.renderer.render(page);enhanceContent($('article'));
   const toc=page.toc.map(h=>`<a href="${page.route}/${h.id}" data-level="${h.level}">${escapeHTML(h.title)}</a>`).join('')||`<a href="${page.route}">${escapeHTML(page.title)}</a>`;$('toc').querySelector('nav').innerHTML=toc;$('mobile-toc').querySelector('nav').innerHTML=toc;$('toc').style.visibility=toc?'visible':'hidden';$('mobile-toc').hidden=!toc;$('mobile-toc').style.display=toc?'':'none';
   const index=this.model.pages.indexOf(page);$('pager').innerHTML=[index>0?`<a href="${this.model.pages[index-1].route}"><small>← Previous</small>${escapeHTML(this.model.pages[index-1].title)}</a>`:'',index<this.model.pages.length-1?`<a href="${this.model.pages[index+1].route}"><small>Next →</small>${escapeHTML(this.model.pages[index+1].title)}</a>`:''].join('');
   this.observer?.disconnect();if('IntersectionObserver'in window){this.observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting);if(visible.length)this.markHeading(visible[0].target.id.slice(8));},{rootMargin:'-140px 0px -55% 0px'});page.toc.forEach(h=>this.observer.observe(document.getElementById('heading-'+h.id)));}this.markHeading(anchor||page.toc[0]?.id);
@@ -1856,7 +2547,7 @@ class DocumentViewer {
 }
 try{const theme=localStorage.getItem('pageleaf-theme');if(['paper','midnight','grove','ocean','contrast'].includes(theme))document.documentElement.dataset.theme=theme;}catch{}
 $('theme').value=document.documentElement.dataset.theme;$('theme').onchange=e=>{document.documentElement.dataset.theme=e.target.value;try{localStorage.setItem('pageleaf-theme',e.target.value);}catch{}};
-if(!window.markdownit){$('status').textContent='The Markdown library could not load. Connect to the internet and reload this file to try again.';}else{try{const md=window.markdownit({html:false,linkify:true,typographer:true});const model=new DocumentParser(md).parse(readMarkdown());new DocumentViewer(model,new MarkdownRenderer(md,model)).start();}catch(error){$('status').hidden=false;$('status').textContent='This document could not be opened: '+error.message;console.error(error);}}
+if(!window.markdownit){$('status').textContent='The Markdown library could not load. Connect to the internet and reload this file to try again.';}else{try{const md=window.markdownit({html:false,linkify:true,typographer:true});geomaps=PageleafGeoMap.install(md);contentEnhancements.push(article=>geomaps.enhance(article));const model=new DocumentParser(md).parse(readMarkdown());new DocumentViewer(model,new MarkdownRenderer(md,model)).start();}catch(error){$('status').hidden=false;$('status').textContent='This document could not be opened: '+error.message;console.error(error);}}
 </script>
 </body>
 </html>
