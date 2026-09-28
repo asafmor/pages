@@ -1,0 +1,1399 @@
+<!doctype html>
+<html lang="en" data-theme="paper" data-layout="sidebar">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pageleaf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:wght@500;600&amp;family=Archivo:wght@500;600&amp;family=Atkinson+Hyperlegible:wght@400;700&amp;family=Chivo:wght@500;600&amp;family=IBM+Plex+Sans:wght@400;600&amp;family=Literata:opsz,wght@7..72,500;7..72,600&amp;family=Manrope:wght@400;600&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet">
+<style>
+/* Architecture: theme tokens → layout → components → Markdown typography → responsive/print. */
+:root{color-scheme:light;--bg:#f4efe6;--surface:#fffdf8;--text:#2d2924;--muted:#665e55;--line:#d7cab8;--accent:#8b3525;--soft:#eee2d2;--code:#f0e6d8;--table-head:#e7d9c6;--quote-rule:4px solid #8b3525;--header-bg:#f8f1e7;--scroll-track:#e7dbcb;--scroll-thumb:#9c7256;--nav-scroll-track:#f8f1e7;--nav-scroll-thumb:#e7d9c6;--title-font:Literata,Georgia,serif;--body-font:"Atkinson Hyperlegible",Arial,sans-serif;--body-size:16px;--body-leading:1.82;--radius:2px;--header-height:126px;--sidebar:245px;--toc:210px;--measure:740px;--article-frame:1120px;--header:var(--header-height);--shadow:0 12px 30px #4d38200d}
+[data-theme="midnight"]{color-scheme:dark;--bg:#0b0d16;--surface:#141827;--text:#f1f3fa;--muted:#a9b2c5;--line:#30374d;--accent:#a9b9ff;--soft:#20263a;--code:#101320;--table-head:#202840;--quote-rule:3px solid #a9b9ff;--header-bg:#0f1220;--scroll-track:#191d2c;--scroll-thumb:#697899;--nav-scroll-track:#0f1220;--nav-scroll-thumb:#30374d;--title-font:Chivo,Arial,sans-serif;--body-font:"IBM Plex Sans",Arial,sans-serif;--body-size:16px;--body-leading:1.76;--radius:10px;--header-height:126px;--shadow:0 18px 48px #0008}
+[data-theme="grove"]{color-scheme:light;--bg:#f8faf4;--surface:#fcfdf8;--text:#243629;--muted:#576a5b;--line:#c4d1bf;--accent:#2d7047;--soft:#e0ebdd;--code:#e6efe2;--table-head:#d6e6d2;--quote-rule:3px solid #2d7047;--header-bg:#e6eee0;--scroll-track:#dfe8da;--scroll-thumb:#6f896b;--nav-scroll-track:#e6eee0;--nav-scroll-thumb:#c4d1bf;--title-font:Alegreya,Georgia,serif;--body-font:"Work Sans",Arial,sans-serif;--body-size:15px;--body-leading:1.78;--radius:14px;--header-height:126px;--shadow:0 10px 28px #29432712}
+[data-theme="ocean"]{color-scheme:light;--bg:#fafcff;--surface:#fcfdff;--text:#182d48;--muted:#53677f;--line:#c0cde0;--accent:#225b9b;--soft:#ecf3fe;--code:#f1f6fe;--table-head:#d5e2f1;--quote-rule:4px solid #225b9b;--header-bg:#dfe8f5;--scroll-track:#d7dfeb;--scroll-thumb:#607a9a;--nav-scroll-track:#dfe8f5;--nav-scroll-thumb:#c0cde0;--title-font:Archivo,Arial,sans-serif;--body-font:Manrope,Arial,sans-serif;--body-size:15px;--body-leading:1.7;--radius:6px;--header-height:126px;--shadow:0 10px 24px #16475c12}
+[data-theme="contrast"]{color-scheme:dark;--bg:#000;--surface:#000;--text:#fff;--muted:#fff;--line:#fff;--accent:#ffe600;--soft:#1c1c1c;--code:#000;--table-head:#252525;--quote-rule:5px solid #ffe600;--header-bg:#000;--scroll-track:#000;--scroll-thumb:#ffe600;--nav-scroll-track:#000;--nav-scroll-thumb:#ffe600;--title-font:Arial Black,Arial,Helvetica,sans-serif;--body-font:Arial,Helvetica,sans-serif;--body-size:18px;--body-leading:1.65;--radius:0;--header-height:130px;--shadow:none}
+[data-theme="paper"] .header{box-shadow:0 2px 0 var(--line)}[data-theme="paper"] .page-title{font-style:italic}[data-theme="paper"] .article th{letter-spacing:.03em;text-transform:uppercase;font-size:.78em}[data-theme="midnight"] .header{background:linear-gradient(90deg,#0f1522,#151b29);box-shadow:0 1px 0 #ffffff12}[data-theme="midnight"] .page-title{letter-spacing:-.055em;font-weight:720}[data-theme="midnight"] .article pre{box-shadow:inset 0 1px #ffffff0d,0 14px 30px #0005}[data-theme="grove"] .header{border-bottom-style:dashed}[data-theme="grove"] .sidebar a[aria-current]{box-shadow:inset 3px 0 var(--accent)}[data-theme="grove"] .article blockquote{background:linear-gradient(90deg,var(--soft),transparent)}[data-theme="ocean"] .header{border-bottom:3px solid var(--accent)}[data-theme="ocean"] .primary a{letter-spacing:.035em;text-transform:uppercase;font-size:11px}[data-theme="ocean"] .article table{font-size:13px}[data-theme="contrast"] a{text-decoration-thickness:3px}[data-theme="contrast"] .header{border-bottom:3px solid var(--accent)}[data-theme="contrast"] .sidebar a[aria-current], [data-theme="contrast"] .toc a[aria-current]{outline:3px solid var(--accent);outline-offset:-3px;background:var(--soft)}[data-theme="contrast"] .article th{color:#000;background:var(--accent)}
+[hidden]{display:none!important}*{box-sizing:border-box;scrollbar-color:var(--accent) var(--soft)}::selection{background:var(--accent);color:var(--surface)}body{margin:0;background:var(--bg);color:var(--text);font:var(--body-size)/var(--body-leading) var(--body-font)}button,select{font:inherit;color:inherit}a{color:var(--accent);text-underline-offset:4px}button,select{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:7px 11px;cursor:pointer}button:hover,a:hover{color:var(--accent)}:focus-visible{outline:3px solid var(--accent);outline-offset:4px}.skip{position:fixed;top:-100px;left:20px;z-index:10;background:var(--surface);padding:12px}.skip:focus{top:10px}.header{position:sticky;top:0;z-index:3;background:var(--header-bg);border-bottom:1px solid var(--line)}.masthead{height:calc(var(--header-height) - 50px);display:flex;align-items:center;gap:16px;padding:0 22px}.doc-title{margin:0;min-width:0;max-width:min(70vw,900px);font-size:22px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.doc-title a{display:block;overflow:hidden;text-overflow:ellipsis;text-decoration:none;color:var(--text)}.tools{margin-left:auto;display:flex;align-items:center;gap:10px;flex-shrink:0}.theme-picker{position:relative;display:grid;align-items:center}.theme-picker::after{content:"";position:absolute;right:14px;width:7px;height:7px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:translateY(-2px) rotate(45deg);pointer-events:none}.theme-picker select{appearance:none;-webkit-appearance:none;min-height:38px;padding:7px 32px 7px 12px;background:var(--surface);border:1px solid var(--line);border-radius:999px;box-shadow:var(--shadow);color:var(--text);font-size:13px;font-weight:600;letter-spacing:.01em}.theme-picker select:hover{background:var(--soft);border-color:var(--accent)}.theme-picker select:focus-visible{outline:3px solid var(--accent);outline-offset:3px}.theme-picker option{background:var(--surface);color:var(--text)}.primary{display:flex;gap:26px;overflow:auto;padding:0 22px;min-height:49px;scrollbar-width:thin;scrollbar-color:var(--nav-scroll-thumb) var(--nav-scroll-track)}.primary::-webkit-scrollbar{height:7px}.primary::-webkit-scrollbar-track{background:var(--nav-scroll-track)}.primary::-webkit-scrollbar-thumb{background:var(--nav-scroll-thumb);border-radius:20px;border:2px solid var(--nav-scroll-track)}.primary a{padding:11px 0;white-space:nowrap;text-decoration:none;color:var(--muted);border-bottom:2px solid transparent;font-size:13px;font-weight:600}.primary a[aria-current]{color:var(--accent);border-color:var(--accent)}.layout{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr) var(--toc);max-width:1600px;margin:auto}.sidebar,.toc{position:sticky;top:var(--header);height:calc(100dvh - var(--header));overflow:auto;padding:35px 22px}.sidebar{border-right:1px solid var(--line)}.eyebrow{font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 17px}.sidebar a,.toc a{display:block;text-decoration:none;color:var(--muted);font-size:13px;line-height:1.5;padding:10px 12px;border-radius:6px;margin:3px 0}.sidebar a[aria-current]{background:var(--soft);color:var(--accent);font-weight:600}.sidebar a:hover,.toc a:hover{background:var(--soft)}.main{min-width:0;padding:42px clamp(24px,4vw,66px) 70px}.article-wrap{max-width:var(--measure);margin:auto}.page-title{font-family:var(--title-font);font-size:clamp(32px,3.2vw,48px);letter-spacing:-1.3px;font-weight:500;line-height:1.15;margin:12px 0 27px}.toc{padding:42px 20px 20px 0}.toc nav{border-left:1px solid var(--line);padding-left:10px}.toc a{font-size:12px;padding:6px 8px}.toc a[aria-current]{color:var(--accent);background:var(--soft)}.toc a[data-level="5"]{margin-left:12px}.toc a[data-level="6"]{margin-left:24px}.pager{display:flex;gap:16px;margin-top:48px;padding-top:24px;border-top:1px solid var(--line)}.pager a{flex:1;padding:16px;border:1px solid var(--line);border-radius:var(--radius);text-decoration:none;background:var(--surface);box-shadow:var(--shadow);font-size:14px}.pager a:last-child{text-align:right}.pager small{display:block;color:var(--muted);font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}.article{overflow-wrap:anywhere}.article [id]{scroll-margin-top:calc(var(--header) + 24px)}.article p{margin:0 0 21px}.article>p:first-child{font-size:18px;line-height:1.8;color:var(--muted)}.article h1,.article h2,.article h3,.article h4,.article h5,.article h6{font-family:var(--title-font);line-height:1.3;scroll-margin-top:150px;margin:34px 0 15px;font-weight:600}.article h4{font-size:25px}.article h5{font-size:20px}.article h6{font-size:17px}.article blockquote{margin:26px 0;padding:18px 23px;border:1px solid var(--line);border-inline-start:var(--quote-rule);background:var(--soft);border-radius:var(--radius)}.article blockquote p:last-child{margin:0}.article pre{padding:22px;background:var(--code);border:1px solid var(--line);border-radius:var(--radius);overflow:auto;font-size:13px;line-height:1.8}.article code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.article :not(pre)>code{background:var(--code);border-radius:4px;padding:2px 5px;font-size:.87em}.article table{display:block;overflow:auto;border-collapse:collapse;width:100%;margin:26px 0;font-size:14px}.article td,.article th{padding:12px 16px;text-align:left;border:1px solid var(--line)}.article th{background:var(--table-head);font-weight:600}.article img{max-width:100%;height:auto;border-radius:var(--radius)}.article li{margin:6px 0}.article hr{border:0;border-top:1px solid var(--line);margin:32px 0}.menu-button{display:none}.mobile-toc{display:none}.drawer{background:var(--bg);color:var(--text);border:1px solid var(--line);max-height:90dvh;width:min(420px,92vw);border-radius:var(--radius);padding:24px}.drawer::backdrop{background:#0008}.drawer a{display:block;padding:8px 12px;text-decoration:none}.drawer a[aria-current]{background:var(--soft)}.drawer h3{font-size:13px;margin:24px 0 5px}.drawer button{float:right}.status{padding:40px;max-width:700px;margin:auto}.print-content{display:none}
+/* Wide documents: tables can breathe while normal paragraphs retain a readable measure. */
+*{scrollbar-color:var(--scroll-thumb) var(--scroll-track)}*::-webkit-scrollbar{width:12px;height:12px}*::-webkit-scrollbar-track{background:var(--scroll-track)}*::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border:3px solid var(--scroll-track);border-radius:20px}
+.primary{align-items:flex-end}.primary a{padding:9px 0}
+[data-theme="paper"] .header{border-bottom:1px solid var(--line);box-shadow:none}[data-theme="paper"] .page-title{font-style:normal}[data-theme="ocean"] .header{border-bottom:1px solid var(--line)}
+[data-theme="grove"] .sidebar a[aria-current]{box-shadow:none}
+:is([data-theme="midnight"],[data-theme="ocean"]) :is(button,select,.sidebar a,.toc a,.pager a,.article blockquote,.article pre,.article table,.drawer,.drawer a,.mobile-toc){border-radius:var(--radius)}
+.article-wrap{max-width:var(--article-frame)}
+.article p,.article>ul,.article>ol,.article>blockquote,.article>pre{max-width:var(--measure)}
+/* Keep header controls aligned with the centered content frame on wide screens. */
+.masthead,.primary-container{max-width:1600px;margin:auto}
+.primary-container{padding:0 22px}.primary-container .primary{padding:0}.sidebar-layout .primary-container{display:none}
+.sidebar-group{margin:0 0 20px}.sidebar-group-title{margin:0;padding:8px 12px 4px;color:var(--text);font-size:12px;line-height:1.45;font-weight:700}.sidebar-group a{margin:1px 0 1px 10px}.sidebar-layout .sidebar{padding-top:28px}
+
+@media(min-width:1600px){.layout{border-left:1px solid var(--line);border-right:1px solid var(--line)}}
+@media(max-width:1199px){.layout{grid-template-columns:220px minmax(0,1fr)}.toc{display:none}.mobile-toc{display:block;border:1px solid var(--line);border-radius:var(--radius);padding:12px 17px;margin-bottom:28px;font-size:13px}.mobile-toc a{display:block;padding:4px 0}.mobile-toc summary{cursor:pointer;color:var(--muted)}}
+@media(max-width:700px){:root{--header:118px}.masthead{height:68px;padding:0 18px;gap:10px}.doc-title{font-size:18px;max-width:calc(100vw - 180px)}.tools{gap:7px}.theme-picker select{max-width:115px;font-size:12px}.menu-button{display:block}.primary{padding:0 18px;gap:23px}.layout{display:block}.sidebar{display:none}.main{padding:28px 22px 45px}.page-title{font-size:36px}.pager{gap:10px}.pager a{padding:12px}.article>p:first-child{font-size:17px}}
+@media(prefers-reduced-motion:no-preference){button,a{transition:background .15s,color .15s}}
+@media print{body{background:white;color:black}.header,.layout,.drawer,.skip{display:none!important}.print-content{display:block}.print-content article{break-before:page}.print-content article:first-child{break-before:auto}.article pre{white-space:pre-wrap}.article a{color:inherit}.article table{display:table}.article h2,.article h3,.article h4{break-after:avoid}}
+/* Standard scrollbar properties override the custom parts unless both are auto. */
+@supports selector(::-webkit-scrollbar){.primary{scrollbar-width:auto;scrollbar-color:auto}.primary::-webkit-scrollbar-button{display:none;width:0;height:0}}
+</style>
+<style>
+.geomap {
+  margin: 28px 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.geomap-map {
+  height: 420px;
+  width: 100%;
+  scroll-margin-top: calc(var(--header) + 16px);
+  /* Leaflet's panes must stay below the document's sticky navigation. */
+  isolation: isolate;
+  z-index: 0;
+  background: var(--soft);
+  color: #222;
+}
+
+.geomap-toolbar { padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.geomap-toolbar:empty { display: none; }
+.geomap-layers { font-size: 14px; }
+.geomap summary { cursor: pointer; font-weight: 600; }
+.geomap-layers fieldset { border: 0; padding: 8px 0 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+.geomap-layers label { display: inline-flex; gap: 8px; align-items: center; min-height: 32px; cursor: pointer; }
+.geomap input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+.geomap-layer-swatch { width: 22px; border-top: 3px solid; }
+.geomap-data > summary { padding: 12px 16px; border-top: 1px solid var(--line); }
+.geomap-table-wrapper { width: 100%; overflow-x: auto; }
+.article .geomap-table { display: table; margin: 0; width: 100%; font-size: 13px; }
+.article .geomap-table th, .article .geomap-table td { padding: 10px 12px; vertical-align: top; overflow-wrap: anywhere; }
+.article .geomap-table th { text-transform: none; letter-spacing: normal; }
+.geomap-table td { min-width: 100px; }
+.geomap-table td:first-child { min-width: 140px; }
+.geomap-table tbody tr { cursor: pointer; }
+.geomap-table tr.is-hovered, .geomap-table tr:hover { background: var(--soft); }
+.geomap-table tr.is-selected { background: var(--soft); box-shadow: inset 4px 0 var(--accent); }
+.geomap-layer-state { display: block; font-size: 11px; font-style: italic; color: var(--muted); }
+.geomap .geomap-feature-button { border: 0; background: transparent; padding: 0; border-radius: 0; text-align: left; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.geomap .geomap-feature-button[aria-current] { font-weight: 700; }
+.article .geomap-table .map-link-cell, .article .geomap-table .map-link-header {
+  width: 1%;
+  min-width: 0;
+  white-space: nowrap;
+  text-align: center;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+.map-link-cell a { display: inline-flex; align-items: center; justify-content: center; min-width: 24px; min-height: 24px; text-decoration: none; }
+.geomap-table-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 12px 16px; font-size: 13px; }
+.geomap-table-controls input { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); padding: 8px 10px; min-width: 0; max-width: 100%; border-radius: var(--radius); }
+.geomap-filter-status { color: var(--muted); }
+.geomap-message, .geomap-error { padding: 12px 16px; color: var(--muted); font-size: 14px; }
+.geomap-error { border: 1px solid var(--line); border-radius: var(--radius); }
+.geomap .geomap-marker {
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #28614b;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font: bold 20px/1 Arial, sans-serif;
+  box-shadow: 0 1px 5px #0009;
+}
+.geomap .geomap-marker.is-hovered { outline: 3px solid #222; outline-offset: 2px; }
+.geomap .geomap-marker.is-selected { outline: 4px double #222; outline-offset: 2px; background: #153c2d; }
+.geomap .leaflet-container :focus-visible { outline: 3px solid #1769aa; outline-offset: 3px; }
+.geomap-popup { font: 14px/1.5 Arial, sans-serif; color: #222; overflow-wrap: anywhere; max-height: 240px; overflow-y: auto; }
+.geomap-popup strong { display: block; margin-bottom: 6px; }
+.article .geomap-popup p { margin: 6px 0; }
+.geomap-popup a { color: #1769aa; }
+.geomap-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+@media (max-width: 700px) {
+  .geomap-map { height: 380px; }
+  .geomap-layers fieldset { flex-direction: column; gap: 4px; }
+  .geomap-table-controls { align-items: stretch; flex-direction: column; }
+}
+
+@media print {
+  .geomap-map, .geomap-toolbar, .geomap-table-controls { display: none; }
+  .geomap { overflow: visible; }
+  .geomap-table-wrapper { overflow: visible; }
+  .geomap-data > summary { list-style: none; }
+  .geomap-table tr { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="header"><div class="masthead"><h1 class="doc-title"><a id="document-title" href="#/"></a></h1><div class="tools"><div class="theme-picker"><select id="theme" aria-label="Choose theme"><option value="paper">Paper</option><option value="midnight">Midnight</option><option value="grove">Grove</option><option value="ocean">Ocean</option><option value="contrast">High contrast</option></select></div><button class="menu-button" id="menu" aria-label="Open document navigation">☰</button></div></div><div class="primary-container"><nav id="primary" class="primary" aria-label="Sections"></nav></div></header>
+<div id="status" class="status" role="status">Loading your document…</div>
+<div class="layout" id="layout" hidden><aside class="sidebar"><nav id="secondary" aria-label="Pages"></nav></aside><main class="main" id="content" tabindex="-1"><div class="article-wrap"><h1 class="page-title" id="page-title"></h1><details class="mobile-toc" id="mobile-toc"><summary>On this page</summary><nav aria-label="On this page"></nav></details><article class="article" id="article"></article><nav class="pager" id="pager" aria-label="Previous and next pages"></nav></div></main><aside class="toc" id="toc"><p class="eyebrow">On this page</p><nav aria-label="On this page"></nav></aside></div>
+<dialog class="drawer" id="drawer"><button id="close-menu" aria-label="Close navigation">✕</button><h2>Explore document</h2><nav id="mobile-nav" aria-label="Document navigation"></nav></dialog>
+<div class="print-content article" id="print-content"></div>
+<noscript><p class="status">Enable JavaScript to read this document.</p></noscript>
+<!-- REPLACE THE MARKDOWN BELOW. For a literal closing script tag in Markdown, write &lt;/script instead; readMarkdown decodes this sequence. -->
+<script id="markdown-source" type="text/plain"># Nagelfluhkette & Prodelzug — Three-Day Hut Trek, June 2027
+
+## 1. Route Overview
+
+### 1.1 Identity & Geography
+
+✓ **Recommended:** hike **Oberstaufen railway station → Staufner Haus → Kemptener Naturfreundehaus → Prodelzug → Hochgratbahn valley station**, then take bus 95 back to Oberstaufen. This makes a logical walking-and-bus loop in the western Allgäu, Landkreis Oberallgäu, Bavaria, Germany. It crosses the central Nagelfluhkette eastwards and returns westwards on the lower Prodelzug. No car, taxi, private transfer or cable-car ascent is needed.
+
+Allow **about 41–43 km, roughly ↑2,500–2,900 m and a similar cumulative descent**, over three full hiking days. The highest point is **Hochgrat, 1,834 m**. These are planning ranges for the tailored route, including a Rindalphorn summit visit, not a surveyed bespoke GPX measurement. The route draws on the [official Allgäu circuit](https://www.allgaeu.de/touren/2-tageswanderung-rundtour-nagelfluhkette-und-prodelzug), the [Hike Like Me station approach](https://www.hikelikeme.com/hikes/nagelfluhkette-round), and the [Deine Berge hut split](https://www.deine-berge.de/Mehrtagestouren/6134/3-Tagestour-Nagelfluhkette.html).
+
+**Research: 21–22 September 2026.** Early June 2027 hut dates, transport schedules and snow conditions are not yet confirmed. This report is a booking and route plan; no reservations have been made.
+
+### 1.2 Character & Experience
+
+The attraction is the contrast between a serrated conglomerate ridge, broad views into the Allgäu Alps, working alpine pastures, and a quieter wooded return ridge. The first day earns the height on foot; the second carries the principal mountain experience; the third remains substantial without repeating the main ridge. Two staffed huts keep the pack light.
+
+The additions in Hike Like Me have different value: **walking from Oberstaufen station improves a three-day itinerary; making the waterfalls and entire return to the station compulsory weakens the stage balance**. Keep the Buchenegger Wasserfälle as a dry-weather option.
+
+### 1.3 At a Glance
+
+| Item | Recommendation |
+|---|---|
+| Suitability | Fit adult with experience of exposed mountain paths, secure footing and no disabling fear of heights |
+| Difficulty | Main ridge difficult mountain hiking, approximately T3; other stages generally easier |
+| Daily demand | Approximately 5–8 h moving, plus breaks and contingency time |
+| Nights | Staufner Haus, then Kemptener Naturfreundehaus |
+| Best early-June pattern | Midweek; illustrative hiking dates **2–4 June 2027** |
+| Access/exit | Rail to Oberstaufen; bus 95 from Hochgratbahn valley station back to rail |
+| Main uncertainty | Residual hard snow on the main ridge and its northern descent |
+| Conditions fallback | Lower Ehrenschwanger valley connector; shorten or abandon if even hut approaches are unsafe |
+
+> ⚠️ **Fitness alone is insufficient for the ridge.** This is a conditional early-season recommendation. If exposed paths are unfamiliar, or steep snow remains, use the lower alternative, hire a qualified guide, or move the ridge trip later. The [official circuit is classified difficult](https://www.allgaeu.de/touren/2-tageswanderung-rundtour-nagelfluhkette-und-prodelzug).
+
+## 2. Route & Stage Breakdown
+
+### 2.1 Standard Itinerary
+
+There is no single mandatory three-day version. The supplied references differ materially:
+
+| Reference | Published route and statistics | Assessment for this trip |
+|---|---|---|
+| [Official Allgäu: Nagelfluhkette und Prodelzug](https://www.allgaeu.de/touren/2-tageswanderung-rundtour-nagelfluhkette-und-prodelzug) | Valley-station circuit; 30.38 km, ↑↓2,128 m, 14 h; presented as two days | Best geographic backbone. Splitting off only the ascent to Staufner Haus would leave a short first day. |
+| [Hike Like Me: Nagelfluhkette Round](https://www.hikelikeme.com/hikes/nagelfluhkette-round) | Station loop; days 13.2 / 12.7 / 21.5 km; total about 48 km, ↑↓2,673 m | Excellent car-free approach and hut pair. Last day is disproportionately long; published day-two time of 4 h 50 is too lean for this plan. |
+| [Deine Berge: 3-Tagestour Nagelfluhkette](https://www.deine-berge.de/Mehrtagestouren/6134/3-Tagestour-Nagelfluhkette.html) | User-created itinerary dated 5 June 2019; 31.03 km, ↑2,398 m, ↓2,399 m, 16 h 41; same two huts | Useful established stage model, but its roughly 4.8 km first day is insufficiently substantial. It is a user route, not an official operating authority. |
+| [Outdoor Magazin](https://www.outdoor-magazin.com/wanderwege/allgaeu-nagelfluhkette/) | Western approach via Hörmoos/Hochhädrich, Falken, Eineguntkopf, Hohenfluhalpkopf and Seelekopf; then central ridge and Prodel return | More ambitious western terrain, with additional fixed-aid and scrambling sections. Unnecessary for this brief, especially in early June. |
+
+**Recommended stage estimates:** moving time excludes long meals, photography and delays. Elevation ranges allow for differing track smoothing and small summit/hut spurs.
+
+| Day | Stage | Distance | Ascent / descent | Moving / elapsed time | Overnight |
+|---|---|---:|---:|---:|---|
+| 1 | Oberstaufen Bahnhof → Steibis → Lauchalpen → Staufner Haus | 13–14 km | ↑1,100–1,200 m / ↓260–350 m | 5–6 h / 6–7 h | Staufner Haus, 1,634 m |
+| 2 | Hochgrat and central ridge → Sedererstuiben → Alpe Gund → Naturfreundehaus | 13–14 km | ↑900–1,100 m / ↓1,100–1,300 m | 6.5–8 h / 8–9 h | Kemptener Naturfreundehaus, 1,442 m |
+| 3 | Naturfreundehaus → Eckhalde → Himmelseck → Denneberg → Prodel → valley station | 14–15 km | ↑500–600 m / ↓1,050–1,150 m | 5.5–7 h / 6.5–8 h | Finish; bus to Oberstaufen |
+
+### 2.2 Stage-by-Stage Analysis
+
+#### Day 1 — Oberstaufen station to Staufner Haus
+
+**Routing:** Oberstaufen Bahnhof → signed walking route down to Weißach → Steibis → Am Giebel/Lanzenbach corridor → Hochgratbahn Talstation → Untere Lauchalpe → Obere Lauchalpe → Staufner Haus. Use the [Hike Like Me GPX](https://www.hikelikeme.com/api/special_files/hike-gpxs/nagelfluhkette-round) for the station approach and the signed normal hut ascent. Its approach goes through Weißach and Steibis, not through the waterfall gorge.
+
+Start around **08:00–08:30**, after sleeping in Oberstaufen. The approach combines village paths, lanes and valley walking; the major sustained ascent comes after the cable-car valley station. The Lauchalpen approach is the straightforward way to the hut, but its upper part still needs a snow check. Carry lunch; buy groceries before leaving town. Steibis and the valley station are the last convenient places to reconsider the plan or switch to public transport.
+
+**Stop at Staufner Haus without adding Hochgrat.** Hike Like Me's prose mentions the summit on day one, but the downloaded track reaches the hut before Hochgrat. Visiting the summit the following morning avoids repeating the same climb and leaves time to settle in. The operator places the hut about ten minutes below the cable-car mountain station. [Staufner Haus](https://www.staufner-haus.de/cms/)
+
+#### Day 2 — The central Nagelfluh ridge
+
+**Routing:** Staufner Haus → Hochgratbahn mountain-station vicinity → **Hochgrat (1,834 m)** → **Brunnenauscharte (about 1,626 m)** → western Rindalphorn ridge → **Rindalphorn (1,821 m), short summit spur and return to the through-path** → **Gündlesscharte** → **Gündleskopf (1,748 m)** → **Buralpkopf (1,772 m)** → **Sedererstuiben (1,737 m)** → saddle towards Stuiben → signed northern descent to **Alpe Gund (1,502 m)** → **Sennalpe Mittelberg (1,370 m)** → **Seifenmoos** → **Kemptener Naturfreundehaus (1,442 m)**. Compare the [official circuit](https://www.allgaeu.de/touren/2-tageswanderung-rundtour-nagelfluhkette-und-prodelzug), [Deine Berge stages](https://www.deine-berge.de/Mehrtagestouren/6134/3-Tagestour-Nagelfluhkette.html) and [Naturfreundehaus access information](https://kemptener-naturfreundehaus.de/wegbeschreibung/).
+
+This is the hardest day: repeated steep climbs and descents, narrow sections, rock steps and occasional fixed cables. The total is more demanding than its distance suggests. The reference GPXs pass near Rindalphorn rather than cleanly over the summit; the explicit spur above makes the summit sequence unambiguous. The route does **not** continue over Steineberg and its ladder.
+
+Eat breakfast at the beginning of Staufner Haus's published **07:00–08:00** service, then leave promptly. Target Naturfreundehaus around **16:00**, with its **17:00 arrival deadline** as a firm constraint. A pace that cannot comfortably meet this in dry conditions argues for the lower alternative or a different second hut. [Staufner Haus](https://www.staufner-haus.de/cms/); [Naturfreundehaus booking rules](https://kemptener-naturfreundehaus.de/buchungsinformationen/)
+
+Carry a full lunch and enough water for the ridge. Alpe Gund and Mittelberg are useful near the end, but neither is a dependable lunch stop without checking the date. In particular, Mittelberg currently closes on Tuesdays and Thursdays. The northern descent from the Sederer/Stuiben area deserves a specific snow enquiry; sunshine on the ridge is not proof that this descent is clear. [Mittelberg hours](https://www.alpe-mittelberg.de/%C3%B6ffnungszeiten); [local spring conditions discussion](https://montolando.com/allgaeuer-nagelfluhkette-wanderungen-im-fruehjahr/)
+
+#### Day 3 — Prodelzug to the bus
+
+**Routing:** Kemptener Naturfreundehaus → Seifenmoos → path around the Dreherberg area → **Eckhalde (1,488 m)** → **Himmelseck (about 1,487 m)** → Klammen/Klamm–Vorderer Prodel ridge corridor → **Denneberg (1,427 m)** → **Prodel ridge** → **Prodelalpe** → **Hochgratbahn Talstation bus stop**. Follow the westbound Prodelzug route, taking the signed descent to the cable-car valley station rather than the Hike Like Me continuation towards the waterfalls. [Official route](https://www.allgaeu.de/touren/2-tageswanderung-rundtour-nagelfluhkette-und-prodelzug); [Hike Like Me route](https://www.hikelikeme.com/hikes/nagelfluhkette-round)
+
+Expect alternating pasture, forest, roots, short climbs and a long final descent. This is a full hiking day rather than a token walk out. Start around **07:30–08:00** and aim to reach the bus stop around **15:00–16:00**, subject to the actual 2027 return timetable. Build the day's cutoff around at least two remaining scheduled departures, not an assumed last bus.
+
+The distance estimate uses the Hike Like Me Naturfreundehaus–Prodel section joined to the official Prodel–valley-station descent: approximately **14.3 km** before rounding. The two tracks use different elevation data, so their combined ascent/descent is deliberately rounded. “Himmelseck” also appears as “Himmeleck” locally; this is the Prodelzug summit, not the much higher Himmeleck near Schneck.
+
+### 2.3 Alternative Itineraries
+
+| Alternative | Routing and estimated demand | When useful |
+|---|---|---|
+| Lower day 2 | Staufner Haus → normal Lauchalpen descent → Hochgratbahn Talstation → Ehrenschwanger Tal → Rosshütte → Seifenmoos → Naturfreundehaus; **roughly 18–21 km, ↑700–900 m, ↓900–1,100 m, 6–8 h** | Ridge snow, low cloud or excessive exposure; requires the valley and upper hut approach to be passable |
+| Short day 3 | Naturfreundehaus → signed descent through Steigbachtal → Immenstadt Bahnhof; **roughly 7–10 km, ↓700–850 m, 2.5–4 h** | Fatigue, worsening weather or early departure; use the forest-road option if wet gorge paths are unsuitable |
+| Other eastern finish | Naturfreundehaus → Gschwender Horn → Immenstadter Horn → Immenstadt; **roughly 9–12 km, ↑200–350 m, ↓900–1,050 m, 4–5.5 h** | A shorter but still scenic final day in suitable conditions; steep/rooted sections remain |
+| Alpe Gund second night | Leave the ridge as described, stop at Alpe Gund, then continue via Mittelberg/Seifenmoos to the Prodelzug next morning | Shortens day 2 but lengthens day 3; reserve and remeasure the changed stages |
+| Original two-day circuit | Start at Hochgratbahn valley station and use the official two-day split | Shorter holiday, but longer ridge day and less margin; not the best match to three substantial days |
+
+The lower connector follows the documented Rosshütte–Naturfreundehaus corridor in the [official Ehrenschwanger Tal route](https://www.allgaeu.de/touren/ehrenschwanger-tal-ratholz). That source is a cycling circuit: the walking figures above are **planning estimates for a different segment**, not its published cycling totals. Confirm signed pedestrian routing with the huts. The eastern exits are supported by [hut access directions](https://kemptener-naturfreundehaus.de/wegbeschreibung/) and a [recent rail-based local hike](https://www.bahn-zum-berg.de/allgaeuer-alpen/von-immenstadt-zum-stuiben-mit-uebernachtung-im-kemptener-naturfreundehaus/).
+
+### 2.4 Variants & Detours
+
+**Stuiben, 1,749 m:** optional out-and-back from the saddle after Sedererstuiben, before descending north. Allow roughly **30–60 minutes and 100–150 m extra ascent**. Add it only with clear paths, stable weather and ample time before the hut's 17:00 deadline. It is deliberately excluded from the primary totals.
+
+**Buchenegger Wasserfälle:** a worthwhile landscape detour, but not a compulsory finale. Hike Like Me's full Naturfreundehaus–waterfalls–Oberstaufen stage is **21.5 km**, around **7 km longer** than the recommended bus finish, with additional climbing. Allow roughly **2–3 extra hours** rather than relying on its optimistic 6 h 20 total. Use the actual [Hike Like Me track](https://www.hikelikeme.com/api/special_files/hike-gpxs/nagelfluhkette-round), which continues beyond the Prodel return, and check the [official waterfall access page](https://www.oberstaufen.de/buchenegger-wasserfaelle). A finish at Steibis with bus 95 can reduce the final town walk, but its exact connector and bus stop must be planned on the live map; it is not included in the quantified primary route.
+
+Avoid the gorge after heavy rain or if paths are icy. Oberstaufen asks visitors to **avoid bathing** to protect the habitat; disregard the swimming suggestion in Hike Like Me. [Official wild-water guidance](https://www.oberstaufen.de/wildes-wasser)
+
+## 3. Difficulty & Trail Conditions
+
+### 3.1 Physical Difficulty
+
+The workload is appropriate for a fit hiker seeking three meaningful days: a long approach and ascent, a demanding succession of ridge climbs, then another 14–15 km. Day two governs suitability. Plan on sustaining approximately seven hours of actual mountain walking while retaining enough concentration for the descent; flat-ground speed is a poor predictor.
+
+### 3.2 Technical Difficulty
+
+The main ridge is mountain hiking with **short scrambling/rock-step and cable-assisted passages**, exposed sides and narrow traverses. It is not a continuous via ferrata, but a stumble can have serious consequences. The approximate T3 assessment is consistent with [Deine Berge's ridge stage](https://www.deine-berge.de/Mehrtagestouren/6134/3-Tagestour-Nagelfluhkette.html) and the [Tourentipp traverse description](https://www.tourentipp.com/de/touren/nagelfluhkette-ueberschreitung-bergtour_1550.html). Stow poles when hands are needed.
+
+**Hard snow changes the activity.** A steep snow crossing with an unsafe runout is a reason to turn back or use the valley. Microspikes alone do not make such a crossing safe. This recommendation does not assume carrying or knowing how to use an ice axe and crampons.
+
+### 3.3 Elevation
+
+The route rises from roughly 790 m at Oberstaufen to 1,834 m on Hochgrat. The huts sit at 1,634 m and 1,442 m. Significant altitude illness is not the central concern here; accumulated ascent, weather exposure and repeated descents matter much more. Both summit heights and hut elevations should take precedence over GPS-track elevation samples, which differ visibly between datasets.
+
+### 3.4 Trail Condition
+
+Expect grassy and earthy paths, conglomerate rock, forest roots and service tracks. Rain makes the rock, mud, roots and steep grass slippery. North-facing shelves and gullies may retain snow after nearby slopes are bare. Check [Oberstaufen Berginfo](https://www.oberstaufen.de/berginfo) and ask both huts for the exact ridge and descent conditions, rather than interpreting a general “open” notice as clearance for every path.
+
+## 4. Season & Weather
+
+### 4.1 Hiking Season
+
+Early June is plausible for staffed hut accommodation but still conditional for the high traverse. The operators' published 2026 summer seasons encompass early June: **Staufner Haus 1 May–18 October**, and **Naturfreundehaus 31 March–8 November**. These are evidence of normal seasonal operation, **not confirmed 2027 opening dates**. [Staufner Haus](https://www.staufner-haus.de/cms/); [Naturfreundehaus](https://kemptener-naturfreundehaus.de/)
+
+For a higher probability of snow-free ridge walking, later June through September is the stronger planning window, although storms and occasional cold spells remain possible. A [German spring-route assessment](https://montolando.com/allgaeuer-nagelfluhkette-wanderungen-im-fruehjahr/) documents how strongly aspect and individual snow years affect this chain.
+
+### 4.2 Weather Patterns
+
+Plan for rain, low cloud, strong ridge wind and potentially near-freezing conditions during a cold spell. Clear mornings can deteriorate into afternoon thunderstorms. The exposed ridge offers poor shelter, so an early start is useful but does not make a thunderstorm forecast acceptable. Use the [DAV mountain forecast](https://www.alpenverein.de/bergwetter), choosing the relevant western Bavarian/Allgäu Alps forecast, together with [Hochgrat webcams and operating information](https://hochgrat.de/).
+
+### 4.3 Historical Weather for the Planned Travel Window
+
+**Historical calculation, not a June 2027 forecast:** DWD daily observations for **Oberstdorf station 03730, 806 m**, selecting **1–10 June in 1991–2020**: 300 daily records. The station is roughly 18 km southeast of Hochgrat, close to the elevation of the access valleys but about 1,000 m below the highest ridge. [DWD historical daily dataset](https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/tageswerte_KL_03730_19100101_20251231_hist.zip); [station metadata](https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/KL_Tageswerte_Beschreibung_Stationen.txt)
+
+| Measure, 1–10 June | Calculated valley observation | Planning meaning |
+|---|---:|---|
+| Mean daily minimum | 7.6°C | Valley nights are often cool |
+| Mean daily temperature | 13.8°C | Mild average masks large daily variation |
+| Mean daily maximum | 20.1°C | Do not use this as the ridge temperature |
+| Average precipitation across ten days | 69.6 mm | Rain is a material part of early-June planning |
+| Days with at least 1 mm precipitation | 55%, or 5.5 of ten days | A wet spell is entirely plausible; this does not predict a particular three-day trip |
+| Mean daily wind | About 2.0 m/s | Sheltered valley measurement; unsuitable for estimating exposed ridge wind |
+| Snow depth observations | 0 cm in 240 valid daily records; 60 missing | Says nothing reliable about residual snow near 1,800 m |
+
+No equally representative high-ridge historical series was established. As an illustrative temperature adjustment, an ascent of 800–1,000 m can reduce temperature by several degrees; **pack for cold, wet conditions around 0–15°C on the ridge**, with colder wind chill possible. This is a clothing scenario, not a measured ridge normal. No defensible route-specific thunderstorm-frequency statistic was obtained.
+
+### 4.4 Seasonal Trade-offs
+
+| Window | Main advantage | Main compromise |
+|---|---|---|
+| Early June | Long daylight, green pastures, quieter midweek huts | Residual snow; variable alm operation; wet weather |
+| July–August | More dependable snow-free access and services | Busier huts, heat and afternoon storms |
+| September | Often attractive visibility and quieter weekdays | Shorter daylight; cold snaps and eventual seasonal closures |
+
+For June 2027, check [Berginfo](https://www.oberstaufen.de/berginfo), [Hochgrat](https://hochgrat.de/) and the [mountain forecast](https://www.alpenverein.de/bergwetter) together. Webcam views show only selected slopes and cannot clear the whole route.
+
+## 5. Navigation & Route Finding
+
+### 5.1 Waymarking
+
+Follow destination signposts rather than expecting one continuous “Nagelfluhkette Round” logo. Critical decisions are the Rindalphorn summit spur, the northward exit after Sedererstuiben, the Seifenmoos connections and the final Prodel descent. Similar local names and variant spellings make a loaded topographic map valuable.
+
+### 5.2 Maps & Digital Navigation
+
+Use these two researched tracks as **references**, not an exact ready-made track for the tailored itinerary:
+
+- [Official circuit map](https://www.outdooractive.com/de/route/wanderung/oberstaufen/2-tageswanderung-rundtour-nagelfluhkette-und-prodelzug/18742274/) and [official GPX download](https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true).
+- [Hike Like Me route description](https://www.hikelikeme.com/hikes/nagelfluhkette-round) and [GPX download](https://www.hikelikeme.com/api/special_files/hike-gpxs/nagelfluhkette-round).
+
+The official track does not visit Naturfreundehaus or Eckhalde exactly; the Hike Like Me track supplies those connections and the station approach. Both pass near rather than precisely over Rindalphorn. Build the daily route in a topographic navigation app from the waypoint sequence in section 2, checking every junction. Carry a current detailed Allgäu/Nagelfluhkette walking map covering both Oberstaufen and Immenstadt; no particular map edition was independently verified.
+
+Section 16 embeds the two source routes and researched points. Its simplified tracks are for orientation, **not turn-by-turn navigation**, and are not labeled as the bespoke recommendation.
+
+### 5.3 Navigation Preparation
+
+Download both reference GPXs, offline terrain maps covering the entire loop and the Ehrenschwanger/Steigbach exits, hut confirmations, bus timetables and emergency contacts. Mark the primary route's deviations before departure. Test offline access in airplane mode. Retain a paper overview and enough battery for three days without assuming hut charging access.
+
+## 6. Accommodation & Overnight Planning
+
+### 6.1 Accommodation System
+
+📅 **Checked: 21 September 2026.** Both primary nights are in staffed mountain accommodation with meals. Normally open in early June, they still require confirmation for the actual 2027 dates.
+
+| Hut | Opening evidence and sleeping options | Booking and contact |
+|---|---|---|
+| **Staufner Haus, 1,634 m** | 2026 summer 1 May–18 October; dormitories and small rooms; 2027 season unpublished | [Official overnight details](https://www.staufner-haus.de/cms/index.php?kat=88), [book](https://www.hut-reservation.org/reservation/book-hut/85/wizard), [contact](https://www.staufner-haus.de/cms/?kat=95); **+49 8386 8255**, **info@staufner-haus.de** |
+| **Kemptener Naturfreundehaus, 1,442 m** | 2026 summer 31 March–8 November; winter 1 December 2026–4 April 2027; summer 2027 unpublished; **Monday rest day** | [Official site](https://kemptener-naturfreundehaus.de/), [booking rules](https://kemptener-naturfreundehaus.de/buchungsinformationen/), [book](https://www.huetten-holiday.com/huts/kemptener-naturfreundehaus); **+49 8323 2123**, **info@kemptener-naturfreundehaus.de** |
+
+Do not confuse **Kemptener Naturfreundehaus** with **Kemptner Hütte** near Oberstdorf.
+
+Alternative second nights: [Alpe Gund](https://alpe-gund-huette-immenstadt-allgaeu.de/), **+49 8323 4921**, has overnight accommodation by prior arrangement; local tourism lists a normal May–November season, but exact 2027 dates and weekly closures remain unverified. [Sennalpe Mittelberg](https://www.alpe-mittelberg.de/%C3%BCbernachtungen), **+49 8323 4920**, **info@alpe-mittelberg.de**, publishes €44 per person with breakfast including local tax. Its current overnight days are **Monday, Wednesday, Friday and Saturday**; summer operation is approximately mid-May–October. It therefore does not naturally replace Naturfreundehaus on Thursday 3 June. [Mittelberg hours](https://www.alpe-mittelberg.de/%C3%B6ffnungszeiten); [regional hut information](https://www.alpsee-gruenten.de/huetten-naturpark-nagelfluhkette)
+
+### 6.2 Booking Strategy
+
+**Reserve both nights before committing to fixed travel.** Staufner Haus provides online reservations; the public page does not establish an absolute prohibition on walk-ins, but depending on one is poor planning. Naturfreundehaus directs bookings exclusively through its linked booking system, with **mandatory half-board** and a **€20 credited deposit**. Its published policy allows free cancellation at least 14 days ahead; no-show loses the deposit, and the booking service fee is not refunded or credited. Check the exact rules for cancellation inside 14 days before paying. [Naturfreundehaus rules](https://kemptener-naturfreundehaus.de/buchungsinformationen/)
+
+For Staufner Haus, read the cancellation terms shown in the booking flow. Ask both huts: “Are you staffed on these dates; are the Hochgrat–Rindalphorn–Sederer ridge and the descent to Alpe Gund usually passable then; can you provide a packed lunch and drinking-water refill?” Confirm availability when 2027 reservations open rather than assuming a booking window.
+
+### 6.3 Overnight Logistics
+
+**Staufner Haus:** a freshly washed hut liner is required; the page lists rental for €5. Published summer breakfast is **07:00–08:00**, dinner **18:00–20:00**, and quiet time begins at **22:00**. The displayed adult overnight tariff, still marked effective 1 May 2023, is €27 nonmember dorm / €37 multibed / €42 double-room category, with lower Alpine Club rates. Meals are additional; reconfirm 2027 prices. [Overnight information](https://www.staufner-haus.de/cms/index.php?kat=88); [operator](https://www.staufner-haus.de/cms/)
+
+**Naturfreundehaus:** arrive **by 17:00**. Published adult prices including three-course dinner and breakfast are **€65 dorm, €75 shared-room category, €85 exclusive-room category per person**; actual availability and solo room pricing need confirmation. A recent local report describes bedding supplied, **cash-only payment**, and a warm shower at **€6 for five minutes**. Treat those latter details as dated firsthand evidence rather than a guaranteed 2027 tariff. [Official booking details](https://kemptener-naturfreundehaus.de/buchungsinformationen/); [Bahn zum Berg report, October 2025, updated August 2026](https://www.bahn-zum-berg.de/allgaeuer-alpen/von-immenstadt-zum-stuiben-mit-uebernachtung-im-kemptener-naturfreundehaus/)
+
+Free potable tap water, packed-lunch availability, sockets, Wi-Fi, and card acceptance were not reliably established for both huts. Ask directly and carry sufficient cash, a power bank and the next day's lunch as necessary.
+
+### 6.4 Camping
+
+A tent is unnecessary for this itinerary. The linked Nagelfluhkette landscape-protection regulation prohibits camping in the protected area and regulates fires; do not plan an informal bivouac as an accommodation substitute. [Official regulation, particularly §3–4](https://nagelfluhkette.info/fileadmin/redaktion/Naturschutz/Verordnungen/Nagelfluhkette_-_Aktuell.pdf)
+
+## 7. Food, Water & Resupply
+
+### 7.1 Water
+
+💧 **Start each day with about 2–3 L, using 3 L carrying capacity**, adjusted to heat and personal consumption. This is a planning allowance, not a sourced guarantee of need. Day two is the critical carry: no dependable potable spring on the ridge was verified. Arrange drinking water with the huts, and be prepared to buy it. Do not assume alpine-pasture streams are safe; livestock contamination is possible. A filter is optional backup, not a reason to rely on an unverified stream.
+
+### 7.2 Food
+
+Buy groceries in Oberstaufen before starting. Use hut dinners and breakfasts; carry lunch and high-energy snacks each day. Staufner Haus offers meals, and Naturfreundehaus includes half-board. Alpe Gund and Mittelberg may provide refreshment, but weekly closures and early-season operations prevent making them essential food stops. Mittelberg advertises self-service fridge provision when closed; do not depend on its stock for a complete meal. [Staufner Haus](https://www.staufner-haus.de/cms/); [Naturfreundehaus](https://kemptener-naturfreundehaus.de/buchungsinformationen/); [Mittelberg hours](https://www.alpe-mittelberg.de/%C3%B6ffnungszeiten)
+
+### 7.3 Resupply Strategy
+
+There is no supermarket resupply between the huts. Carry the first day's food plus a spare lunch/snack reserve, then obtain packed lunches only if confirmed. Refill or buy water each evening and morning. A stove and cooking kit add little value on this serviced route.
+
+## 8. Access & Transportation
+
+### 8.1 Reaching the Route
+
+🚌 **Arrive by train at Oberstaufen Bahnhof the evening before day one.** Regional rail access runs through the Kempten/Immenstadt corridor or from the Lindau side. From Munich airport, a practical search is airport → München Hbf → Kempten/Immenstadt → Oberstaufen; allow much of an arrival day and use the actual itinerary returned by the operator. No flight origin or arrival time is assumed. [Oberstaufen rail information](https://www.oberstaufen.de/bahn); [DB journey planner and tickets](https://www.bahn.de/)
+
+Starting directly from the station eliminates any dependency on a morning mountain bus. An arrival-day start would compress a substantial first stage and is not recommended after a long international journey.
+
+### 8.2 Leaving the Route
+
+At **Hochgratbahn Talstation**, take **bus 95 towards Oberstaufen Bahnhof**, passing through the Steibis/Weißach corridor. The municipality provides the official route and timetable links, with regional information through mona. [Oberstaufen buses](https://www.oberstaufen.de/bus-parken); [mona Allgäu](https://www.mona-allgaeu.de/)
+
+The [published 2025/26 route-95 PDF](https://www.oberstaufen.de/files/20260409-95-oberstaufen-hochgratbahn-wi25-26_69d77d9e974e43cc2204e6ba_1775730078_web_de-DE.pdf) demonstrates the connection, including seasonal variations, but **must not be used as a June 2027 timetable**. No 2027 last departure or guaranteed connection to a particular train is asserted here. Stay in Oberstaufen afterwards if your onward journey has an inflexible departure.
+
+### 8.3 Along-the-Route Transport
+
+| Connection | Use | Limitation |
+|---|---|---|
+| Bus 95: Oberstaufen–Steibis–Hochgratbahn | Shorten day-one approach or complete day three | Check date-specific stops, service days and last return |
+| Hochgratbahn | Retreat from Staufner Haus area or shorten ascent | Weather/maintenance can stop operation; requires walking up from hut to mountain station |
+| Bus 39: Ratholz corridor–Oberstaufen/Immenstadt | Exit from the eastern Prodel/Alpsee side | Plan the actual descent and bus connection before using it |
+| Rail from Immenstadt | Reliable geographic endpoint for eastern walking exits | Confirm actual train services and disruption notices |
+
+Operator information: [Hochgratbahn](https://hochgrat.de/), [Oberstaufen timetable directory](https://www.oberstaufen.de/bus-parken), [mona](https://www.mona-allgaeu.de/), [DB](https://www.bahn.de/). Cable-car times displayed in September 2026 are not a promise for June 2027. Do not assume a hut booking includes a free regional bus pass.
+
+### 8.4 Pre- and Post-Trek Logistics
+
+Book one night in Oberstaufen before the trek, ideally a flexible night after it. With only a hiking backpack, no luggage transfer is needed. Station lockers or accommodation storage were not verified; if carrying extra travel luggage, arrange storage explicitly with the town accommodation. [Official Oberstaufen tourism portal](https://www.oberstaufen.de/)
+
+## 9. Safety & Risk Management
+
+### 9.1 Main Hazards
+
+The decision-critical hazards are exposed wet rock, steep grass, residual snow with a poor runout, thunderstorms, poor visibility at junctions, and fatigue late on day two. The waterfall detour adds steep wet steps and roots near fast water. Treat cattle calmly and give them room. [Official difficult circuit](https://www.allgaeu.de/touren/2-tageswanderung-rundtour-nagelfluhkette-und-prodelzug); [Naturpark visitor guidance](https://nagelfluhkette.info/freizeit); [waterfall guidance](https://www.oberstaufen.de/wildes-wasser)
+
+**Go/no-go rule:** take the ridge only with a favourable mountain forecast, confirmation that the intended passages and north descent are suitable for ordinary hiking, and personal comfort with exposure. Turn around before crossing snow or terrain you cannot safely reverse.
+
+### 9.2 Emergency Planning
+
+Call **112** for mountain emergencies in Germany. Give location/coordinates, injury, number of people, weather and a callback number. An emergency call may use another available network, but no phone can overcome complete absence of radio coverage. Do not rely on ordinary SMS to 112. [DAV emergency and rescue guidance](https://www.alpenverein.de/artikel/notruf-und-rettung-in-den-alpen_3802c636-0bd1-4f83-a33a-e9b266bd51d8)
+
+Leave the stage plan and overdue procedure with someone, check in at each hut, and carry an emergency bivy and headlamp. Forested valleys may have weak reception; section 12.3 separates evidence from terrain-based inference. A satellite messenger is optional for this short popular route but useful for a solo hiker who already owns one or expects repeated remote trips.
+
+### 9.3 Bailout & Escape Options
+
+| Position | Sensible exit | Important constraint |
+|---|---|---|
+| Before/at Staufner Haus | Reverse the normal Lauchalpen approach to bus 95; cable car if operating | Do not substitute an unfamiliar steep gully descent |
+| Early central ridge | Reverse to Hochgrat/Staufner while it remains safe | Brunnenauscharte's northern descent is steep and can retain snow; it is not an automatic easy escape |
+| Rindalphorn area | Mapped Rindalpe/Ehrenschwang routes exist | Use only with local advice and clear conditions; north-facing descent may be worse than retreat |
+| Sederer/Stuiben area | Marked descent to Alpe Gund/Mittelberg, then towards the Immenstadt valley | Confirm snow on the descent; do not leave the path into gullies |
+| Naturfreundehaus | Signed Steigbachtal descent to Immenstadt | Choose suitable broad-road alternatives during wet conditions |
+| Eckhalde/eastern Prodelzug | Descend towards Obere Kalle/Alpsee Bergwelt and Ratholz for bus 39 | Verify the actual bus stop and timetable before committing |
+
+The [official Rindalphorn circuit](https://www.allgaeu.de/touren/9-rundtour-uebers-rindalphorn) documents the Ehrenschwang-side connection, but does not make it safe in snow. **Do not use route 4a through Seelekopf/Seelekessel:** the [Hochgrat operator](https://hochgrat.de/sommer/wandern) states it is no longer maintained, signposted or marked.
+
+### 9.4 Health & Insurance
+
+For this three-day, hut-based trip, review routine vaccination status and tick protection. No vaccination history or individual medical suitability is assumed. A travel-health clinician should review relevant records well before departure. [Germany travel-health guidance](https://travelhealthpro.org.uk/countries/germany)
+
+| Issue | Trip-specific assessment |
+|---|---|
+| Routine vaccines | Check tetanus/diphtheria/pertussis, measles-containing vaccination and polio status; do not infer protection from nationality or age. |
+| **Tick-borne encephalitis, TBE/FSME** | **Moderate qualitative concern for this itinerary**, with high confidence that Oberallgäu is a designated risk district. Repeated forest-edge and pasture exposure in June makes vaccination worth discussing, especially if other Central European outdoor trips are planned. This is not a quantified infection probability. |
+| Other travel vaccines | This short serviced itinerary adds no clear special trigger for pre-exposure rabies vaccination or a route-specific hepatitis vaccine recommendation beyond the traveller's wider itinerary and history. |
+| Entry certificates | Germany guidance reports no IHR vaccination-certificate requirement; this is distinct from medical recommendations. Recheck actual transit countries and rules before travel. |
+
+The **2026 RKI/BIÖG risk map** includes Oberallgäu; local health information describes the tick-active season as approximately April–October. The short duration lowers cumulative exposure, but three days of repeated outdoor contact are relevant. There is no defensible “safe above this elevation” cutoff. Use repellent, cover legs where practical, stay on paths, check skin daily and remove attached ticks promptly with fine-tipped tweezers. Choose pasteurised dairy. [Official 2026 risk map](https://shop.bioeg.de/pdf/62200656.pdf); [Oberallgäu health department](https://www.oberallgaeu.org/gesundheit-von-mensch-und-tier/gesundheitsamt/infektionsschutz); [CDC Yellow Book TBE guidance](https://www.cdc.gov/yellow-book/hcp/travel-associated-infections-diseases/tick-borne-encephalitis.html)
+
+September 2026 Bavarian surveillance shows continuing vaccine-preventable disease activity; it cannot establish June 2027 local outbreak status. Refresh [Bavarian surveillance](https://www.lgl.bayern.de/gesundheit/infektionsschutz/infektionsepidemiologie/aktuelle_meldezahlen/index.htm) and destination health guidance near departure. Both specialist research assessments agreed on the district-level TBE evidence and the need to distinguish local disease background from this traveller's exposure.
+
+Check that insurance covers **solo mountain hiking to 1,834 m, exposed/cable-assisted hiking paths, search and rescue, helicopter evacuation, medical treatment and repatriation**. Do not assume ordinary medical cover includes rescue costs. If relying on Alpine Club cover, read its actual terms. [DAV insurance information](https://www.alpenverein.de/verband/services/versicherungen-im-dav)
+
+## 10. Rules, Access & Trail Management
+
+### 10.1 Access Requirements
+
+No ordinary walking permit was identified for the proposed marked route. Hut reservations and transport tickets are separate requirements. Follow any temporary closure or wildlife-protection notice. The Naturpark spans a wider area than any one protection designation; do not describe the entire park as one nature reserve. [Naturpark](https://nagelfluhkette.info/freizeit)
+
+### 10.2 Regulations
+
+Stay on permitted marked paths in sensitive areas, respect protected zones and avoid camping or fires contrary to the landscape-protection rules. The official site links the relevant [Nagelfluhkette regulation](https://nagelfluhkette.info/fileadmin/redaktion/Naturschutz/Verordnungen/Nagelfluhkette_-_Aktuell.pdf). At the waterfalls, follow local access notices and the request to avoid bathing. [Oberstaufen wild-water guidance](https://www.oberstaufen.de/wildes-wasser)
+
+### 10.3 Trail Etiquette
+
+Close pasture gates, give livestock space, keep noise down, take rubbish out and avoid disturbing wildlife around dawn and dusk. Give people secure room at cable sections and narrow traverses. [Naturpark visitor guidance](https://nagelfluhkette.info/freizeit)
+
+## 11. Gear & Packing
+
+### 11.1 Route-Specific Gear Strategy
+
+Use a hut-hiking pack, approximately 25–35 L, with enough weather protection and emergency insulation to wait safely outside. Do not carry a tent or full cooking system. Keep the pack compact for cable and rock-step sections.
+
+### 11.2 Footwear
+
+Wear broken-in hiking footwear with secure heel hold and dependable grip on wet rock, roots and mud. Choose fit and stability over minimum weight. Light shoes can suit experienced hikers in dry conditions, but early-June cold rain and soft snow make water resistance and warmth worth considering. No footwear makes steep hard snow an ordinary walking surface.
+
+### 11.3 Clothing & Layering
+
+Carry a quick-drying walking layer, warm midlayer, insulated layer, long trousers, warm hat and light gloves. Include dry sleep clothes and spare socks. The ridge can be much colder than Oberstaufen.
+
+### 11.4 Rain & Weather Protection
+
+Bring a hooded waterproof jacket, waterproof overtrousers and a reliable pack liner/dry bags. Add sunglasses, sunscreen and a sun hat. A pack cover alone is insufficient protection for critical dry clothing in wind-driven rain.
+
+### 11.5 Sleeping & Accommodation Gear
+
+Carry a clean hut liner, earplugs, compact wash kit and small towel. Staufner Haus explicitly requires the liner. Confirm bedding at Naturfreundehaus and avoid packing a full sleeping bag unnecessarily. [Staufner overnight rules](https://www.staufner-haus.de/cms/index.php?kat=88)
+
+### 11.6 Food & Water Equipment
+
+Carry bottles or a bladder with 3 L capacity, lunch containers and a rubbish bag. A small treatment option is optional backup; no stove is needed for the planned two catered nights.
+
+### 11.7 Navigation, Electronics & Charging
+
+Bring an offline-capable phone, charging cable, roughly 10,000 mAh power bank, appropriate European plug adapter if needed, and a paper map. Keep electronics waterproof. A second phone is less valuable than independent power and offline maps unless it also provides a useful second network.
+
+### 11.8 Safety & Emergency Equipment
+
+Carry a headlamp, whistle, compact first-aid kit with blister supplies, personal medication, emergency bivy, small repair kit and trekking poles. Do not add technical snow equipment merely to preserve the itinerary without the corresponding skills; change the route instead.
+
+### 11.9 Pack Weight
+
+A reasonable target is **5–7 kg before water and food**, roughly **8–11 kg when leaving with 2–3 L and provisions**. These are planning targets, not prerequisites. Reduce spare clothing, toiletries and electronics before removing waterproofs, warmth or emergency equipment.
+
+## 12. Costs & Practicalities
+
+### 12.1 Trek Budget
+
+📅 **Price evidence checked: 21 September 2026; all 2027 totals are estimates.** Staufner's displayed tariff is older, while Naturfreundehaus's current booking page gives half-board prices. Flights, long-distance rail and town hotel nights are excluded below.
+
+| Style | Three-day budget per adult | Approximate daily average |
+|---|---:|---:|
+| Lean: dorms, restrained drinks, grocery lunches | €160–190 | €53–63 |
+| Comfortable planning allowance | **€210–260** | **€70–87** |
+| Smaller-room options, more purchased food/drinks and contingency | €300–380 | €100–127 |
+
+Known anchors are **€27 Staufner nonmember dorm, meals extra**, and **€65 Naturfreundehaus dorm with half-board**. Allow additional money for Staufner dinner/breakfast, three lunches/snacks, drinking water/drinks, shower or booking fees and the local bus. Meal and bus allowances are estimates rather than verified 2027 quotes. [Staufner tariff](https://www.staufner-haus.de/cms/index.php?kat=88); [Naturfreundehaus tariff](https://kemptener-naturfreundehaus.de/buchungsinformationen/)
+
+### 12.2 Money
+
+Use euros. Carry enough cash to pay all outstanding hut charges and ordinary on-trail spending, allowing for deposits already paid; **around €200–250 cash** is a practical starting allowance for the standard dorm plan. Card acceptance at both huts was not confirmed, and a recent Naturfreundehaus report says cash only. Obtain cash in town rather than expecting an ATM on the route. [Local firsthand report](https://www.bahn-zum-berg.de/allgaeuer-alpen/von-immenstadt-zum-stuiben-mit-uebernachtung-im-kemptener-naturfreundehaus/)
+
+### 12.3 Mobile Networks & Connectivity
+
+📅 **Assessed: 21 September 2026.** Germany's networks include **Telekom, Vodafone, Telefónica/O2 and 1&1**. The regulator's coverage map is a model of outdoor reception, not proof of service in a hut or ravine. It distinguishes technologies including 2G, 4G and 5G. No complete route-cell comparison or continuous measured walk-through was obtained. [Federal mobile monitoring](https://gigabitgrundbuch.bund.de/GIGA/DE/MobilfunkMonitoring/start.html); [crowdsourced dead-zone measurements](https://breitbandmessung.de/kartenansicht-funkloch)
+
+| Network/evidence | What can be concluded |
+|---|---|
+| [Telekom coverage map](https://www.telekom.de/netz/mobilfunk-netzausbau) | Useful candidate for primary service; route-wide superiority was not demonstrated |
+| [Vodafone coverage map](https://www.vodafone.de/hilfe/netzabdeckung.html) and [October 2025 Oberstaufen expansion notice](https://www.presseportal.de/pm/43172/6142603) | Local infrastructure exists and was expanded; that does not establish reception throughout the ridge and valleys |
+| [O2 coverage map](https://www.o2online.de/netz/) | Check against the precise route; no hut-specific reception test was obtained |
+| [Staufner Haus hiker database entry](https://www.deine-berge.de/POI/Huette/Deutschland/Allgaeuer-Alpen/Hoehe-1634m/809/Staufner-Haus.html), updated May 2025 | Reports mobile reception, without identifying carrier or quality |
+| Naturfreundehaus and forested valleys | No reliable carrier-specific measurement established; weak reception in terrain shadows is an inference, not a verified dead-zone inventory |
+
+**Practical recommendation: provisionally choose Telekom as the primary host network and Vodafone as an optional second-network backup. Confidence: Low for the route-specific ranking.** This is a redundancy strategy, not a claim of proven best coverage. Before purchase, compare both maps along the actual route and ask the huts which network works indoors/outside. A direct-network plan with voice/SMS is simpler for calling huts; if using a travel eSIM, verify the underlying host, tethering and voice/SMS support. A data-only eSIM does not supply ordinary calling or SMS; retain a working voice line. No particular travel-eSIM host or 2027 tariff is assumed.
+
+Offline maps substantially reduce data needs; roughly 2–3 GB is a planning allowance for modest use, not a requirement. Border-area phones may roam onto an Austrian network, so check that your plan includes it. Hut Wi-Fi and charging are unverified and should not be required for navigation. A second network may help, but neither dual SIM nor 5G guarantees emergency connectivity.
+
+### 12.4 Everyday Practicalities
+
+Use town shops and pharmacies before starting. Expect shared hut facilities and limited opportunities for drying or laundry; pack out rubbish and carry a small personal toilet kit. Shower and socket access should be confirmed directly. The accommodation pages in section 6 are the primary practical contacts.
+
+## 13. Planning the Trek
+
+### 13.1 Recommended Itinerary
+
+**Keep the Oberstaufen walking approach, both Hike Like Me huts, the central ridge and the Prodelzug. Finish at the Hochgrat bus rather than forcing the full waterfall-and-station return.** This preserves three meaningful days while reducing the busiest final stage by about seven kilometres. Keep Rindalphorn as an explicit summit; leave Stuiben optional and the more technical western ridge out.
+
+### 13.2 Reservations & Timeline
+
+| When | Action |
+|---|---|
+| When summer 2027 calendars open | Confirm both hut operating dates; reserve [Staufner Haus](https://www.hut-reservation.org/reservation/book-hut/85/wizard) and [Naturfreundehaus](https://www.huetten-holiday.com/huts/kemptener-naturfreundehaus), then flexible Oberstaufen accommodation |
+| Several months before travel | Review travel-health records, insurance and cancellation cover; build mountain fitness and test footwear |
+| When 2027 timetables become available | Plan trains and the day-three bus using [DB](https://www.bahn.de/) and [Oberstaufen buses](https://www.oberstaufen.de/bus-parken) |
+| 1–2 weeks before | Ask huts about snow, north-facing descents, water/lunches and any closure; decide whether to preserve or change the hut plan within cancellation rules |
+| 48–72 hours before, then each morning | Check forecast, webcams, local advice and transport disruptions; make the actual ridge decision |
+
+### 13.3 Travel Plan
+
+A coherent example is **Tuesday 1 June 2027: arrive Oberstaufen; Wednesday 2 June: Staufner Haus; Thursday 3 June: Naturfreundehaus; Friday 4 June: Prodelzug and bus to Oberstaufen; Saturday 5 June: onward travel**. This avoids Naturfreundehaus's published Monday rest day and leaves an overnight buffer before departure. Dates remain contingent on 2027 staffing and availability. [Naturfreundehaus operator](https://kemptener-naturfreundehaus.de/)
+
+### 13.4 Contingency Planning
+
+If the main ridge is unsuitable but normal hut approaches are clear, retain both nights using the longer lower valley connector. If the upper approaches themselves are snowbound or severe weather affects the area, move accommodation to the valley or change the destination: **two mountain-hut nights cannot be guaranteed in every early-June weather scenario**.
+
+If a hut is full, investigate Alpe Gund and remeasure the stage split rather than booking a geographically convenient-sounding hut. If travel is delayed, bus 95 can shorten day one's approach; do not compensate by rushing an exposed day two. Finish day three early enough that a missed bus does not force an unplanned late waterfall walk.
+
+## 14. Current Conditions & Final Preparation
+
+### 14.1 Latest Route Status
+
+📅 **Research completed 22 September 2026, with operational pages checked 21 September 2026.** There is no verified June 2027 snow or closure status yet. General destination pages do not certify the entire ridge open. The concrete route-management warning found is that **Hochgrat route 4a through Seelekopf/Seelekessel is no longer maintained or marked**. [Hochgrat walking information](https://hochgrat.de/sommer/wandern)
+
+The primary huts publish seasons that support normal early-June operation, but not yet summer 2027 dates. No confirmed current waterfall closure was established; equally, historic reopening/repair reports should not be treated as a 2027 guarantee. Recheck [Berginfo](https://www.oberstaufen.de/berginfo), [waterfall access](https://www.oberstaufen.de/buchenegger-wasserfaelle), [Staufner Haus](https://www.staufner-haus.de/cms/) and [Naturfreundehaus](https://kemptener-naturfreundehaus.de/).
+
+### 14.2 Pre-Departure Verification
+
+Ask specifically about **Brunnenauscharte, the Rindalphorn approaches, the Gündles/Buralp ridge and the north descent towards Alpe Gund**, not just whether “the Nagelfluhkette” is open. Check [mountain weather](https://www.alpenverein.de/bergwetter), [Hochgrat webcams](https://hochgrat.de/), hut arrival rules and meals, the [correct bus-95 timetable](https://www.oberstaufen.de/bus-parken) and [rail disruptions](https://www.bahn.de/). Refresh travel-health and insurance details if the wider trip changes.
+
+### 14.3 Final Checklist
+
+- Both hut confirmations, arrival deadlines and cancellation terms saved offline.
+- Date-specific bus and rail itineraries, plus an earlier exit option.
+- Primary and lower routes loaded offline; key junctions checked.
+- Waterproofs, warm layer, liner, headlamp, emergency kit and charged power bank packed.
+- Lunches, snacks, drinking-water plan and sufficient cash arranged.
+- Insurance/document copies and 112 available offline; trusted contact has the itinerary.
+- Ridge decision based on current snow and weather, with willingness to change the plan.
+
+## 15. Route-Specific Considerations
+
+### 15.1 Special Characteristics
+
+“Nagelfluh” is conglomerate rock: embedded stones give the landscape its distinctive texture, but loose fragments and polished wet surfaces reward deliberate foot placement. Repeated short cols make a modest-looking distance physically expensive. The nearby cable car is useful infrastructure, but does not turn the ridge into a promenade. [Tourentipp route description](https://www.tourentipp.com/de/touren/nagelfluhkette-ueberschreitung-bergtour_1550.html)
+
+### 15.2 Local Knowledge
+
+Treat *Alpe* opening days separately from hut sleeping availability. A hut can offer booked overnight meals even when its general day-visitor kitchen schedule differs. Clarify the actual overnight arrangement directly. For conditions, a recent report about the exact northern descent is more useful than a photograph of a sunny summit. [Mittelberg operation](https://www.alpe-mittelberg.de/); [Naturfreundehaus booking information](https://kemptener-naturfreundehaus.de/buchungsinformationen/); [local spring analysis](https://montolando.com/allgaeuer-nagelfluhkette-wanderungen-im-fruehjahr/)
+
+### 15.3 Names & Pronunciation
+
+These are German names. Respelling approximates pronunciation for English speakers; it is not transliteration. Bold marks stress. Minor peak and hut names without verified pronunciation evidence are omitted rather than guessed.
+
+| Name | Context | Approximate pronunciation | Evidence/usage note |
+|---|---|---|---|
+| Allgäu | Region | **AL**-goy | [Dictionary IPA: ˈalɡɔɪ̯](https://de.wiktionary.org/wiki/Allg%C3%A4u) |
+| Nagelfluh | Rock/route-name component | **NAH**-gl-floo | [Dictionary pronunciation](https://de.wiktionary.org/wiki/Nagelfluh); long “ah” and “oo” |
+| Nagelfluhkette | Mountain chain | **NAH**-gl-floo-ket-uh | Component-based approximation from [Nagelfluh](https://de.wiktionary.org/wiki/Nagelfluh) and [Kette](https://de.wiktionary.org/wiki/Kette); full local compound stress not independently verified |
+| Immenstadt | Eastern rail exit | **IM**-uhn-shtaht | [Dictionary IPA: ˈɪmənˌʃtat](https://de.wiktionary.org/wiki/Immenstadt) |
+| Oberstaufen | Start/return town | Use the linked native recording | [Native audio page](https://de.forvo.com/word/oberstaufen/); audio was not independently transcribed in this research |
+
+### 15.4 Research Gaps & Uncertainties
+
+The main open items are actual 2027 hut staffing and prices, bus times, snow on the exact ridge/descent, meal/water arrangements and hut mobile reception. Lower-stage distances are estimates; no continuous bespoke GPX incorporating all recommended summit and hut spurs is supplied. The waterfall-to-Steibis shortening is an option to map locally, not a fully quantified stage. These gaps do not undermine the geographic loop, but they matter before execution.
+
+## 16. Maps
+
+### 16.1 Nagelfluhkette & Prodelzug — Three-Day Hut Trek, June 2027
+
+```geomap
+{"layers":[{"id":"points-of-interest","name":"Huts, summits and access points","role":"poi","geojson":{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[10.05723,47.50958]},"properties":{"name":"Hochgratbahn bus stop","category":"transport","note":"Day 3 finish and route 95 connection; bus stop beside the valley station.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.06917,47.49158]},"properties":{"name":"Staufner Haus","category":"accommodation","note":"Night 1 mountain hut beneath Hochgrat.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.07861,47.49538]},"properties":{"name":"Hochgrat","category":"summit","note":"Highest summit on the proposed traverse; climb on Day 2.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.11742,47.50397]},"properties":{"name":"Gündlesscharte","category":"pass","note":"Deep saddle between Rindalphorn and Gündleskopf.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.12357,47.50671]},"properties":{"name":"Gündleskopf","category":"summit","note":"Day 2 ridge summit east of Gündlesscharte.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.13145,47.51093]},"properties":{"name":"Buralpkopf","category":"summit","note":"Day 2 summit between Gündleskopf and Sedererstuiben.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.1532,47.51433]},"properties":{"name":"Sedererstuiben","category":"summit","note":"Final core summit before the northward hut descent.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.16031,47.51722]},"properties":{"name":"Stuiben","category":"summit","note":"Optional out-and-back summit; do not extend onto its east ridge.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.16505,47.52361]},"properties":{"name":"Alpe Gund","category":"accommodation","note":"Day 2 refreshment and alternative overnight hut; confirm opening and beds.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.1663,47.53412]},"properties":{"name":"Sennalpe Mittelberg","category":"accommodation","note":"Alpine farm en route to Naturfreundehaus; alternative lodging requires confirmation.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.0849,47.5279]},"properties":{"name":"Denneberg","category":"summit","note":"Day 3 western Prodelzug summit.","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.1741,47.54454]},"properties":{"name":"Kemptener Naturfreundehaus","category":"accommodation","note":"Night 2 hut near Gschwender Horn; distinct from Kemptner Hütte near Oberstdorf.","source":{"url":"https://www.outdooractive.com/de/hut/alpen/kemptener-naturfreundehaus/1302180/","publisher":"Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.02512,47.55396]},"properties":{"name":"Oberstaufen Bahnhof","category":"transport","note":"Rail access and Day 1 start; station reference point, not a particular platform.","source":{"url":"https://de.wikipedia.org/wiki/Bahnhof_Oberstaufen","publisher":"Wikipedia","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.2146,47.55938]},"properties":{"name":"Immenstadt Bahnhof","category":"transport","note":"Rail exit for an eastward descent alternative; station reference point.","source":{"url":"https://www.alpenvereinaktiv.com/de/punkt/bahnhof/immenstadt-bahnhof/17889805/","publisher":"Alpenvereinaktiv","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.07248,47.49226]},"properties":{"name":"Hochgratbahn Bergstation","category":"transport","note":"Cable-car bailout near Staufner Haus when operating; weather may stop service.","source":{"url":"https://www.outdooractive.com/de/poi/allgaeu/bergstation-hochgratbahn/1272410/","publisher":"Outdooractive","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.10778,47.50528]},"properties":{"name":"Rindalphorn","category":"summit","note":"Short summit spur from the traverse; both supplied source tracks miss the actual top.","source":{"url":"https://de.m.wiki.li/Rindalphorn","publisher":"Wikipedia mirror","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.09125,47.49845]},"properties":{"name":"Brunnenauscharte","category":"pass","note":"Saddle between Hochgrat and the Rindalphorn massif.","source":{"url":"https://www.wikidata.org/wiki/Q139567394","publisher":"Wikidata / OpenStreetMap","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.14617,47.54381]},"properties":{"name":"Eckhalde / Eckhaldekopf","category":"summit","note":"Day 3 high point on the Hike Like Me version; the official circuit passes south of it.","source":{"url":"https://de.wikipedia.org/wiki/Eckhalde","publisher":"Wikipedia","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.12315,47.5369]},"properties":{"name":"Himmelseck","category":"summit","note":"Day 3 Prodelzug summit; distinct from the 2152 m Himmeleck near Oberstdorf.","source":{"url":"https://de.wikipedia.org/wiki/Himmelseck","publisher":"Wikipedia","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.07105,47.52337]},"properties":{"name":"Prodel ridge","category":"summit","note":"Western ridge reference point; attribution of Prodel to this individual summit is disputed.","source":{"url":"https://de.wikipedia.org/wiki/Prodel","publisher":"Wikipedia","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.04966,47.5297]},"properties":{"name":"Buchenegger Wasserfälle","category":"sight","note":"Optional waterfall gorge extension; locality point, not a verified safe access or swimming point.","source":{"url":"https://de.wikipedia.org/wiki/Buchenegger_Wasserf%C3%A4lle","publisher":"Wikipedia","retrievedAt":"2026-09-22"}}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.02453,47.52935]},"properties":{"name":"Steibis","category":"settlement","note":"Village on Day 1; this is not the precise Steibis Ort bus-stop pole.","source":{"url":"https://de.wikipedia.org/wiki/Steibis","publisher":"Wikipedia","retrievedAt":"2026-09-22"}}}]}},{"id":"official-circuit","name":"Official Nagelfluhkette–Prodelzug circuit — source track","role":"route","source":{"url":"https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true","publisher":"Allgäu / Oberstaufen Tourismus","retrievedAt":"2026-09-22","originalFormat":"gpx"},"geojson":{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Point","coordinates":[10.05723,47.50958,856.0]},"properties":{"name":"Steibis, Hochgratbahn"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.05241,47.50355,995.0]},"properties":{"name":"Untere Lauch-Alpe"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.06917,47.49158,1634.0]},"properties":{"name":"Staufner house"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.07861,47.49538,1833.0]},"properties":{"name":"Hochgrat"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.08536,47.49784,1726.0]},"properties":{"name":"Blick ins Westallgäu"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.08867,47.49511,1567.0]},"properties":{"name":"Gütle-Alpe"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.11742,47.50397,1537.0]},"properties":{"name":"Gündlesscharte"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.12225,47.50558,1709.0]},"properties":{"name":"Nagelfluh"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.12357,47.50671,1742.0]},"properties":{"name":"Gündleskopf"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.13145,47.51093,1759.0]},"properties":{"name":"Buralpkopf"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.14536,47.50872,1486.0]},"properties":{"name":"Gatter-Alpe"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.147,47.511,1591.0]},"properties":{"name":"Nagelfluh-Relikte"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.1532,47.51433,1735.0]},"properties":{"name":"Sedererstuiben"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.16031,47.51722,1749.0]},"properties":{"name":"Stuiben"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.16505,47.52361,1502.0]},"properties":{"name":"Alpe Gund"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.1663,47.53412,1370.0]},"properties":{"name":"Sennalpe Mittelberg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.09695,47.52772,1308.0]},"properties":{"name":"Obere Klamm-Alpe"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.0849,47.5279,1427.0]},"properties":{"name":"Denneberg"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.05998,47.51001,858.0]},"properties":{"name":"Hochgratbahn"}},{"type":"Feature","geometry":{"type":"Point","coordinates":[10.05928,47.50988,857.0]},"properties":{"name":"Parkplatz Hochgratbahn"}},{"type":"Feature","geometry":{"type":"LineString","coordinates":[[10.05825,47.5098,853.5],[10.05634,47.50955,854.8],[10.05659,47.5077,896.1],[10.05374,47.50811,921.3],[10.05482,47.50704,934.7],[10.05237,47.50717,947.8],[10.05224,47.50296,1003.1],[10.04987,47.49845,1070.0],[10.05482,47.50092,1129.0],[10.05466,47.5003,1145.3],[10.06059,47.49911,1175.2],[10.06087,47.50059,1198.7],[10.0636,47.49825,1278.2],[10.06374,47.49577,1331.3],[10.06469,47.49578,1346.5],[10.06548,47.49769,1376.8],[10.06606,47.49683,1402.0],[10.06742,47.49717,1427.2],[10.06934,47.49401,1533.6],[10.0701,47.49451,1558.7],[10.06962,47.49103,1650.9],[10.0788,47.49453,1803.2],[10.07861,47.49533,1834.1],[10.08176,47.4967,1765.1],[10.0854,47.4978,1722.7],[10.08999,47.49778,1637.0],[10.09776,47.50205,1767.1],[10.10157,47.50266,1802.1],[10.10448,47.50225,1764.8],[10.10688,47.50422,1793.1],[10.11157,47.50353,1627.2],[10.1202,47.50451,1611.8],[10.12358,47.50672,1736.6],[10.12781,47.50801,1705.8],[10.13145,47.51088,1757.8],[10.13801,47.51013,1670.5],[10.14734,47.51107,1578.3],[10.15199,47.5124,1670.4],[10.15178,47.51371,1695.7],[10.16025,47.51687,1729.4],[10.15701,47.51546,1678.0],[10.15774,47.51673,1666.3],[10.15693,47.52,1590.2],[10.1625,47.52198,1530.2],[10.1631,47.52379,1487.0],[10.16543,47.52372,1481.2],[10.16305,47.52391,1485.1],[10.16572,47.52681,1463.3],[10.16486,47.52847,1452.6],[10.16576,47.53383,1370.5],[10.16979,47.53622,1321.9],[10.16869,47.53836,1297.6],[10.15954,47.54223,1254.8],[10.15549,47.54111,1252.9],[10.15451,47.53993,1217.7],[10.14957,47.5389,1255.0],[10.136,47.54032,1399.2],[10.1324,47.5397,1412.4],[10.12934,47.54043,1421.3],[10.12517,47.53858,1439.2],[10.1232,47.53673,1476.8],[10.11327,47.53351,1423.3],[10.10967,47.53381,1450.9],[10.10315,47.53196,1466.5],[10.09476,47.52822,1331.5],[10.08471,47.52784,1426.6],[10.08149,47.52611,1387.0],[10.07745,47.52624,1381.6],[10.05851,47.51699,1208.8],[10.05991,47.51625,1177.5],[10.06572,47.51683,1133.5],[10.06074,47.51424,1048.2],[10.06618,47.51434,973.7],[10.06522,47.51371,964.2],[10.06569,47.51257,920.2],[10.06279,47.51104,870.0],[10.06377,47.50997,863.6],[10.05825,47.5098,853.5]]},"properties":{"name":"2-day hike: Circular route Nagelfluh chain and Prodel ridge","note":"Source itinerary, not the custom recommended route. Geometry simplified to 50 m for overview only. Source elevations are uncorrected; use original GPX for detailed inspection."}}]}},{"id":"hikelikeme-circuit","name":"Hike Like Me circuit with station and waterfall extension — source track","role":"route","source":{"url":"https://www.hikelikeme.com/api/special_files/hike-gpxs/nagelfluhkette-round","publisher":"Hike Like Me","retrievedAt":"2026-09-22","originalFormat":"gpx"},"geojson":{"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"LineString","coordinates":[[10.02533,47.55343,789.6],[10.02234,47.55312,789.9],[10.0232,47.55252,776.6],[10.02255,47.55047,734.9],[10.02101,47.54919,709.9],[10.02181,47.5471,694.4],[10.01982,47.54595,683.3],[10.0185,47.54349,663.7],[10.02009,47.53899,709.1],[10.01908,47.53767,742.7],[10.02441,47.53447,825.2],[10.0243,47.52916,864.6],[10.03556,47.52213,889.3],[10.0403,47.52235,908.3],[10.04331,47.52105,889.9],[10.0475,47.52157,854.1],[10.04814,47.52222,851.1],[10.05072,47.522,816.4],[10.05128,47.52099,818.7],[10.04975,47.51965,821.2],[10.04917,47.51561,827.5],[10.05006,47.51264,842.5],[10.05394,47.51026,865.9],[10.05859,47.51,860.5],[10.05636,47.50935,887.4],[10.05652,47.50748,921.4],[10.05434,47.5081,924.4],[10.05313,47.50707,949.0],[10.0499,47.49843,1083.4],[10.05471,47.50089,1122.6],[10.05471,47.50032,1139.4],[10.06064,47.49912,1178.0],[10.06092,47.50059,1202.1],[10.06357,47.4983,1292.3],[10.06379,47.49576,1336.7],[10.0647,47.49577,1355.1],[10.06566,47.4977,1387.0],[10.06606,47.49681,1401.5],[10.06743,47.49716,1429.4],[10.06933,47.494,1536.4],[10.07014,47.49453,1556.4],[10.06906,47.49106,1620.5],[10.06982,47.49101,1636.5],[10.08004,47.49612,1775.8],[10.08544,47.4978,1696.5],[10.08999,47.49775,1625.0],[10.09789,47.50217,1748.2],[10.10135,47.50279,1774.5],[10.10452,47.50241,1759.2],[10.10688,47.50424,1777.8],[10.11148,47.50353,1652.8],[10.12266,47.50497,1691.8],[10.12358,47.50671,1710.2],[10.12781,47.508,1683.2],[10.13153,47.51089,1743.8],[10.13825,47.51018,1657.2],[10.14618,47.51082,1578.5],[10.15014,47.51243,1618.2],[10.15184,47.51237,1660.8],[10.15157,47.51338,1676.0],[10.1573,47.51591,1670.0],[10.15688,47.52018,1581.5],[10.16251,47.52196,1524.2],[10.1625,47.52321,1489.8],[10.16575,47.52687,1466.0],[10.16485,47.5285,1455.8],[10.16591,47.5308,1391.0],[10.16574,47.5338,1365.0],[10.17259,47.53726,1343.8],[10.1706,47.54047,1382.5],[10.17426,47.54429,1415.2],[10.1706,47.54047,1382.5],[10.17259,47.53726,1343.8],[10.1698,47.53622,1328.5],[10.16824,47.53875,1312.8],[10.1608,47.54145,1273.0],[10.15941,47.54279,1277.8],[10.15791,47.54269,1288.0],[10.15359,47.54649,1405.0],[10.1427,47.54206,1464.0],[10.13716,47.54238,1443.5],[10.13013,47.54068,1412.5],[10.12528,47.53876,1433.5],[10.12327,47.53677,1468.8],[10.11328,47.53356,1422.8],[10.10764,47.53334,1448.0],[10.09863,47.53031,1414.2],[10.09466,47.52819,1328.8],[10.08568,47.52795,1400.0],[10.08139,47.52608,1374.5],[10.07783,47.52638,1377.5],[10.0749,47.52471,1379.5],[10.07101,47.52371,1353.2],[10.06109,47.51783,1234.8],[10.05815,47.51668,1191.2],[10.05778,47.51742,1180.2],[10.0566,47.51711,1147.0],[10.05564,47.5156,1106.5],[10.05501,47.51624,1089.0],[10.05453,47.51463,1039.0],[10.05387,47.51626,1023.2],[10.05478,47.51826,1006.2],[10.05156,47.51575,929.5],[10.05018,47.51251,847.5],[10.04917,47.51561,829.2],[10.04975,47.51965,822.5],[10.05128,47.52099,821.8],[10.05076,47.52196,816.2],[10.04814,47.52222,851.8],[10.0475,47.52157,854.5],[10.0439,47.52143,900.0],[10.04676,47.52747,878.2],[10.04623,47.52917,860.0],[10.04896,47.52966,814.0],[10.04839,47.52995,811.2],[10.04964,47.53015,805.0],[10.04851,47.53075,809.8],[10.04948,47.53101,828.0],[10.04605,47.53283,902.5],[10.04108,47.53124,856.2],[10.03961,47.53466,837.5],[10.04078,47.53667,840.5],[10.04251,47.53735,853.8],[10.03978,47.5403,840.2],[10.03828,47.54403,843.5],[10.04035,47.54659,799.2],[10.0361,47.54792,756.2],[10.03043,47.54751,786.5],[10.02735,47.54999,800.0],[10.02534,47.55343,790.8]]},"properties":{"name":"GPX from Points","note":"Source itinerary, not the custom recommended route. Geometry simplified to 50 m for overview only. Source elevations are uncorrected; use original GPX for detailed inspection."}}]}}]}
+```
+
+## 17. Research Sources & Confidence
+
+### 17.1 Research Method
+
+Compared all four supplied references, checked German official/operator sources for consequential logistics, examined both downloadable GPXs, and reconciled their routes with the hut split. Calculated early-June valley climate summaries from DWD daily observations. Two specialist health assessments were consolidated; a dedicated geographic researcher resolved map coordinates and converted the source tracks. No bookings, calls or emails were made.
+
+### 17.2 Source Hierarchy
+
+Hut and transport operators govern their own operations; official tourism/Naturpark sources establish route and access context; DWD provides weather observations; government and specialist travel-health sources support health advice. Hiking publications and firsthand reports supplement terrain, stage practicality and reception evidence. User route statistics are useful comparisons rather than surveyed measurements.
+
+### 17.3 Source Recency
+
+The reference itineraries span older publications and current webpages. Deine Berge's route is dated 2019; Outdoor's article is dated 2021; Staufner's still-displayed tariff is effective 2023. The hut seasons and transport PDF concern 2026, while the intended trip is 2027. DWD statistics deliberately use the 1991–2020 baseline. Health risk classification uses 2026 evidence. Dates are preserved rather than silently treating all information as newly measured.
+
+### 17.4 Cross-Verification
+
+Official Allgäu and Deine Berge agree on the central ridge/Prodel concept, while Hike Like Me adds the station approach and longer finish. Downloaded geometry confirms that Hike Like Me reaches Staufner Haus before Hochgrat, despite its prose. Reference tracks do not precisely cover every recommended summit and hut entrance. Elevation totals differ with sampling and smoothing; planning ranges therefore replace false precision. Both health specialists agreed that Oberallgäu is a TBE risk district and June hiking adds relevant exposure.
+
+### 17.5 Confidence Ratings
+
+#### High Confidence
+
+The geographic loop, identities and locations of the primary huts, existence of bus 95, official difficult classification, and the 2026 Oberallgäu TBE risk designation. Published operator rules are high-confidence descriptions of what their pages said when checked, not guarantees for 2027.
+
+#### Medium Confidence
+
+The tailored stages' distance/ascent ranges, realistic walking-time allowances, normal early-June hut operation, likely snow-retaining terrain, and the usefulness of the lower valley connector. Weather calculations are high-confidence valley statistics but only indirectly representative of the ridge.
+
+#### Low Confidence
+
+Exact June 2027 snow/closure status, unpublished 2027 timetables and tariffs, free potable water and charging at both huts, precise network ranking, and untracked alternative-stage metrics. None should be interpreted as confirmed operational facts.
+
+### 17.6 Confidence in Recommendations
+
+**High confidence in the route design for suitable summer conditions; conditional confidence for early June 2027.** Keeping the station approach and removing the mandatory station/waterfall finish directly improves balance. The judgement that T3 is suitable depends on the hiker's mountain experience, which was not established by the statement of fitness alone.
+
+### 17.7 Claim-Level Citation Standard
+
+Consequential claims are linked where used. Published facts, calculated track/weather summaries, planning estimates and recommendations are distinguished in the text. A linked route does not independently verify a proposed variation's exact distance or future condition; the source register provides the broader evidence trail.
+
+### 17.8 Source Register
+
+Unless specified otherwise, sources were accessed during **21–22 September 2026**. Operational checks were primarily 21 September; health sources were also reopened on 22 September. Undated webpages should be refreshed before travel.
+
+| Source and direct links | Type/date | Supports |
+|---|---|---|
+| [Allgäu official Nagelfluhkette–Prodelzug circuit](https://www.allgaeu.de/touren/2-tageswanderung-rundtour-nagelfluhkette-und-prodelzug); [Outdooractive map](https://www.outdooractive.com/de/route/wanderung/oberstaufen/2-tageswanderung-rundtour-nagelfluhkette-und-prodelzug/18742274/); [GPX](https://www.outdooractive.com/download.tour.gpx?i=18742274&key=4FIVWWDV-EMWGMIIK-4OSSAJZW&project=api-allgaeu&exportWaypoints=true) | Official tourism and route data; undated live page | Sections 1–5, 9, 16: backbone, difficulty, geometry and imported waypoints |
+| [Hike Like Me](https://www.hikelikeme.com/hikes/nagelfluhkette-round); [GPX](https://www.hikelikeme.com/api/special_files/hike-gpxs/nagelfluhkette-round) | Hiking publisher; live page | Sections 1–5, 16: station approach, hut connection, waterfall extension and track comparison |
+| [Deine Berge three-day route](https://www.deine-berge.de/Mehrtagestouren/6134/3-Tagestour-Nagelfluhkette.html) | User itinerary, 5 June 2019 | Sections 1–3: stage model and T3 classification |
+| [Outdoor Magazin](https://www.outdoor-magazin.com/wanderwege/allgaeu-nagelfluhkette/) | Specialist publication, 1 October 2021 | Section 2: western alternative and comparison |
+| [Tourentipp traverse](https://www.tourentipp.com/de/touren/nagelfluhkette-ueberschreitung-bergtour_1550.html) | German specialist route description | Sections 3, 15: terrain and technical character |
+| [Staufner Haus](https://www.staufner-haus.de/cms/); [overnights/prices](https://www.staufner-haus.de/cms/index.php?kat=88); [booking](https://www.hut-reservation.org/reservation/book-hut/85/wizard); [contact](https://www.staufner-haus.de/cms/?kat=95) | Hut operator; 2026 season, displayed tariff effective 2023 | Sections 2, 4, 6–7, 11–14: season, meals, liner, prices and reservation |
+| [Kemptener Naturfreundehaus](https://kemptener-naturfreundehaus.de/); [booking rules](https://kemptener-naturfreundehaus.de/buchungsinformationen/); [reservation](https://www.huetten-holiday.com/huts/kemptener-naturfreundehaus); [access](https://kemptener-naturfreundehaus.de/wegbeschreibung/) | Hut operator; 2026/27 winter and 2026 summer information | Sections 2, 4, 6–9, 12–14: staffed seasons, arrival, half-board, prices, descent |
+| [Alpe Gund](https://alpe-gund-huette-immenstadt-allgaeu.de/); [regional hut information](https://www.alpsee-gruenten.de/huetten-naturpark-nagelfluhkette) | Operator and regional tourism | Sections 2, 6: backup accommodation and usual season |
+| [Mittelberg](https://www.alpe-mittelberg.de/); [hours](https://www.alpe-mittelberg.de/%C3%B6ffnungszeiten); [overnight details](https://www.alpe-mittelberg.de/%C3%BCbernachtungen) | Alm operator; live pages | Sections 2, 6–7, 15: weekly closures, overnight days, price |
+| [Bahn zum Berg Naturfreundehaus/Stuiben hike](https://www.bahn-zum-berg.de/allgaeuer-alpen/von-immenstadt-zum-stuiben-mit-uebernachtung-im-kemptener-naturfreundehaus/) | Firsthand, October 2025; updated August 2026 | Sections 2, 6, 12: eastern alternatives, dated shower/cash/bedding evidence |
+| [Ehrenschwanger Tal–Ratholz](https://www.allgaeu.de/touren/ehrenschwanger-tal-ratholz); [Rindalphorn circuit](https://www.allgaeu.de/touren/9-rundtour-uebers-rindalphorn) | Official tourism routes | Sections 2, 9: lower corridor and descent connections; cycling totals not reused as walking totals |
+| [Oberstaufen rail](https://www.oberstaufen.de/bahn); [buses](https://www.oberstaufen.de/bus-parken); [route-95 2025/26 PDF](https://www.oberstaufen.de/files/20260409-95-oberstaufen-hochgratbahn-wi25-26_69d77d9e974e43cc2204e6ba_1775730078_web_de-DE.pdf); [mona](https://www.mona-allgaeu.de/); [DB](https://www.bahn.de/) | Municipality and transport authorities/operators | Sections 8, 13–14: rail access, bus connections and future timetable checks |
+| [Hochgrat operator](https://hochgrat.de/); [walking and route warning](https://hochgrat.de/sommer/wandern) | Cable-car operator | Sections 4, 8–9, 14: webcams, operating status, unmaintained route 4a |
+| [Oberstaufen Berginfo](https://www.oberstaufen.de/berginfo); [waterfalls](https://www.oberstaufen.de/buchenegger-wasserfaelle); [wild-water guidance](https://www.oberstaufen.de/wildes-wasser); [tourism portal](https://www.oberstaufen.de/) | Official tourism | Sections 2–4, 8–10, 14: condition checks, waterfall access and no-bathing request |
+| [Naturpark visitor information](https://nagelfluhkette.info/freizeit); [landscape-protection regulation](https://nagelfluhkette.info/fileadmin/redaktion/Naturschutz/Verordnungen/Nagelfluhkette_-_Aktuell.pdf) | Park authority; regulation dated 29 October 1992, currently linked | Sections 6, 9–10: access conduct, wildlife, camping/fire restrictions |
+| [DWD station 03730 daily archive](https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/tageswerte_KL_03730_19100101_20251231_hist.zip); [metadata](https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/KL_Tageswerte_Beschreibung_Stationen.txt) | National meteorological observations; calculation subset 1991–2020 | Section 4: observed early-June temperature, rain, valley snow and wind |
+| [Montolando spring Nagelfluh hikes](https://montolando.com/allgaeuer-nagelfluhkette-wanderungen-im-fruehjahr/); [DAV mountain forecast](https://www.alpenverein.de/bergwetter) | Local hiking article, 7 June 2023; forecast portal | Sections 2, 4, 14–15: aspect-dependent snow and forecast checks |
+| [DAV emergency guidance](https://www.alpenverein.de/artikel/notruf-und-rettung-in-den-alpen_3802c636-0bd1-4f83-a33a-e9b266bd51d8); [insurance](https://www.alpenverein.de/verband/services/versicherungen-im-dav) | Alpine Club | Section 9: emergency number and insurance verification |
+| [Germany TravelHealthPro](https://travelhealthpro.org.uk/countries/germany); [CDC TBE Yellow Book](https://www.cdc.gov/yellow-book/hcp/travel-associated-infections-diseases/tick-borne-encephalitis.html) | Specialist/government travel health; CDC updated 23 April 2025 for 2026 edition | Section 9: routine vaccine review, traveler TBE assessment and certificate distinction |
+| [BIÖG/RKI TBE map](https://shop.bioeg.de/pdf/62200656.pdf); [Oberallgäu health authority](https://www.oberallgaeu.org/gesundheit-von-mensch-und-tier/gesundheitsamt/infektionsschutz); [Bavarian surveillance](https://www.lgl.bayern.de/gesundheit/infektionsschutz/infektionsepidemiologie/aktuelle_meldezahlen/index.htm) | Official health; 2026 risk map and September 2026 surveillance | Section 9: district risk, tick season, surveillance limitations |
+| [Federal mobile monitoring](https://gigabitgrundbuch.bund.de/GIGA/DE/MobilfunkMonitoring/start.html); [crowdsourced observations](https://breitbandmessung.de/kartenansicht-funkloch); [Telekom](https://www.telekom.de/netz/mobilfunk-netzausbau); [Vodafone](https://www.vodafone.de/hilfe/netzabdeckung.html); [O2](https://www.o2online.de/netz/) | Regulator and network operators | Section 12: modeled coverage tools and limitations |
+| [Vodafone Oberstaufen notice](https://www.presseportal.de/pm/43172/6142603); [Staufner reception entry](https://www.deine-berge.de/POI/Huette/Deutschland/Allgaeuer-Alpen/Hoehe-1634m/809/Staufner-Haus.html) | Operator release October 2025; hiker database updated May 2025 | Section 12: local infrastructure and limited reception evidence |
+| [Allgäu](https://de.wiktionary.org/wiki/Allg%C3%A4u); [Nagelfluh](https://de.wiktionary.org/wiki/Nagelfluh); [Kette](https://de.wiktionary.org/wiki/Kette); [Immenstadt](https://de.wiktionary.org/wiki/Immenstadt); [Oberstaufen audio](https://de.forvo.com/word/oberstaufen/) | Collaborative pronunciation dictionaries/native audio | Section 15: sourced pronunciation and explicit verification limits |
+| [Naturfreundehaus mapped location](https://www.outdooractive.com/de/hut/alpen/kemptener-naturfreundehaus/1302180/); [Hochgrat mountain station](https://www.outdooractive.com/de/poi/allgaeu/bergstation-hochgratbahn/1272410/); [Immenstadt station](https://www.alpenvereinaktiv.com/de/punkt/bahnhof/immenstadt-bahnhof/17889805/); [Oberstaufen station](https://de.wikipedia.org/wiki/Bahnhof_Oberstaufen) | Geographic POI sources | Section 16: hut, cable-car and rail coordinates |
+| [Rindalphorn](https://de.m.wiki.li/Rindalphorn); [Brunnenauscharte](https://www.wikidata.org/wiki/Q139567394); [Eckhalde](https://de.wikipedia.org/wiki/Eckhalde); [Himmelseck](https://de.wikipedia.org/wiki/Himmelseck); [Prodel](https://de.wikipedia.org/wiki/Prodel); [waterfalls](https://de.wikipedia.org/wiki/Buchenegger_Wasserf%C3%A4lle); [Steibis](https://de.wikipedia.org/wiki/Steibis) | Supplemental geographic sources, cross-checked with source tracks | Section 16: coordinate resolution and name disambiguation; Steibis point is a locality, not a verified bus pole |
+
+### 17.9 Conflicts, Unknowns & Verification List
+
+- Hike Like Me's day-one prose and track differ over Hochgrat; this plan visits it on day two.
+- Source ascent totals and moving times differ; conservative ranges are used, especially for day two.
+- Official geometry does not exactly pass Naturfreundehaus/Eckhalde, and summit spurs require deliberate routing.
+- The lower connector and eastern alternatives have estimated, not independently tracked, walking metrics.
+- 2027 summer opening dates, weekly exceptions, tariffs and timetables need operator confirmation.
+- Ridge and north-descent snow, temporary closures, drinking-water terms, packed lunches and hut connectivity remain departure checks.
+- The map omits unresolved precise bus poles and junctions; Prodel naming varies between sources. Use the signed route and current topographic map on the ground.
+
+### 17.10 Research Freshness
+
+Prepared **22 September 2026**, using research on **21–22 September 2026**, for travel in **early June 2027**. Refresh accommodation and transport when 2027 information is released; refresh snow, closures, weather, health notices and service availability shortly before departure and daily during the trek. The recommendation is a well-supported route design with explicit early-season conditions, not a future all-clear.
+</script>
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+<script>
+var PageleafGeoMap = (() => {
+  var __defProp = Object.defineProperty;
+  var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+  var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __hasOwnProp = Object.prototype.hasOwnProperty;
+  var __export = (target, all) => {
+    for (var name in all)
+      __defProp(target, name, { get: all[name], enumerable: true });
+  };
+  var __copyProps = (to, from, except, desc) => {
+    if (from && typeof from === "object" || typeof from === "function") {
+      for (let key of __getOwnPropNames(from))
+        if (!__hasOwnProp.call(to, key) && key !== except)
+          __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+    }
+    return to;
+  };
+  var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+
+  // src/geomap/index.js
+  var index_exports = {};
+  __export(index_exports, {
+    install: () => install
+  });
+
+  // src/geomap/data.js
+  var isObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+  function text(...values) {
+    for (const value of values) {
+      if (typeof value === "string" && value.trim()) return value.trim();
+      if (typeof value === "number" && Number.isFinite(value)) return String(value);
+    }
+    return "";
+  }
+  function safeUrl(value) {
+    if (typeof value !== "string") return "";
+    try {
+      const url = new URL(value);
+      return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+    } catch {
+      return "";
+    }
+  }
+  function sourceUrl(source) {
+    return safeUrl(isObject(source) ? source.url : source);
+  }
+  function position(value) {
+    if (!Array.isArray(value) || value.length < 2 || !value.every(Number.isFinite) || Math.abs(value[0]) > 180 || Math.abs(value[1]) > 90) {
+      throw new Error("Invalid longitude/latitude position");
+    }
+  }
+  function coordinates(value, child, minimum = 0) {
+    if (!Array.isArray(value) || value.length < minimum) throw new Error("Invalid coordinate array");
+    value.forEach(child);
+  }
+  function line(value) {
+    coordinates(value, position, 2);
+  }
+  function ring(value) {
+    coordinates(value, position, 4);
+    const first = value[0], last = value.at(-1);
+    if (first.length !== last.length || first.some((n, i) => n !== last[i])) {
+      throw new Error("Polygon rings must be closed");
+    }
+  }
+  function polygon(value) {
+    coordinates(value, ring, 1);
+  }
+  function validateGeometry(geometry, depth = 0) {
+    if (geometry === null) return;
+    if (!isObject(geometry) || depth > 64) throw new Error("Invalid or excessively nested geometry");
+    if (geometry.type === "GeometryCollection") {
+      if (!Array.isArray(geometry.geometries)) throw new Error("Missing geometries array");
+      geometry.geometries.forEach((child) => {
+        if (child === null) throw new Error("Null GeometryCollection member");
+        validateGeometry(child, depth + 1);
+      });
+      return;
+    }
+    const validators = {
+      Point: position,
+      MultiPoint: (value) => coordinates(value, position),
+      LineString: line,
+      MultiLineString: (value) => coordinates(value, line),
+      Polygon: polygon,
+      MultiPolygon: (value) => coordinates(value, polygon)
+    };
+    if (!Object.hasOwn(validators, geometry.type)) throw new Error(`Unsupported geometry: ${geometry.type}`);
+    if (Array.isArray(geometry.coordinates) && geometry.coordinates.length === 0) return;
+    validators[geometry.type](geometry.coordinates);
+  }
+  function asFeatures(geojson) {
+    if (!isObject(geojson)) throw new Error("Missing GeoJSON object");
+    const features = geojson.type === "FeatureCollection" ? geojson.features : [geojson.type === "Feature" ? geojson : { type: "Feature", properties: {}, geometry: geojson }];
+    if (!Array.isArray(features)) throw new Error("Missing features array");
+    for (const feature of features) {
+      if (!isObject(feature) || feature.type !== "Feature" || !(feature.properties === null || isObject(feature.properties))) {
+        throw new Error("Invalid GeoJSON Feature");
+      }
+      validateGeometry(feature.geometry);
+    }
+    return features;
+  }
+  function hasGeometry(geometry) {
+    if (!geometry) return false;
+    if (geometry.type === "GeometryCollection") return geometry.geometries.some(hasGeometry);
+    return geometry.coordinates.length > 0;
+  }
+  function drawableGeometry(geometry) {
+    if (!hasGeometry(geometry)) return null;
+    if (geometry.type !== "GeometryCollection") return geometry;
+    return { ...geometry, geometries: geometry.geometries.map(drawableGeometry).filter(Boolean) };
+  }
+  function normalizeGeoMap(input) {
+    if (!isObject(input) || !Array.isArray(input.layers)) throw new Error("GeoMap requires a layers array");
+    const layers = [], features = [], errors = [], ids = /* @__PURE__ */ new Set();
+    input.layers.forEach((layer, layerIndex) => {
+      try {
+        if (!isObject(layer) || !["id", "name", "role"].every((key) => typeof layer[key] === "string" && layer[key].trim())) {
+          throw new Error("Layer requires a nonempty id, name and role");
+        }
+        if (ids.has(layer.id)) throw new Error("Duplicate layer id");
+        if (layer.source !== void 0 && (!isObject(layer.source) || ["url", "publisher", "retrievedAt", "originalFormat"].some((key) => layer.source[key] !== void 0 && typeof layer.source[key] !== "string"))) {
+          throw new Error("Invalid layer source metadata");
+        }
+        const entries = asFeatures(layer.geojson).map((feature, index) => {
+          const p = feature.properties || {};
+          return {
+            id: `${layer.id}/${index}`,
+            layerId: layer.id,
+            layerName: layer.name,
+            role: layer.role,
+            feature,
+            name: text(p.name) || `${layer.name} \xB7 ${index + 1}`,
+            category: text(p.category, p.type) || layer.role,
+            routeSection: text(p.routeSection, p.route_section),
+            note: text(p.note, p.description, p.desc),
+            sourceUrl: sourceUrl(p.source) || safeUrl(p.sourceUrl) || safeUrl(p.source_url) || sourceUrl(layer.source),
+            point: feature.geometry?.type === "Point" && hasGeometry(feature.geometry) ? feature.geometry.coordinates : null
+          };
+        });
+        ids.add(layer.id);
+        layers.push({ id: layer.id, name: layer.name, role: layer.role, features: entries });
+        for (const entry of entries) features.push(entry);
+      } catch (error) {
+        errors.push(`Layer ${layerIndex + 1}: ${error.message}`);
+      }
+    });
+    if (input.layers.length && !layers.length) throw new Error(errors.join("; "));
+    return { layers, features, errors };
+  }
+
+  // src/geomap/dom.js
+  function element(tag, className, text2) {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text2 !== void 0) node.textContent = text2;
+    return node;
+  }
+  function externalLink(url, label) {
+    const link = element("a", "", label);
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.addEventListener("click", (event) => event.stopPropagation());
+    return link;
+  }
+  function popupContent(feature) {
+    const content = element("div", "geomap-popup");
+    content.append(element("strong", "", feature.name));
+    for (const [label, value] of [["Category", feature.category], ["Layer", feature.layerName], ["Route section", feature.routeSection]]) {
+      if (value) content.append(element("div", "", `${label}: ${value}`));
+    }
+    if (feature.note) content.append(element("p", "", feature.note));
+    if (feature.sourceUrl) content.append(externalLink(feature.sourceUrl, "Source \u2197"));
+    return content;
+  }
+
+  // src/geomap/table.js
+  function locationLink(feature) {
+    const [longitude, latitude] = feature.point;
+    const link = externalLink(`https://www.google.com/maps?q=${latitude},${longitude}`, "\u{1F4CD}");
+    link.setAttribute("aria-label", `Open ${feature.name} in Google Maps`);
+    link.title = "Open in Google Maps";
+    return link;
+  }
+  var FeatureTable = class {
+    constructor(root, runtime, id, { onSelect, onHover } = {}) {
+      this.rows = /* @__PURE__ */ new Map();
+      this.details = element("details", "geomap-data");
+      this.details.open = runtime.features.length <= 8;
+      this.details.append(element("summary", "", `Map locations and features (${runtime.features.length})`));
+      const wrapper = element("div", "geomap-table-wrapper");
+      wrapper.tabIndex = 0;
+      wrapper.setAttribute("role", "region");
+      wrapper.setAttribute("aria-label", "Map locations and features table");
+      const table = element("table", "geomap-table");
+      table.id = `${id}-table`;
+      const caption = element("caption", "geomap-sr-only", "Geographic features. Select a name to focus it on the map.");
+      table.append(caption);
+      const columns = [
+        { key: "name", label: "Name" },
+        { key: "category", label: "Category / Type" },
+        { key: "layerName", label: "Layer" },
+        { key: "routeSection", label: "Route section" },
+        { key: "note", label: "Details" },
+        { key: "point", label: "\u{1F4CD}" },
+        { key: "sourceUrl", label: "Source" }
+      ].filter((column) => ["name", "category", "layerName"].includes(column.key) || runtime.features.some((f) => f[column.key]));
+      const head = element("thead"), heading = element("tr");
+      for (const column of columns) {
+        const th = element("th", column.key === "point" ? "map-link-header" : "", column.label);
+        th.scope = "col";
+        if (column.key === "point") th.setAttribute("aria-label", "Google Maps location");
+        heading.append(th);
+      }
+      head.append(heading);
+      table.append(head);
+      const body = element("tbody");
+      for (const feature of runtime.features) {
+        const row = element("tr");
+        row.dataset.featureId = `${id}/${feature.id}`;
+        for (const column of columns) {
+          const cell = element("td", column.key === "point" ? "map-link-cell" : "");
+          if (column.key === "name") {
+            const button = element("button", "geomap-feature-button", feature.name);
+            button.type = "button";
+            button.setAttribute("aria-label", `Show ${feature.name} on map`);
+            button.addEventListener("click", (event) => {
+              event.stopPropagation();
+              onSelect?.(feature.id);
+            });
+            cell.append(button);
+          } else if (column.key === "point") {
+            if (feature.point) cell.append(locationLink(feature));
+          } else if (column.key === "sourceUrl") {
+            if (feature.sourceUrl) cell.append(externalLink(feature.sourceUrl, "Source \u2197"));
+          } else {
+            cell.textContent = feature[column.key] || "\u2014";
+            if (column.key === "layerName") {
+              const state = element("span", "geomap-layer-state", " (hidden on map)");
+              state.hidden = true;
+              cell.append(state);
+            }
+          }
+          row.append(cell);
+        }
+        row.addEventListener("click", (event) => {
+          if (!event.target.closest("a, button") && !window.getSelection()?.toString()) onSelect?.(feature.id);
+        });
+        row.addEventListener("mouseenter", () => onHover?.(feature.id));
+        row.addEventListener("mouseleave", () => onHover?.(null));
+        row.addEventListener("focusin", () => onHover?.(feature.id));
+        row.addEventListener("focusout", () => onHover?.(null));
+        this.rows.set(feature.id, row);
+        body.append(row);
+      }
+      table.append(body);
+      wrapper.append(table);
+      if (runtime.features.length > 8) this.addSearch(runtime.features, id);
+      this.details.append(wrapper);
+      if (!runtime.features.length) this.details.append(element("p", "geomap-message", "No geographic features."));
+      root.append(this.details);
+    }
+    addSearch(features, id) {
+      const controls = element("div", "geomap-table-controls");
+      const label = element("label", "", "Search locations");
+      const input = element("input");
+      input.id = `${id}-search`;
+      input.type = "search";
+      input.placeholder = "Search locations\u2026";
+      label.htmlFor = input.id;
+      const status = element("span", "geomap-filter-status", `${features.length} of ${features.length} features`);
+      status.setAttribute("role", "status");
+      const searchText = new Map(features.map((f) => [f.id, [f.name, f.category, f.layerName, f.routeSection, f.note].join(" ").toLocaleLowerCase()]));
+      input.addEventListener("input", () => {
+        const query = input.value.trim().toLocaleLowerCase();
+        let count = 0;
+        for (const [id2, row] of this.rows) {
+          row.hidden = !searchText.get(id2).includes(query);
+          if (!row.hidden) count += 1;
+        }
+        status.textContent = `${count} of ${features.length} features`;
+      });
+      controls.append(label, input, status);
+      this.details.append(controls);
+    }
+    select(id) {
+      this.rows.get(this.selectedId)?.classList.remove("is-selected");
+      this.rows.get(this.selectedId)?.querySelector("button").removeAttribute("aria-current");
+      this.rows.get(id)?.classList.add("is-selected");
+      this.rows.get(id)?.querySelector("button").setAttribute("aria-current", "true");
+      this.selectedId = id;
+    }
+    hover(id) {
+      this.rows.get(this.hoveredId)?.classList.remove("is-hovered");
+      this.rows.get(id)?.classList.add("is-hovered");
+      this.hoveredId = id;
+    }
+    setLayerVisible(layer, visible) {
+      for (const feature of layer.features) {
+        const row = this.rows.get(feature.id);
+        row.classList.toggle("is-layer-hidden", !visible);
+        row.querySelector(".geomap-layer-state").hidden = visible;
+      }
+    }
+  };
+
+  // src/geomap/style.js
+  var routeColors = ["#1769aa", "#a33a14", "#7041a0", "#00796b"];
+  var routePatterns = [null, "12 7", "3 7", "14 5 3 5"];
+  var categoryIcons = new Map(Object.entries({
+    settlement: "\u2302",
+    accommodation: "\u25A3",
+    transport: "\u2194",
+    water: "\u2248",
+    pass: "\u22C8",
+    viewpoint: "\u25C9",
+    historic: "\u265C",
+    "trail-access": "\u2197",
+    summit: "\u25B2",
+    food: "\u2668"
+  }));
+  function layerStyle(role, routeIndex) {
+    if (role === "route") return { color: routeColors[routeIndex % routeColors.length], weight: 4, dashArray: routePatterns[routeIndex % routePatterns.length], fillOpacity: 0.12 };
+    if (role === "boundary") return { color: "#79532b", weight: 2, dashArray: "6 5", fillOpacity: 0.14 };
+    return { color: "#28614b", weight: 3, dashArray: null, fillOpacity: 0.18 };
+  }
+  function pointMarker(L, latlng, feature) {
+    const icon = element("span", "geomap-marker-symbol", categoryIcons.get(feature.category.toLowerCase()) || "\u25CF");
+    icon.setAttribute("aria-hidden", "true");
+    return L.marker(latlng, {
+      icon: L.divIcon({ className: "geomap-marker", html: icon, iconSize: [30, 30], iconAnchor: [15, 15] }),
+      title: feature.name,
+      alt: feature.name,
+      // Keyboard focus should not unexpectedly move the document or the map.
+      autoPanOnFocus: false,
+      bubblingMouseEvents: false
+    });
+  }
+  function emphasize(group, style, level) {
+    const apply = (layer) => {
+      if (layer.eachLayer) {
+        layer.eachLayer(apply);
+        return;
+      }
+      if (layer.setStyle) layer.setStyle({ ...style, weight: style.weight + (level === 2 ? 3 : level), fillOpacity: style.fillOpacity + level * 0.08 });
+      const icon = layer.getElement?.();
+      icon?.classList.toggle("is-selected", level === 2);
+      icon?.classList.toggle("is-hovered", level === 1);
+      if (layer.setZIndexOffset) layer.setZIndexOffset(level * 500);
+    };
+    apply(group);
+  }
+
+  // src/geomap/map.js
+  var FeatureMap = class {
+    constructor(L, container, toolbar, runtime, { onSelect, onHover, onVisibility }) {
+      this.L = L;
+      this.container = container;
+      this.layers = /* @__PURE__ */ new Map();
+      this.features = /* @__PURE__ */ new Map();
+      this.onSelect = onSelect;
+      this.onHover = onHover;
+      this.reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+      this.map = L.map(container, {
+        scrollWheelZoom: false,
+        fadeAnimation: !this.reducedMotion,
+        zoomAnimation: !this.reducedMotion,
+        markerZoomAnimation: !this.reducedMotion
+      }).setView([20, 0], 2);
+      try {
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: '\xA9 <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
+        }).addTo(this.map);
+        let routeIndex = 0;
+        const controls = element("details", "geomap-layers");
+        controls.append(element("summary", "", "Layers"));
+        const fields = element("fieldset");
+        fields.append(element("legend", "geomap-sr-only", "Visible map layers"));
+        for (const layer of runtime.layers) {
+          const style = layerStyle(layer.role, layer.role === "route" ? routeIndex++ : 0);
+          const group = L.featureGroup().addTo(this.map);
+          const label = element("label");
+          const checkbox = element("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = true;
+          checkbox.addEventListener("change", () => {
+            if (checkbox.checked) group.addTo(this.map);
+            else this.map.removeLayer(group);
+            onVisibility(layer, checkbox.checked);
+            this.refresh(this.selectedId);
+            this.refresh(this.hoveredId);
+          });
+          const swatch = element("span", "geomap-layer-swatch");
+          swatch.style.borderTopColor = style.color;
+          swatch.style.borderTopStyle = style.dashArray ? "dashed" : "solid";
+          swatch.setAttribute("aria-hidden", "true");
+          label.append(checkbox, swatch, document.createTextNode(layer.name));
+          fields.append(label);
+          this.layers.set(layer.id, { group, checkbox, layer });
+          for (const feature of layer.features) {
+            const drawable = drawableGeometry(feature.feature.geometry);
+            if (!drawable) continue;
+            const geometry = L.geoJSON({ ...feature.feature, geometry: drawable }, {
+              style: () => style,
+              pointToLayer: (_, latlng) => pointMarker(L, latlng, feature)
+            });
+            geometry.bindPopup(() => popupContent(feature), { maxWidth: 300, autoPan: false });
+            geometry.on("click", () => this.select(feature.id));
+            geometry.on("mouseover", () => this.hover(feature.id));
+            geometry.on("mouseout", () => this.hover(null));
+            geometry.addTo(group);
+            this.features.set(feature.id, { geometry, style, feature });
+          }
+        }
+        controls.append(fields);
+        toolbar.append(controls);
+        const bounds = L.latLngBounds([]);
+        for (const { group } of this.layers.values()) {
+          const layerBounds = group.getBounds();
+          if (layerBounds.isValid()) bounds.extend(layerBounds);
+        }
+        if (bounds.isValid()) this.map.fitBounds(bounds, { padding: [24, 24], maxZoom: 15 });
+        if (window.ResizeObserver) {
+          this.observer = new ResizeObserver(() => this.map.invalidateSize({ pan: false }));
+          this.observer.observe(container);
+        }
+        this.onVisibility = onVisibility;
+      } catch (error) {
+        this.destroy();
+        throw error;
+      }
+    }
+    refresh(id) {
+      const binding = this.features.get(id);
+      if (binding) emphasize(binding.geometry, binding.style, id === this.selectedId ? 2 : id === this.hoveredId ? 1 : 0);
+    }
+    select(id) {
+      const previous = this.selectedId;
+      this.selectedId = id;
+      this.refresh(previous);
+      this.refresh(id);
+      this.onSelect(id);
+    }
+    hover(id) {
+      const previous = this.hoveredId;
+      this.hoveredId = id;
+      this.refresh(previous);
+      this.refresh(id);
+      this.onHover(id);
+    }
+    focus(id) {
+      const binding = this.features.get(id);
+      if (!binding) {
+        this.select(id);
+        return;
+      }
+      const { geometry, feature } = binding;
+      const entry = this.layers.get(feature.layerId);
+      entry.group.addTo(this.map);
+      entry.checkbox.checked = true;
+      this.onVisibility(entry.layer, true);
+      this.select(id);
+      this.container.scrollIntoView({ behavior: this.reducedMotion ? "instant" : "smooth", block: "start" });
+      this.map.invalidateSize({ pan: false });
+      if (feature.point) {
+        const [longitude, latitude] = feature.point;
+        this.map.flyTo([latitude, longitude], Math.max(this.map.getZoom(), 15), { animate: !this.reducedMotion });
+      } else {
+        const bounds = geometry.getBounds();
+        if (bounds.isValid()) this.map.fitBounds(bounds, { padding: [30, 30], maxZoom: 16, animate: !this.reducedMotion });
+      }
+      geometry.openPopup();
+    }
+    destroy() {
+      this.observer?.disconnect();
+      this.map.remove();
+    }
+  };
+
+  // src/geomap/leaflet.js
+  var loading;
+  function loadLeaflet() {
+    if (loading) return loading;
+    loading = Promise.all([
+      loadAsset("link", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css", "sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="),
+      loadAsset("script", "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js", "sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=")
+    ]).then(() => {
+      if (!window.L) throw new Error("Leaflet did not initialize");
+      return window.L;
+    });
+    return loading;
+  }
+  function loadAsset(tag, url, integrity) {
+    return new Promise((resolve, reject) => {
+      const node = document.createElement(tag);
+      if (tag === "link") {
+        node.rel = "stylesheet";
+        node.href = url;
+      } else node.src = url;
+      node.integrity = integrity;
+      node.crossOrigin = "anonymous";
+      const timer = setTimeout(() => finish(new Error("Leaflet download timed out")), 15e3);
+      const finish = (error) => {
+        clearTimeout(timer);
+        node.onload = node.onerror = null;
+        if (error) {
+          node.remove();
+          reject(error);
+        } else resolve();
+      };
+      node.onload = () => finish();
+      node.onerror = () => finish(new Error("Leaflet download failed"));
+      document.head.append(node);
+    });
+  }
+
+  // src/geomap/index.js
+  function install(md, { loadMapLibrary = loadLeaflet } = {}) {
+    const originalFence = md.renderer.rules.fence;
+    const parsed = /* @__PURE__ */ new WeakMap(), pending = /* @__PURE__ */ new Map(), components = /* @__PURE__ */ new WeakMap();
+    let nextId = 0;
+    md.renderer.rules.fence = (tokens, index, ...args) => {
+      const token = tokens[index];
+      if (token.info.trim().split(/\s+/)[0] !== "geomap") return originalFence(tokens, index, ...args);
+      if (!parsed.has(token)) {
+        try {
+          const runtime2 = normalizeGeoMap(JSON.parse(token.content));
+          runtime2.errors.forEach((error) => console.warn("GeoMap:", error));
+          parsed.set(token, runtime2);
+        } catch (error) {
+          console.error("GeoMap:", error);
+          parsed.set(token, null);
+        }
+      }
+      const runtime = parsed.get(token);
+      if (!runtime) return '<p class="geomap-error" role="status">Map data could not be rendered.</p>';
+      const id = `geomap-${++nextId}`;
+      pending.set(id, runtime);
+      return `<div class="geomap" data-geomap-id="${id}"></div>`;
+    };
+    function enhance(root, { interactive = true } = {}) {
+      const active = components.get(root) || [];
+      for (const node of root.querySelectorAll("[data-geomap-id]")) {
+        const id = node.dataset.geomapId, runtime = pending.get(id);
+        if (!runtime) continue;
+        pending.delete(id);
+        const component = { disposed: false };
+        active.push(component);
+        const toolbar = element("div", "geomap-toolbar");
+        const container = element("div", "geomap-map");
+        container.id = `${id}-map`;
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Interactive geographic map");
+        const status = element("p", "geomap-message", interactive ? "Loading map\u2026" : "Geographic features");
+        status.setAttribute("role", "status");
+        container.append(status);
+        node.append(toolbar, container);
+        const table = new FeatureTable(node, runtime, id, {
+          onSelect: (featureId) => {
+            table.select(featureId);
+            component.map?.focus(featureId);
+          },
+          onHover: (featureId) => component.map?.hover(featureId)
+        });
+        if (runtime.errors.length) node.prepend(element("p", "geomap-message", "Some map layers could not be rendered."));
+        if (!interactive) {
+          table.details.open = true;
+          continue;
+        }
+        Promise.resolve().then(loadMapLibrary).then((L) => {
+          if (component.disposed || !node.isConnected) return;
+          status.remove();
+          component.map = new FeatureMap(L, container, toolbar, runtime, {
+            onSelect: (featureId) => table.select(featureId),
+            onHover: (featureId) => table.hover(featureId),
+            onVisibility: (layer, visible) => table.setLayerVisible(layer, visible)
+          });
+        }).catch((error) => {
+          if (component.disposed) return;
+          console.error("GeoMap:", error);
+          toolbar.replaceChildren();
+          container.replaceChildren(element("p", "geomap-message", "Map unavailable. Geographic features and links are listed below."));
+        });
+      }
+      components.set(root, active);
+    }
+    function dispose(root) {
+      for (const component of components.get(root) || []) {
+        component.disposed = true;
+        component.map?.destroy();
+      }
+      components.delete(root);
+    }
+    return { enhance, dispose };
+  }
+  return __toCommonJS(index_exports);
+})();
+</script>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const escapeHTML = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const slugify = text => text.normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}\s_-]/gu,'').trim().replace(/[\s_]+/g,'-') || 'untitled';
+function uniqueSlug(text, used){const base=slugify(text);let id=base,n=2;while(used.has(id))id=base+'-'+n++;used.add(id);return id;}
+function plainText(token){return (token.children||[]).map(t=>t.type==='image'?t.content:t.type==='softbreak'||t.type==='hardbreak'?' ':t.content||'').join('')||token.content||'Untitled';}
+function readMarkdown(){return $('markdown-source').textContent.replace(/&lt;\/script/gi,'<'+'/script');}
+class DocumentParser {
+ constructor(md){this.md=md;}
+ parse(source){
+  const env={},tokens=this.md.parse(source,env),doc={title:'Untitled document',sections:[],pages:[],anchors:new Map(),env};
+  const sectionSlugs=new Set(),headingSlugs=new Set();let section=null,page=null,titleFound=false;
+  const addSection=title=>{section={title,slug:uniqueSlug(title,sectionSlugs),pages:[],used:new Set()};doc.sections.push(section);page=null;return section;};
+  const addPage=(title,kind='page')=>{if(!section)addSection('Document');page={title,slug:uniqueSlug(title,section.used),kind,tokens:[],toc:[],section};page.route='#/'+section.slug+'/'+page.slug;section.pages.push(page);doc.pages.push(page);return page;};
+  const ensurePage=()=>page||addPage('Overview','overview');
+  for(let i=0;i<tokens.length;i++){
+   const t=tokens[i];
+   if(t.type==='heading_open'){
+    const level=Number(t.tag.slice(1)),title=plainText(tokens[i+1]),id=uniqueSlug(title,headingSlugs);t.attrSet('id','heading-'+id);
+    if(t.level===0&&level===1&&!titleFound){doc.title=title;titleFound=true;doc.titleAnchor=id;i+=2;continue;}
+    if(t.level===0&&level===2){addSection(title);section.anchor=id;i+=2;continue;}
+    if(t.level===0&&level===3){addPage(title);doc.anchors.set(id,{page});i+=2;continue;}
+    ensurePage();doc.anchors.set(id,{page,id});if(level>=4)page.toc.push({title,id,level});
+   }
+   ensurePage().tokens.push(t);
+  }
+  for(const s of doc.sections){if(!s.pages.length){section=s;addPage(s.title,'overview');}if(s.anchor)doc.anchors.set(s.anchor,{page:s.pages[0]});}
+  if(!doc.pages.length){addSection('Document');addPage(doc.title,'overview');}
+  // Reconstruct source order after filling empty sections.
+  doc.pages=doc.sections.flatMap(s=>s.pages);if(doc.titleAnchor)doc.anchors.set(doc.titleAnchor,{page:doc.pages[0]});
+  for(const p of doc.pages){
+   if(p.toc.length)continue;
+   for(let i=0;i<p.tokens.length;i++){
+    const token=p.tokens[i],inline=p.tokens[i+1];
+    if(token.type!=='paragraph_open'||token.level!==0||inline?.type!=='inline')continue;
+    const children=inline.children||[],start=children.findIndex(t=>t.type!=='text'||t.content.trim());
+    if(start<0||children[start].type!=='strong_open')continue;
+    const end=children.findIndex((t,j)=>j>start&&t.type==='strong_close');
+    if(end<0)continue;
+    const label=children.slice(start+1,end).map(t=>t.content||'').join('').trim();
+    const remainder=children.slice(end+1).map(t=>t.content||'').join('').trim();
+    if(!label||label.length>100||(remainder&&!/[:：]$/.test(label)))continue;
+    const title=label.replace(/[:：.]$/,'');
+    const id=uniqueSlug(title,headingSlugs);token.attrSet('id','heading-'+id);
+    p.toc.push({title,id,level:4});doc.anchors.set(id,{page:p,id});
+   }
+  }
+  return doc;
+ }
+}
+class MarkdownRenderer {
+ constructor(md,model){this.md=md;this.model=model;const original=md.renderer.rules.link_open||((ts,i,o,e,r)=>r.renderToken(ts,i,o));md.renderer.rules.link_open=(ts,i,o,e,r)=>{const t=ts[i],href=t.attrGet('href');if(href?.startsWith('#')&&!href.startsWith('#/')){let key;try{key=decodeURIComponent(href.slice(1));}catch{key=href.slice(1);}const target=model.anchors.get(key);if(target)t.attrSet('href',target.page.route+(target.id?'/'+target.id:''));}t.attrSet('target','_blank');t.attrSet('rel','noopener noreferrer');return original(ts,i,o,e,r);};}
+ render(page){return this.md.renderer.render(page.tokens,this.md.options,this.model.env);}
+}
+// Extension point: add future transformations here. Navigation and TOC are core UI.
+const contentEnhancements=[];
+let geomaps;
+function enhanceContent(article){for(const enhance of contentEnhancements)enhance(article);}
+class HashRouter {
+ constructor(model,onRoute){this.model=model;this.onRoute=onRoute;this.positions=new Map();this.current=null;this.lastPages=new Map();}
+ start(){if('scrollRestoration'in history)history.scrollRestoration='manual';window.addEventListener('hashchange',()=>this.resolve());this.resolve(true);}
+ resolve(initial=false){
+  if(location.hash==='#content'){$('content').focus();return;}
+  if(this.current)this.positions.set(this.current,window.scrollY);
+  let parts;try{parts=decodeURIComponent(location.hash).replace(/^#\//,'').split('/');}catch{parts=[];}
+  let section=this.model.sections.find(s=>s.slug===parts[0]),page=section?.pages.find(p=>p.slug===parts[1]),anchor=parts.slice(2).join('/');
+  if(!page){let alias;try{alias=this.model.anchors.get(decodeURIComponent(location.hash.slice(1)));}catch{}page=alias?.page||section?.pages[0]||this.model.pages[0];anchor=alias?.id||'';history.replaceState(null,'',page.route+(anchor?'/'+anchor:''));}
+  if(anchor&&!page.tokens.some(t=>t.attrGet('id')==='heading-'+anchor)){anchor='';history.replaceState(null,'',page.route);}
+  this.current=location.hash;this.lastPages.set(page.section.slug,page);this.onRoute(page,anchor,initial);const route=this.current;
+  requestAnimationFrame(()=>{if(this.current!==route)return;if(anchor)document.getElementById('heading-'+anchor)?.scrollIntoView();else window.scrollTo(0,this.positions.get(route)||0);});
+ }
+}
+class DocumentViewer {
+ constructor(model,renderer){this.model=model;this.renderer=renderer;this.router=new HashRouter(model,(...args)=>this.render(...args));this.observer=null;}
+ link(page,label,current){return `<a href="${page.route}"${page===current?' aria-current="page"':''}>${escapeHTML(label)}</a>`;}
+ start(){
+  const homePage=this.model.pages[0];$('document-title').textContent=this.model.title;$('document-title').href=homePage.route;const sidebarLayout=document.documentElement.dataset.layout==='sidebar';$('primary').hidden=sidebarLayout;document.documentElement.classList.toggle('sidebar-layout',sidebarLayout);$('secondary').setAttribute('aria-label',sidebarLayout?'Document navigation':'Pages');if('ResizeObserver'in window)new ResizeObserver(entries=>document.documentElement.style.setProperty('--header',entries[0].target.offsetHeight+'px')).observe(document.querySelector('.header'));$('status').hidden=true;$('layout').hidden=false;
+  $('menu').onclick=()=>$('drawer').showModal();$('close-menu').onclick=()=>$('drawer').close();$('drawer').addEventListener('click',e=>{if(e.target===$('drawer')){const r=$('drawer').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('drawer').close();}if(e.target.closest('a'))$('drawer').close();});
+  window.addEventListener('beforeprint',()=>{$('print-content').innerHTML=`<h1>${escapeHTML(this.model.title)}</h1>`+this.model.sections.map(s=>`<section><h2>${escapeHTML(s.title)}</h2>${s.pages.map(p=>`<article><h3>${escapeHTML(p.title)}</h3>${this.renderer.render(p)}</article>`).join('')}</section>`).join('');geomaps?.enhance($('print-content'),{interactive:false});});window.addEventListener('afterprint',()=>{geomaps?.dispose($('print-content'));$('print-content').replaceChildren();});this.router.start();
+ }
+ render(page,anchor,initial){
+  const s=page.section;document.title=page.title+' · '+this.model.title+' | Pageleaf';
+  $('primary').innerHTML=this.model.sections.map(section=>`<a href="${(this.router.lastPages.get(section.slug)||section.pages[0]).route}"${section===s?' aria-current="true"':''}>${escapeHTML(section.title)}</a>`).join('');
+  const sidebarLayout=document.documentElement.dataset.layout==='sidebar';$('secondary').innerHTML=sidebarLayout?this.model.sections.map(section=>`<section class="sidebar-group"><h3 class="sidebar-group-title">${escapeHTML(section.title)}</h3>${section.pages.length>1?section.pages.map(p=>this.link(p,p.title,page)).join(''):this.link(section.pages[0],section.pages[0].kind==='overview'?'Overview':section.pages[0].title,page)}</section>`).join(''):s.pages.map(p=>this.link(p,p.title,page)).join('');
+  $('mobile-nav').innerHTML=this.model.sections.map(section=>`<h3>${escapeHTML(section.title)}</h3>${section.pages.map(p=>this.link(p,p.title,page)).join('')}`).join('');
+  $('page-title').textContent=page.title;
+  geomaps?.dispose($('article'));$('article').innerHTML=this.renderer.render(page);enhanceContent($('article'));
+  const toc=page.toc.map(h=>`<a href="${page.route}/${h.id}" data-level="${h.level}">${escapeHTML(h.title)}</a>`).join('')||`<a href="${page.route}">${escapeHTML(page.title)}</a>`;$('toc').querySelector('nav').innerHTML=toc;$('mobile-toc').querySelector('nav').innerHTML=toc;$('toc').style.visibility=toc?'visible':'hidden';$('mobile-toc').hidden=!toc;$('mobile-toc').style.display=toc?'':'none';
+  const index=this.model.pages.indexOf(page);$('pager').innerHTML=[index>0?`<a href="${this.model.pages[index-1].route}"><small>← Previous</small>${escapeHTML(this.model.pages[index-1].title)}</a>`:'',index<this.model.pages.length-1?`<a href="${this.model.pages[index+1].route}"><small>Next →</small>${escapeHTML(this.model.pages[index+1].title)}</a>`:''].join('');
+  this.observer?.disconnect();if('IntersectionObserver'in window){this.observer=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting);if(visible.length)this.markHeading(visible[0].target.id.slice(8));},{rootMargin:'-140px 0px -55% 0px'});page.toc.forEach(h=>this.observer.observe(document.getElementById('heading-'+h.id)));}this.markHeading(anchor||page.toc[0]?.id);
+  if(!initial)$('content').focus({preventScroll:true});
+ }
+ markHeading(id){document.querySelectorAll('.toc a,.mobile-toc a').forEach(a=>{if(a.hash.endsWith('/'+id))a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});}
+}
+try{const theme=localStorage.getItem('pageleaf-theme');if(['paper','midnight','grove','ocean','contrast'].includes(theme))document.documentElement.dataset.theme=theme;}catch{}
+$('theme').value=document.documentElement.dataset.theme;$('theme').onchange=e=>{document.documentElement.dataset.theme=e.target.value;try{localStorage.setItem('pageleaf-theme',e.target.value);}catch{}};
+if(!window.markdownit){$('status').textContent='The Markdown library could not load. Connect to the internet and reload this file to try again.';}else{try{const md=window.markdownit({html:false,linkify:true,typographer:true});geomaps=PageleafGeoMap.install(md);contentEnhancements.push(article=>geomaps.enhance(article));const model=new DocumentParser(md).parse(readMarkdown());new DocumentViewer(model,new MarkdownRenderer(md,model)).start();}catch(error){$('status').hidden=false;$('status').textContent='This document could not be opened: '+error.message;console.error(error);}}
+</script>
+</body>
+</html>
